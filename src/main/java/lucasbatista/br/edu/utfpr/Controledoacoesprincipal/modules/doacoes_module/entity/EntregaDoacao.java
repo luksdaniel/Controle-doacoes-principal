@@ -6,6 +6,7 @@ import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.en
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,48 +19,41 @@ import java.util.Set;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 
 @Entity
-@Table(name = "coleta_doacao")
-public class ColetaDoacao extends RepresentationModel<ColetaDoacao> {
+@Table(name = "entrega_doacao")
+public class EntregaDoacao extends RepresentationModel<EntregaDoacao> implements Serializable {
 
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "esta_efetivada")
-    private boolean estaEfetivada;
+    private String descricao;
 
-    @Column(name = "data_doacao")
-    private LocalDate dataDoacao;
-
-    @Column(name = "data_efetivacao")
-    private LocalDate dataEfetivacao;
+    @Column(name = "data_entrega")
+    private LocalDate dataEntrega;
 
     private String observacao;
 
     @Column(name = "esta_cancelada")
     private boolean estaCancelada;
 
-    @Column(name = "motivo_cancelamento")
-    private String motivoCancelamento;
-
-    @ManyToOne
-    private Usuario usuarioEfetivacao;
+    @Column(name = "nome_responsavel")
+    private String nomeResponsavel;
 
     @ManyToOne
     private Usuario usuarioRegistro;
 
     @ManyToMany
     @JoinTable(
-            name = "item_coleta_doacao",
-            joinColumns = @JoinColumn(name = "coleta_doacao_id"),
+            name = "item_entrega_doacao",
+            joinColumns = @JoinColumn(name = "entrega_doacao_id"),
             inverseJoinColumns = @JoinColumn(name = "item_id")
 
     )
-    private Set<Item> itemColeta = new HashSet<>();
+    private Set<Item> itemEntrega = new HashSet<>();
 
     @ManyToOne
-    @JoinColumn(name = "doador_id", referencedColumnName = "id")
-    private Doador doador;
+    @JoinColumn(name = "beneficiario_id", referencedColumnName = "id")
+    private Beneficiario beneficiario;
 
 }

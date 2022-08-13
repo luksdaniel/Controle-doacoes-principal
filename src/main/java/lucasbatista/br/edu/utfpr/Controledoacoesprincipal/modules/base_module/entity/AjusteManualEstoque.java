@@ -1,6 +1,7 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity;
 
 import lombok.*;
+import net.bytebuddy.utility.nullability.MaybeNull;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
@@ -31,7 +32,7 @@ public class AjusteManualEstoque extends RepresentationModel<AjusteManualEstoque
     @Column(name = "esta_cancelada")
     private boolean estaCancelada;
 
-    @OneToOne
+    @ManyToOne
     private Usuario usuarioResponsavel;
 
 }

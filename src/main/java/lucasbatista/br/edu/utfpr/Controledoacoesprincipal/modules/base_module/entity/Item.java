@@ -2,6 +2,7 @@ package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.e
 
 import lombok.*;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.ColetaDoacao;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.EntregaDoacao;
 import net.minidev.json.annotate.JsonIgnore;
 import org.springframework.hateoas.RepresentationModel;
 
@@ -53,5 +54,9 @@ public class Item extends RepresentationModel<Item> implements Serializable {
     @JsonIgnore
     @ManyToMany(mappedBy = "itemColeta")
     private Set<ColetaDoacao> coletasDoacao = new HashSet<>();
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "itemEntrega")
+    private Set<EntregaDoacao> entregasDoacao = new HashSet<>();
 
 }
