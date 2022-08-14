@@ -1,6 +1,7 @@
-package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity;
+package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.unidadeMedida;
 
 import lombok.*;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item.Item;
 import net.minidev.json.annotate.JsonIgnore;
 import org.springframework.hateoas.RepresentationModel;
 

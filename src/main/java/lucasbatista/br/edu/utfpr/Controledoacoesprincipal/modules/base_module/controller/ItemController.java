@@ -1,7 +1,7 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.controller;
 
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.Item;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.persistence.item.ItemService;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item.Item;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item.ManagerItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
@@ -15,11 +15,11 @@ import java.util.Optional;
 @RequestMapping("/item")
 public class ItemController {
     @Autowired
-    ItemService itemService;
+    ManagerItem managerItem;
 
     @GetMapping
     public ResponseEntity<List<Item>> findAllItem() {
-        List<Item> itemList = itemService.findAllItem();
+        List<Item> itemList = managerItem.findAllItem();
         if(itemList.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }else{
@@ -34,7 +34,7 @@ public class ItemController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Item> findItemById(@PathVariable("id") Long id){
-        Optional<Item> item = itemService.findById(id);
+        Optional<Item> item = managerItem.findById(id);
         if(item.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }else{
@@ -46,7 +46,7 @@ public class ItemController {
 
     @PostMapping
     public ResponseEntity<Item> saveItem(@RequestBody Item item){
-        Item itemInterno = itemService.saveItem(item);
+        Item itemInterno = managerItem.saveItem(item);
         if(item == null){
             return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
         }else{
@@ -59,10 +59,10 @@ public class ItemController {
 
     @PutMapping
     public ResponseEntity<Item> updateItem(@RequestBody Item item){
-        if(itemService.findById(item.getId()).isEmpty()){
+        if(managerItem.findById(item.getId()).isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
-            Item itemInterno = (itemService.updateItem(item));
+            Item itemInterno = (managerItem.updateItem(item));
             itemInterno.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ItemController.class).findAllItem()).withRel("Lista de itens"));
             return new ResponseEntity<Item>(itemInterno, HttpStatus.OK);
         }
@@ -71,7 +71,7 @@ public class ItemController {
     @DeleteMapping("/{id}")
     public ResponseEntity<List<Item>> deleteItem(@PathVariable("id") Long id){
         try{
-            itemService.deleteItem(id);
+            managerItem.deleteItem(id);
             return findAllItem();
         }catch (Exception ex){
             return new ResponseEntity(ex.getMessage(), HttpStatus.NOT_FOUND);

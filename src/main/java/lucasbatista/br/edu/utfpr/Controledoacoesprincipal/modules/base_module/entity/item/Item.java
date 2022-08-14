@@ -1,6 +1,7 @@
-package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity;
+package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item;
 
 import lombok.*;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.unidadeMedida.UnidadeMedida;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.ColetaDoacao;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.EntregaDoacao;
 import net.minidev.json.annotate.JsonIgnore;

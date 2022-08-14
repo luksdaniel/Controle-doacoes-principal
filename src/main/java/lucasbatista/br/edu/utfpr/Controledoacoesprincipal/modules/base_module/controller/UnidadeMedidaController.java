@@ -1,7 +1,7 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.controller;
 
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.UnidadeMedida;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.persistence.unidadeMedida.UnidadeMedidaService;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.unidadeMedida.ManagerUnidadeMedida;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.unidadeMedida.UnidadeMedida;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
@@ -16,11 +16,11 @@ import java.util.Optional;
 public class UnidadeMedidaController {
 
     @Autowired
-    UnidadeMedidaService unidadeMedidaService;
+    ManagerUnidadeMedida managerUnidadeMedida;
 
     @GetMapping
     public ResponseEntity<List<UnidadeMedida>> findAllUnidadeMedida() {
-        List<UnidadeMedida> unidadeMedidaList = unidadeMedidaService.findAllUnidadeMedida();
+        List<UnidadeMedida> unidadeMedidaList = managerUnidadeMedida.findAllUnidadeMedida();
         if(unidadeMedidaList.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }else{
@@ -35,7 +35,7 @@ public class UnidadeMedidaController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UnidadeMedida> findUnidadeMedidaById(@PathVariable("id") Long id){
-        Optional<UnidadeMedida> un = unidadeMedidaService.findById(id);
+        Optional<UnidadeMedida> un = managerUnidadeMedida.findById(id);
         if(un.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }else{
@@ -47,7 +47,7 @@ public class UnidadeMedidaController {
 
     @PostMapping
     public ResponseEntity<UnidadeMedida> saveUnidadeMedida(@RequestBody UnidadeMedida unidadeMedida){
-        UnidadeMedida un = unidadeMedidaService.saveUnidadeMedida(unidadeMedida);
+        UnidadeMedida un = managerUnidadeMedida.saveUnidadeMedida(unidadeMedida);
         if(unidadeMedida == null){
             return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
         }else{
@@ -60,10 +60,10 @@ public class UnidadeMedidaController {
 
     @PutMapping
     public ResponseEntity<UnidadeMedida> updateUnidadeMedida(@RequestBody UnidadeMedida unidadeMedida){
-        if(unidadeMedidaService.findById(unidadeMedida.getId()).isEmpty()){
+        if(managerUnidadeMedida.findById(unidadeMedida.getId()).isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
-            UnidadeMedida un = (unidadeMedidaService.updaUnidadeMedida(unidadeMedida));
+            UnidadeMedida un = (managerUnidadeMedida.updaUnidadeMedida(unidadeMedida));
             un.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UnidadeMedidaController.class).findAllUnidadeMedida()).withRel("Lista de Unidades de medida"));
             return new ResponseEntity<UnidadeMedida>(un, HttpStatus.OK);
         }
@@ -72,10 +72,10 @@ public class UnidadeMedidaController {
     @DeleteMapping("/{id}")
     public ResponseEntity<List<UnidadeMedida>> deleteUnidadeMedida(@PathVariable("id") Long id){
         try{
-            unidadeMedidaService.deleteUnidadeMedida(id);
+            managerUnidadeMedida.deleteUnidadeMedida(id);
             return findAllUnidadeMedida();
         }catch (Exception ex){
-            return new ResponseEntity(ex.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
 
     }

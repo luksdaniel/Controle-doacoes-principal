@@ -1,7 +1,7 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity;
 
 import lombok.*;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.Item;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item.Item;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.Usuario;
 import org.springframework.hateoas.RepresentationModel;
 
