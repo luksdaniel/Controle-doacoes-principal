@@ -1,10 +1,10 @@
-package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity;
+package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.doador;
 
 import lombok.*;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.Pessoa;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.Usuario;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.pessoa.Pessoa;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.usuario.Usuario;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.ColetaDoacao;
 import net.minidev.json.annotate.JsonIgnore;
-import org.springframework.jmx.export.annotation.ManagedNotification;
 
 import javax.persistence.*;
 import java.io.Serializable;

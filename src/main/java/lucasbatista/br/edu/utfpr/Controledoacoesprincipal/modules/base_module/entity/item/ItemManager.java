@@ -3,7 +3,7 @@ package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.e
 import java.util.List;
 import java.util.Optional;
 
-public interface ManagerItem {
+public interface ItemManager {
 
     List<Item> findAllItem();
     Optional<Item> findById(Long id);

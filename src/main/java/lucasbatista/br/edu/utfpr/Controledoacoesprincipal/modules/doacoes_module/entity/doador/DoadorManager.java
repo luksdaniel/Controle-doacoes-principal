@@ -1,11 +1,9 @@
-package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.persistence.doador;
-
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.doador.Doador;
+package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.doador;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface DoadorService {
+public interface DoadorManager {
 
     List<Doador> findAllDoador();
 

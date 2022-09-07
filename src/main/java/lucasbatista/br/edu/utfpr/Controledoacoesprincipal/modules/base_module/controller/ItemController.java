@@ -1,7 +1,7 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.controller;
 
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item.Item;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item.ManagerItem;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item.ItemManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ import java.util.Optional;
 @RequestMapping("/item")
 public class ItemController {
     @Autowired
-    ManagerItem managerItem;
+    ItemManager managerItem;
 
     @GetMapping
     public ResponseEntity<List<Item>> findAllItem() {
@@ -35,13 +35,11 @@ public class ItemController {
     @GetMapping("/{id}")
     public ResponseEntity<Item> findItemById(@PathVariable("id") Long id){
         Optional<Item> item = managerItem.findById(id);
-        if(item.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }else{
-            item.get().removeLinks();
-            item.get().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ItemController.class).findAllItem()).withRel("Lista de Items"));
-            return new ResponseEntity<Item>(item.get(), HttpStatus.OK);
-        }
+
+        item.get().removeLinks();
+        item.get().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ItemController.class).findAllItem()).withRel("Lista de Items"));
+        return new ResponseEntity<Item>(item.get(), HttpStatus.OK);
+
     }
 
     @PostMapping

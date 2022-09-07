@@ -1,6 +1,8 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity;
 
 import lombok.*;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.pessoa.Pessoa;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.usuario.Usuario;
 import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
