@@ -27,29 +27,32 @@ public class Item extends RepresentationModel<Item> implements Serializable {
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, updatable = false)
     private long id;
+
+    @Column(name = "descricao", nullable = false)
     private String descricao;
 
     @Column(name = "informacoes_adicionais")
     private String informacoesAdicionais;
 
-    @Column(name = "esta_cancelado")
+    @Column(name = "esta_cancelado", nullable = false)
     private boolean estaCancelado;
 
-    @Column(name = "quantidade_minima")
+    @Column(name = "quantidade_minima", nullable = false)
     private double quantidadeMinima;
 
-    @Column(name = "quantidade_estoque")
+    @Column(name = "quantidade_estoque", nullable = false)
     private double quantidadeEstoque;
 
-    @Column(name = "data_cadastro")
+    @Column(name = "data_cadastro", nullable = false)
     private LocalDate dataCadastro;
 
     @Column(name = "tipo_item")
     private String tipoItem;
 
     @ManyToOne
-    @JoinColumn(name = "unidade_medida_id", referencedColumnName = "id")
+    @JoinColumn(name = "unidade_medida_id", referencedColumnName = "id", nullable = false)
     private UnidadeMedida unidadeMedida;
 
     @JsonIgnore

@@ -3,9 +3,12 @@ package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.e
 import lombok.*;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item.Item;
 import net.minidev.json.annotate.JsonIgnore;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.*;
 
@@ -23,11 +26,19 @@ public class UnidadeMedida extends RepresentationModel<UnidadeMedida> implements
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, updatable = false)
     private long id;
+
+    @NotBlank(message = "Sigla não pode ser nula")
+    @Column(nullable = false)
     private String sigla;
+
+    @NotBlank
+    @Column(nullable = false)
     private String descricao;
 
-    @Column(name = "esta_cancelado")
+    @NotNull
+    @Column(name = "esta_cancelado", nullable = false)
     private boolean estaCancelado;
 
     @JsonIgnore

@@ -6,9 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -20,16 +24,12 @@ public class ItemController {
     @GetMapping
     public ResponseEntity<List<Item>> findAllItem() {
         List<Item> itemList = managerItem.findAllItem();
-        if(itemList.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }else{
-            for(Item item : itemList){
-                item.removeLinks();
-                long id = item.getId();
-                item.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ItemController.class).findItemById((Long) id)).withSelfRel());
-            }
-            return new ResponseEntity<>(itemList, HttpStatus.OK);
+        for(Item item : itemList){
+            item.removeLinks();
+            long id = item.getId();
+            item.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ItemController.class).findItemById((Long) id)).withSelfRel());
         }
+        return new ResponseEntity<>(itemList, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -45,35 +45,23 @@ public class ItemController {
     @PostMapping
     public ResponseEntity<Item> saveItem(@RequestBody Item item){
         Item itemInterno = managerItem.saveItem(item);
-        if(item == null){
-            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
-        }else{
-            itemInterno.removeLinks();
-            itemInterno.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ItemController.class).findAllItem()).withRel("Lista de Items"));
-            return new ResponseEntity<Item>(itemInterno, HttpStatus.OK);
-        }
+        itemInterno.removeLinks();
+        itemInterno.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ItemController.class).findAllItem()).withRel("Lista de Items"));
+        return new ResponseEntity<Item>(itemInterno, HttpStatus.CREATED);
 
     }
 
     @PutMapping
     public ResponseEntity<Item> updateItem(@RequestBody Item item){
-        if(managerItem.findById(item.getId()).isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            Item itemInterno = (managerItem.updateItem(item));
-            itemInterno.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ItemController.class).findAllItem()).withRel("Lista de itens"));
-            return new ResponseEntity<Item>(itemInterno, HttpStatus.OK);
-        }
+        Item itemInterno = (managerItem.updateItem(item));
+        itemInterno.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ItemController.class).findAllItem()).withRel("Lista de itens"));
+        return new ResponseEntity<Item>(itemInterno, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<List<Item>> deleteItem(@PathVariable("id") Long id){
-        try{
-            managerItem.deleteItem(id);
-            return findAllItem();
-        }catch (Exception ex){
-            return new ResponseEntity(ex.getMessage(), HttpStatus.NOT_FOUND);
-        }
-
+        managerItem.deleteItem(id);
+        return findAllItem();
     }
+
 }

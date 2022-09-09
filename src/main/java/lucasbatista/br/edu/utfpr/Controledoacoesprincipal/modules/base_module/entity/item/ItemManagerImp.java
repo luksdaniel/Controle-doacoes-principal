@@ -1,5 +1,6 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item;
 
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceCreateError;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceNotFoundException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.controller.ItemController;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.persistence.item.ItemService;
@@ -20,7 +21,12 @@ public class ItemManagerImp implements ItemManager {
 
     @Override
     public List<Item> findAllItem() {
-        return itemService.findAllItem();
+        List<Item> itemList = itemService.findAllItem();
+        if(itemList.isEmpty()){
+            throw new ResourceNotFoundException("Item não encontrado");
+        }else{
+            return itemList;
+        }
     }
 
     @Override
@@ -35,16 +41,31 @@ public class ItemManagerImp implements ItemManager {
 
     @Override
     public Item saveItem(Item item) {
-        return itemService.saveItem(item);
+        Item itemInterno = itemService.saveItem(item);
+        if(itemInterno == null){
+            throw new ResourceCreateError("Não foi possível criar o item");
+        }else{
+            return itemInterno;
+        }
     }
 
     @Override
     public Item updateItem(Item item) {
-        return itemService.updateItem(item);
+        if(itemService.findById(item.getId()).isEmpty()){
+            throw new ResourceNotFoundException("Item não encontrado");
+        } else {
+            Item itemInterno = (itemService.updateItem(item));
+            return itemInterno;
+        }
+
     }
 
     @Override
     public void deleteItem(Long id) {
-        itemService.deleteItem(id);
+        if(itemService.findById(id).isEmpty()){
+            throw new ResourceNotFoundException("Item não encontrado");
+        } else {
+            itemService.deleteItem(id);
+        }
     }
 }
