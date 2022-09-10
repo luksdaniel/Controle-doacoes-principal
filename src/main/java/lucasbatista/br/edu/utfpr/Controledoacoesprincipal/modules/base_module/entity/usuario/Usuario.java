@@ -5,6 +5,8 @@ import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.en
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -22,21 +24,25 @@ public class Usuario extends RepresentationModel<Usuario> implements Serializabl
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, updatable = false)
     private long id;
 
+    @NotBlank
+    @Column(nullable = false)
     private String login;
+
+    @NotBlank
+    @Column(nullable = false)
     private String senha;
 
-    @Column(name = "from_google")
+    @NotNull
+    @Column(name = "from_google", nullable = false)
     private boolean eDoGoogle;
 
-    @Column(name = "data_cadastro")
+    @Column(name = "data_cadastro", nullable = false)
     private LocalDate dataCadastro;
 
-    @Column(name = "esta_logado")
-    private boolean estaLogado;
-
-    @Column(name = "esta_cancelado")
+    @Column(name = "esta_cancelado", nullable = false)
     private boolean estaCancelado;
 
     @ManyToOne

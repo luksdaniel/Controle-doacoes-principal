@@ -64,20 +64,14 @@ public class DoadorManagerImp implements DoadorManager{
         validaEnderecoExistente(doador);
         validaCPFeCNPJ(doador);
 
-        if(doadorService.findById(doador.getId()).isEmpty()){
-            throw new ResourceNotFoundException("doador não encontrado");
-        } else {
-            return (doadorService.updateDoador(doador));
-        }
+        verificaDoadorJaCadastrado(doador.getId());
+        return (doadorService.updateDoador(doador));
     }
 
     @Override
     public void deleteDoador(Long id) {
-        if(doadorService.findById(id).isEmpty()){
-            throw new ResourceNotFoundException("Doador não encontrado");
-        } else {
-            doadorService.deleteDoador(id);
-        }
+        verificaDoadorJaCadastrado(id);
+        doadorService.deleteDoador(id);
     }
 
     private void validaEnderecoExistente(Doador doador){
@@ -109,5 +103,10 @@ public class DoadorManagerImp implements DoadorManager{
       Endereco endereco = enderecoManager.saveEndereco(doador.getEndereco());
       doador.setEndereco(endereco);
 
+    }
+
+    private void verificaDoadorJaCadastrado(Long id){
+        if(doadorService.findById(id).isEmpty())
+            throw new ResourceNotFoundException("Doador não encontrado");
     }
 }

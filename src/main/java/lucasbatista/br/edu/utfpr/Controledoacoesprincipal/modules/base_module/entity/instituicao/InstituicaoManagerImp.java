@@ -49,19 +49,18 @@ public class InstituicaoManagerImp implements InstituicaoManager{
 
     @Override
     public Instituicao updateInstituicao(Instituicao instituicao) {
-        if(instituicaoService.findById(instituicao.getId()).isEmpty()){
-            throw new ResourceNotFoundException("Instituição não encontrada");
-        }else {
-            return (instituicaoService.updateInstituicao(instituicao));
-        }
+        verificaInstituicaoJaCadastrada(instituicao.getId());
+        return (instituicaoService.updateInstituicao(instituicao));
     }
 
     @Override
     public void deleteInstituicao(Long id) {
-        if(instituicaoService.findById(id).isEmpty()){
+        verificaInstituicaoJaCadastrada(id);
+        instituicaoService.deleteInstituicao(id);
+    }
+
+    private void verificaInstituicaoJaCadastrada(Long id){
+        if(instituicaoService.findById(id).isEmpty())
             throw new ResourceNotFoundException("Instituição não econtrada");
-        }else {
-            instituicaoService.deleteInstituicao(id);
-        }
     }
 }

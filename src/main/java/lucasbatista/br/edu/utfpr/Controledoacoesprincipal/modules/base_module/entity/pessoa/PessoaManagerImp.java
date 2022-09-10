@@ -47,20 +47,19 @@ public class PessoaManagerImp implements PessoaManager{
 
     @Override
     public Pessoa updatePessoa(Pessoa pessoa) {
-        if (pessoaService.findById(pessoa.getId()).isEmpty()){
-            throw new ResourceNotFoundException("Pessoa não encontrada");
-        }else {
-            Pessoa pessoa1 = (pessoaService.updatePessoa(pessoa));
-            return pessoa1;
-        }
+        verificaPessoaJaCadastrada(pessoa.getId());
+        Pessoa pessoa1 = (pessoaService.updatePessoa(pessoa));
+        return pessoa1;
     }
 
     @Override
     public void deletePessoa(Long id) {
-        if (pessoaService.findById(id).isEmpty()){
+        verificaPessoaJaCadastrada(id);
+        pessoaService.deletePessoa(id);
+    }
+
+    private void verificaPessoaJaCadastrada(Long id){
+        if (pessoaService.findById(id).isEmpty())
             throw new ResourceNotFoundException("Pessoa não encontrada");
-        }else {
-            pessoaService.deletePessoa(id);
-        }
     }
 }

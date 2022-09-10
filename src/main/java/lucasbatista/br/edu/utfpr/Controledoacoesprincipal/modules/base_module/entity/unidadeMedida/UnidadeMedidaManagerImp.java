@@ -47,20 +47,18 @@ public class UnidadeMedidaManagerImp implements UnidadeMedidaManager {
 
     @Override
     public UnidadeMedida updaUnidadeMedida(UnidadeMedida unidadeMedida) {
-        if(unidadeMedidaService.findById(unidadeMedida.getId()).isEmpty()){
-            throw new ResourceNotFoundException("Unidade de medida não encontrada");
-        } else {
-            UnidadeMedida un = (unidadeMedidaService.updaUnidadeMedida(unidadeMedida));
-            return un;
-        }
+        verificaUnidadeMedidaJaCadastrada(unidadeMedida.getId());
+        return (unidadeMedidaService.updaUnidadeMedida(unidadeMedida));
     }
 
     @Override
     public void deleteUnidadeMedida(Long id) {
-        if(unidadeMedidaService.findById(id).isEmpty()){
+        verificaUnidadeMedidaJaCadastrada(id);
+        unidadeMedidaService.deleteUnidadeMedida(id);
+    }
+
+    private void verificaUnidadeMedidaJaCadastrada(Long id){
+        if(unidadeMedidaService.findById(id).isEmpty())
             throw new ResourceNotFoundException("Unidade de medida não encontrada");
-        }else {
-            unidadeMedidaService.deleteUnidadeMedida(id);
-        }
     }
 }

@@ -47,19 +47,18 @@ public class EnderecoManagerImp implements EnderecoManager{
 
     @Override
     public Endereco updateEndereco(Endereco endereco) {
-        if(enderecoService.findById(endereco.getId()).isEmpty()){
-            throw new ResourceNotFoundException("Endereço não encontrado");
-        }else {
-            return (enderecoService.updateEndereco(endereco));
-        }
+        verificaEnderecoJaCadastrado(endereco.getId());
+        return (enderecoService.updateEndereco(endereco));
     }
 
     @Override
     public void deleteEndereco(Long id) {
-        if (enderecoService.findById(id).isEmpty()){
+        verificaEnderecoJaCadastrado(id);
+        enderecoService.deleteEndereco(id);
+    }
+
+    private void verificaEnderecoJaCadastrado(Long id){
+        if(enderecoService.findById(id).isEmpty())
             throw new ResourceNotFoundException("Endereço não encontrado");
-        }else {
-            enderecoService.deleteEndereco(id);
-        }
     }
 }

@@ -26,7 +26,7 @@ public class ItemManagerImp implements ItemManager {
     public List<Item> findAllItem() {
         List<Item> itemList = itemService.findAllItem();
         if(itemList.isEmpty()){
-                throw new ResourceNotFoundException("Itens não encontrados");
+            throw new ResourceNotFoundException("Itens não encontrados");
         }else{
             return itemList;
         }
@@ -59,27 +59,24 @@ public class ItemManagerImp implements ItemManager {
     public Item updateItem(Item item) {
         validaUnidadeMedidaExistente(item);
 
-        if(itemService.findById(item.getId()).isEmpty()){
-            throw new ResourceNotFoundException("Item não encontrado");
-        } else {
-            return (itemService.updateItem(item));
-        }
-
+        verificaItemJaCadastrado(item.getId());
+        return (itemService.updateItem(item));
     }
 
     @Override
     public void deleteItem(Long id) {
-        if(itemService.findById(id).isEmpty()){
-            throw new ResourceNotFoundException("Item não encontrado");
-        } else {
-            itemService.deleteItem(id);
-        }
+        verificaItemJaCadastrado(id);
+        itemService.deleteItem(id);
     }
 
     private void validaUnidadeMedidaExistente(Item item){
-
         if (unidadeMedidaService.findById(item.getUnidadeMedida().getId()).isEmpty())
             throw new DependencyNotFoundException("Não foi localizada a unidade de medida informada");
 
+    }
+
+    private void verificaItemJaCadastrado(Long id){
+        if(itemService.findById(id).isEmpty())
+            throw new ResourceNotFoundException("Item não encontrado");
     }
 }
