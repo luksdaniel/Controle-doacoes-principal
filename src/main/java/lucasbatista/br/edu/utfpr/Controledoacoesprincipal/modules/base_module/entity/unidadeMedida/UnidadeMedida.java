@@ -1,12 +1,14 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.unidadeMedida;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item.Item;
-import net.minidev.json.annotate.JsonIgnore;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -29,8 +31,9 @@ public class UnidadeMedida extends RepresentationModel<UnidadeMedida> implements
     @Column(nullable = false, updatable = false)
     private long id;
 
-    @NotBlank(message = "Sigla não pode ser nula")
-    @Column(nullable = false)
+    @NotBlank()
+    @Length(max = 3)
+    @Column(nullable = false, length = 3)
     private String sigla;
 
     @NotBlank

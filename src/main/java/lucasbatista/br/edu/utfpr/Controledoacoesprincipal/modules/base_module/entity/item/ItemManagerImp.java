@@ -1,15 +1,15 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item;
 
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceCreateError;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.DependencyNotFoundException;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceCreateErrorException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceNotFoundException;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.controller.ItemController;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.unidadeMedida.UnidadeMedida;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.persistence.item.ItemService;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.persistence.unidadeMedida.UnidadeMedidaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,11 +19,14 @@ public class ItemManagerImp implements ItemManager {
     @Autowired
     ItemService itemService;
 
+    @Autowired
+    UnidadeMedidaService unidadeMedidaService;
+
     @Override
     public List<Item> findAllItem() {
         List<Item> itemList = itemService.findAllItem();
         if(itemList.isEmpty()){
-            throw new ResourceNotFoundException("Item não encontrado");
+                throw new ResourceNotFoundException("Itens não encontrados");
         }else{
             return itemList;
         }
@@ -41,9 +44,12 @@ public class ItemManagerImp implements ItemManager {
 
     @Override
     public Item saveItem(Item item) {
+        validaUnidadeMedidaExistente(item);
+
+        item.setDataCadastro(LocalDate.now());
         Item itemInterno = itemService.saveItem(item);
         if(itemInterno == null){
-            throw new ResourceCreateError("Não foi possível criar o item");
+            throw new ResourceCreateErrorException("Não foi possível criar o item");
         }else{
             return itemInterno;
         }
@@ -51,11 +57,12 @@ public class ItemManagerImp implements ItemManager {
 
     @Override
     public Item updateItem(Item item) {
+        validaUnidadeMedidaExistente(item);
+
         if(itemService.findById(item.getId()).isEmpty()){
             throw new ResourceNotFoundException("Item não encontrado");
         } else {
-            Item itemInterno = (itemService.updateItem(item));
-            return itemInterno;
+            return (itemService.updateItem(item));
         }
 
     }
@@ -67,5 +74,12 @@ public class ItemManagerImp implements ItemManager {
         } else {
             itemService.deleteItem(id);
         }
+    }
+
+    private void validaUnidadeMedidaExistente(Item item){
+
+        if (unidadeMedidaService.findById(item.getUnidadeMedida().getId()).isEmpty())
+            throw new DependencyNotFoundException("Não foi localizada a unidade de medida informada");
+
     }
 }

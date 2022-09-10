@@ -7,6 +7,7 @@ import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module
 import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -22,16 +23,18 @@ import java.util.Set;
 @Entity
 @Table(name = "doador")
 public class Doador extends Pessoa implements Serializable {
-
-    @Column(name = "esta_cancelado")
+/*
+    @NotNull
+    @Column(name = "esta_cancelado", nullable = false)
     private boolean estaCancelao;
-
-    @Column(name = "recebe_emails")
+*/
+    @NotNull
+    @Column(name = "recebe_emails", nullable = false)
     private boolean recebeEmails;
-
-    @Column(name = "data_cadastro")
+/*
+    @Column(name = "data_cadastro",nullable = false)
     private LocalDate dataCadastro;
-
+*/
     @JsonIgnore
     @OneToOne
     private Usuario usuario;

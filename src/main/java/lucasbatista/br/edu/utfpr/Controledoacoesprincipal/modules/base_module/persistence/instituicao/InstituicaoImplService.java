@@ -1,6 +1,6 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.persistence.instituicao;
 
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.Instituicao;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.instituicao.Instituicao;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.repository.InstituicaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,12 +25,12 @@ public class InstituicaoImplService implements InstituicaoService{
     }
 
     @Override
-    public Instituicao saveEndereco(Instituicao instituicao) {
+    public Instituicao saveInstituicao(Instituicao instituicao) {
         return instituicaoRepository.save(instituicao);
     }
 
     @Override
-    public Instituicao updateEndereco(Instituicao instituicao) {
+    public Instituicao updateInstituicao(Instituicao instituicao) {
         return instituicaoRepository.save(instituicao);
     }
 

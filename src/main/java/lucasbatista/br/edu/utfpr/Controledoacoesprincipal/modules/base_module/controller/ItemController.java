@@ -1,5 +1,6 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.controller;
 
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptionHandler.EntityValidadeExceptionHandler;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item.Item;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item.ItemManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +19,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/item")
-public class ItemController {
+public class ItemController extends EntityValidadeExceptionHandler {
     @Autowired
     ItemManager managerItem;
 
@@ -43,7 +45,7 @@ public class ItemController {
     }
 
     @PostMapping
-    public ResponseEntity<Item> saveItem(@RequestBody Item item){
+    public ResponseEntity<Item> saveItem(@RequestBody @Valid Item item){
         Item itemInterno = managerItem.saveItem(item);
         itemInterno.removeLinks();
         itemInterno.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ItemController.class).findAllItem()).withRel("Lista de Items"));
@@ -52,7 +54,7 @@ public class ItemController {
     }
 
     @PutMapping
-    public ResponseEntity<Item> updateItem(@RequestBody Item item){
+    public ResponseEntity<Item> updateItem(@RequestBody @Valid Item item){
         Item itemInterno = (managerItem.updateItem(item));
         itemInterno.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ItemController.class).findAllItem()).withRel("Lista de itens"));
         return new ResponseEntity<Item>(itemInterno, HttpStatus.OK);
