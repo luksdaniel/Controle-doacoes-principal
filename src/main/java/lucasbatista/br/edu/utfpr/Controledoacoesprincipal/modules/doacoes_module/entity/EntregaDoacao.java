@@ -3,6 +3,7 @@ package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_modul
 import lombok.*;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item.Item;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.usuario.Usuario;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.beneficiario.Beneficiario;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;

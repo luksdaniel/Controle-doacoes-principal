@@ -1,5 +1,6 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.controller;
 
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptionHandler.EntityValidadeExceptionHandler;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.doador.Doador;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.doador.DoadorManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/doador")
-public class DoadorController {
+public class DoadorController extends EntityValidadeExceptionHandler {
 
     @Autowired
     DoadorManager doadorManager;

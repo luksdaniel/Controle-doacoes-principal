@@ -10,5 +10,8 @@ public interface PessoaManager {
     Pessoa savePessoa(Pessoa pessoa);
     Pessoa updatePessoa(Pessoa pessoa);
     void deletePessoa(Long id);
+    public void setaAtributosIniciais(Pessoa pessoa);
+    public void validaCPFeCNPJ(Pessoa pessoa);
+    public void criaEnderecoPessoa(Pessoa pessoa);
 
 }

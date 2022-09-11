@@ -1,7 +1,11 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.instituicao;
 
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.DependencyNotFoundException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceCreateErrorException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceNotFoundException;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.endereco.EnderecoManager;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.pessoa.Pessoa;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.pessoa.PessoaManager;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.persistence.instituicao.InstituicaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,6 +19,10 @@ public class InstituicaoManagerImp implements InstituicaoManager{
 
     @Autowired
     InstituicaoService instituicaoService;
+    @Autowired
+    PessoaManager pessoaManager;
+    @Autowired
+    EnderecoManager enderecoManager;
 
     @Override
     public List<Instituicao> findAllInstituicao() {
@@ -38,7 +46,11 @@ public class InstituicaoManagerImp implements InstituicaoManager{
 
     @Override
     public Instituicao saveInstituicao(Instituicao instituicao) {
-        instituicao.setDataImplantacao(LocalDate.now());
+        pessoaManager.setaAtributosIniciais(instituicao);
+        pessoaManager.criaEnderecoPessoa(instituicao);
+        validaEnderecoExistente(instituicao);
+        pessoaManager.validaCPFeCNPJ(instituicao);
+
         Instituicao instituicao1 = instituicaoService.saveInstituicao(instituicao);
         if (instituicao1 == null){
             throw new ResourceCreateErrorException("Não foi possível criar instituição");
@@ -49,6 +61,12 @@ public class InstituicaoManagerImp implements InstituicaoManager{
 
     @Override
     public Instituicao updateInstituicao(Instituicao instituicao) {
+        atualizaEnderecoComId(instituicao);
+        validaEnderecoExistente(instituicao);
+
+        pessoaManager.validaCPFeCNPJ(instituicao);
+        pessoaManager.setaAtributosIniciais(instituicao);
+
         verificaInstituicaoJaCadastrada(instituicao.getId());
         return (instituicaoService.updateInstituicao(instituicao));
     }
@@ -57,6 +75,17 @@ public class InstituicaoManagerImp implements InstituicaoManager{
     public void deleteInstituicao(Long id) {
         verificaInstituicaoJaCadastrada(id);
         instituicaoService.deleteInstituicao(id);
+    }
+
+    public void atualizaEnderecoComId(Instituicao instituicao){
+        Optional<Instituicao> optionalInstituicao = findById(instituicao.getId());
+        Instituicao instituicaoInterna = optionalInstituicao.get();
+        instituicao.setEndereco(instituicaoInterna.getEndereco());
+    }
+
+    public void validaEnderecoExistente(Instituicao instituicao){
+        if (enderecoManager.findById(instituicao.getEndereco().getId()).isEmpty())
+            throw new DependencyNotFoundException("Não foi localizado o endereço para criação da instituição");
     }
 
     private void verificaInstituicaoJaCadastrada(Long id){

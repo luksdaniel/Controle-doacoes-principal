@@ -1,6 +1,8 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptionHandler;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -25,6 +27,11 @@ public class EntityValidadeExceptionHandler {
         });
 
         return errors;
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity handleUnprosseasableMsgException(HttpMessageNotReadableException e){
+        return new ResponseEntity(e.getMessage(),HttpStatus.UNPROCESSABLE_ENTITY) ;
     }
 
 }

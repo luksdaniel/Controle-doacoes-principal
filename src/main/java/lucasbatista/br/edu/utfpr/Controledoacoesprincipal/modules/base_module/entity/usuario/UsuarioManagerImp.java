@@ -2,6 +2,7 @@ package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.e
 
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceCreateErrorException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceNotFoundException;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.instituicao.InstituicaoManager;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.persistence.usuario.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,9 @@ public class UsuarioManagerImp implements UsuarioManager{
 
     @Autowired
     UsuarioService usuarioService;
+
+    @Autowired
+    InstituicaoManager instituicaoManager;
 
     @Override
     public List<Usuario> findAllUsuario() {
@@ -40,6 +44,7 @@ public class UsuarioManagerImp implements UsuarioManager{
     public Usuario saveUsuario(Usuario usuario) {
         setaAtributosIniciais(usuario);
 
+        usuario.setInstituicao(instituicaoManager.findById(usuario.getInstituicao().getId()).get());
         Usuario usuarioInterno = usuarioService.saveUsuario(usuario);
         if(usuarioInterno == null){
             throw new ResourceCreateErrorException("Não foi possível criar o usuário");
@@ -50,6 +55,7 @@ public class UsuarioManagerImp implements UsuarioManager{
 
     @Override
     public Usuario updateUsuario(Usuario usuario) {
+        setaAtributosIniciais(usuario);
         verificaUsuarioJaCadastrado(usuario.getId());
         return usuarioService.updateUsuario(usuario);
     }

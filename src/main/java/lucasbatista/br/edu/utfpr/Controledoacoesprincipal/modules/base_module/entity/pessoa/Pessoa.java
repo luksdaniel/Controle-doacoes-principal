@@ -39,11 +39,11 @@ public class Pessoa extends RepresentationModel<Pessoa> implements Serializable 
     @Column(name = "razao_social", nullable = false)
     private String razaoSocial;
 
-    @CPF
+    @CPF(message = "CPF Inválido")
     @Column(name = "cpf")
     private String cpf;
 
-    @CNPJ
+    @CNPJ(message = "CNPJ Inválido")
     @Column(name = "cnpj")
     private String cnpj;
 

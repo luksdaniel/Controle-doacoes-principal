@@ -1,11 +1,13 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.instituicao;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.pessoa.Pessoa;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.usuario.Usuario;
-import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -23,9 +25,12 @@ import java.util.Set;
 @Table(name = "instituicao")
 public class Instituicao extends Pessoa implements Serializable {
 
-    @Column(name = "horario_funcionamento")
+    @NotBlank
+    @Column(name = "horario_funcionamento", nullable = false)
     private String horarioFuncionamento;
 
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    @NotNull
     @Column(name = "data_implantacao", nullable = false)
     private LocalDate dataImplantacao;
 

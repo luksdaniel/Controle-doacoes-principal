@@ -37,7 +37,7 @@ public class Endereco extends RepresentationModel<Endereco> implements Serializa
     @Column(nullable = false)
     private int numero;
 
-    @NotBlank
+    @NotNull
     @Column(nullable = false)
     private int cep;
 

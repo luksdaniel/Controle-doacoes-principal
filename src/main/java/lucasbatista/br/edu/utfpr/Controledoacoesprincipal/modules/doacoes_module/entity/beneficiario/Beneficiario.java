@@ -1,16 +1,17 @@
-package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity;
+package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.beneficiario;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.pessoa.Pessoa;
-import net.minidev.json.annotate.JsonIgnore;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.EntregaDoacao;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,28 +26,40 @@ import java.util.Set;
 @Table(name = "beneficiario")
 public class Beneficiario extends Pessoa implements Serializable {
 
-    @Column(name = "procurou_cras")
+    @NotNull
+    @Column(name = "procurou_cras", nullable = false)
     private boolean procurouCras;
 
-    @Column(name = "tem_casa_propria")
+    @NotNull
+    @Column(name = "tem_casa_propria", nullable = false)
     private boolean temCasaPropria;
 
-    @Column(name = "possui_criancas")
+    @NotNull
+    @Column(name = "possui_criancas", nullable = false)
     private boolean possuiCriancas;
 
-    @Column(name = "quantidade_moradores_casa")
+    @NotNull
+    @Min(1)
+    @Column(name = "quantidade_moradores_casa", nullable = false)
     private int quantidadeMoradoresCasa;
 
-    @Column(name = "quantidade_criancas")
+    @Min(0)
+    @NotNull
+    @Column(name = "quantidade_criancas", nullable = false)
     private int quantidadeCriancas;
 
-    @Column(name = "possui_idosos")
+    @NotNull
+    @Column(name = "possui_idosos", nullable = false)
     private boolean possuiIdosos;
 
-    @Column(name = "quantidade_idosos")
+    @Min(0)
+    @NotNull
+    @Column(name = "quantidade_idosos", nullable = false)
     private int quantidadeIdosos;
 
-    @Column(name = "renda_familiar")
+    @Min(0)
+    @NotNull
+    @Column(name = "renda_familiar", nullable = false)
     private double rendaFamiliar;
 
     @Column(name = "tipo_atendimento")

@@ -3,9 +3,8 @@ package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.e
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.DependencyNotFoundException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceCreateErrorException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceNotFoundException;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.unidadeMedida.UnidadeMedida;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.unidadeMedida.UnidadeMedidaManager;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.persistence.item.ItemService;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.persistence.unidadeMedida.UnidadeMedidaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +19,7 @@ public class ItemManagerImp implements ItemManager {
     ItemService itemService;
 
     @Autowired
-    UnidadeMedidaService unidadeMedidaService;
+    UnidadeMedidaManager unidadeMedidaManager;
 
     @Override
     public List<Item> findAllItem() {
@@ -46,6 +45,7 @@ public class ItemManagerImp implements ItemManager {
     public Item saveItem(Item item) {
         validaUnidadeMedidaExistente(item);
 
+        item.setUnidadeMedida(unidadeMedidaManager.findById(item.getUnidadeMedida().getId()).get());
         item.setDataCadastro(LocalDate.now());
         Item itemInterno = itemService.saveItem(item);
         if(itemInterno == null){
@@ -70,7 +70,7 @@ public class ItemManagerImp implements ItemManager {
     }
 
     private void validaUnidadeMedidaExistente(Item item){
-        if (unidadeMedidaService.findById(item.getUnidadeMedida().getId()).isEmpty())
+        if (unidadeMedidaManager.findById(item.getUnidadeMedida().getId()).isEmpty())
             throw new DependencyNotFoundException("Não foi localizada a unidade de medida informada");
 
     }

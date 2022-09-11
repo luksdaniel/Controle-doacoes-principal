@@ -1,12 +1,10 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.doador;
 
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.Enumerators.TipoPessoa;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.DependencyNotFoundException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceCreateErrorException;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceIntegrityException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceNotFoundException;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.endereco.Endereco;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.endereco.EnderecoManager;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.pessoa.PessoaManager;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.persistence.doador.DoadorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,7 +18,8 @@ public class DoadorManagerImp implements DoadorManager{
 
     @Autowired
     DoadorService doadorService;
-
+    @Autowired
+    PessoaManager pessoaManager;
     @Autowired
     EnderecoManager enderecoManager;
 
@@ -46,10 +45,10 @@ public class DoadorManagerImp implements DoadorManager{
 
     @Override
     public Doador saveDoador(Doador doador) {
-        setaAtributosIniciais(doador);
-        criaEnderecoDoador(doador);
+        pessoaManager.setaAtributosIniciais(doador);
+        pessoaManager.criaEnderecoPessoa(doador);
         validaEnderecoExistente(doador);
-        validaCPFeCNPJ(doador);
+        pessoaManager.validaCPFeCNPJ(doador);
 
         Doador doadorInterno = doadorService.saveDoador(doador);
         if(doadorInterno == null){
@@ -61,8 +60,11 @@ public class DoadorManagerImp implements DoadorManager{
 
     @Override
     public Doador updateDoador(Doador doador) {
+        atualizaEnderecoComId(doador);
         validaEnderecoExistente(doador);
-        validaCPFeCNPJ(doador);
+
+        pessoaManager.validaCPFeCNPJ(doador);
+        pessoaManager.setaAtributosIniciais(doador);
 
         verificaDoadorJaCadastrado(doador.getId());
         return (doadorService.updateDoador(doador));
@@ -74,35 +76,15 @@ public class DoadorManagerImp implements DoadorManager{
         doadorService.deleteDoador(id);
     }
 
-    private void validaEnderecoExistente(Doador doador){
+    public void atualizaEnderecoComId(Doador doador){
+        Optional<Doador> optionalDoador = findById(doador.getId());
+        Doador doadorInterno = optionalDoador.get();
+        doador.setEndereco(doadorInterno.getEndereco());
+    }
+
+    public void validaEnderecoExistente(Doador doador){
         if (enderecoManager.findById(doador.getEndereco().getId()).isEmpty())
             throw new DependencyNotFoundException("Não foi localizado o endereço para criação do doador");
-    }
-
-    private void setaAtributosIniciais(Doador doador){
-
-        doador.setEstaCancelao(false);
-        doador.setDataCadastro(LocalDate.now());
-
-    }
-
-    private void validaCPFeCNPJ(Doador doador){
-
-        if(doador.getTipoPessoa().equals(TipoPessoa.PESSOA_JURIDICA) &&
-                doador.getCnpj().isEmpty()){
-            throw new ResourceIntegrityException("O doador foi informado como pessoa Jurídica mas seu CNPJ está vazio");
-        }else if (doador.getTipoPessoa().equals(TipoPessoa.PESSOA_FISICA) &&
-                doador.getCpf().isEmpty()){
-            throw new ResourceIntegrityException("O doador foi informado como pessoa Física mas seu CPF está vazio");
-        }
-
-    }
-
-    private void criaEnderecoDoador(Doador doador){
-
-      Endereco endereco = enderecoManager.saveEndereco(doador.getEndereco());
-      doador.setEndereco(endereco);
-
     }
 
     private void verificaDoadorJaCadastrado(Long id){

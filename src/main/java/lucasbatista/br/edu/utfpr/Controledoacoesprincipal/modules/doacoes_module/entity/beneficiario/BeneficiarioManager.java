@@ -1,22 +1,16 @@
-package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.persistence.beneficiario;
+package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.beneficiario;
 
-
-
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.beneficiario.Beneficiario;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item.Item;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface BeneficiarioService {
+public interface BeneficiarioManager {
 
     List<Beneficiario> findAllBeneficiario();
-
     Optional<Beneficiario> findById(Long id);
-
     Beneficiario saveBeneficiario(Beneficiario beneficiario);
-
     Beneficiario updateBeneficiario(Beneficiario beneficiario);
-
     void deleteBeneficiario(Long id);
 
 }
