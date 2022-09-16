@@ -1,6 +1,6 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.persistence.ajusteManualEstoque;
 
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.AjusteManualEstoque;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.ajusteManualEstoque.AjusteManualEstoque;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.repository.AjusteManualEstoqueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ public class AjusteManualEstImpService implements AjusteManualEstService{
     AjusteManualEstoqueRepository ajusteManualEstoqueRepository;
 
     @Override
-    public List<AjusteManualEstoque> findAllEndereco() {
+    public List<AjusteManualEstoque> findAllAjusteManualEst() {
         return ajusteManualEstoqueRepository.findAll();
     }
 
@@ -37,5 +37,10 @@ public class AjusteManualEstImpService implements AjusteManualEstService{
     @Override
     public void deleteAjusteManualEstoque(Long id) {
         ajusteManualEstoqueRepository.deleteById(id);
+    }
+
+    @Override
+    public List<AjusteManualEstoque> findByItemId(long id) {
+        return ajusteManualEstoqueRepository.findByItemId(id);
     }
 }
