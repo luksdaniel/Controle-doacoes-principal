@@ -6,8 +6,7 @@ import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.en
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -35,9 +34,11 @@ public class AjusteManualEstoque extends RepresentationModel<AjusteManualEstoque
     @Column(name = "quantidade_movimentada", nullable = false)
     private double quantidadeMovimentada;
 
+    @NotBlank
+    @Column(nullable = false, length = 5000)
     private String observacao;
 
-    @Column(name = "esta_cancelada")
+    @Column(name = "esta_cancelada", nullable = false)
     private boolean estaCancelada;
 
     @NotNull

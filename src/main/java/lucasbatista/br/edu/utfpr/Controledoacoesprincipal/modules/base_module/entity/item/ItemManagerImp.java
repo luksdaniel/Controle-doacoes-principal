@@ -1,5 +1,6 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item;
 
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.BusinessException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.DependencyNotFoundException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceCreateErrorException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceNotFoundException;
@@ -69,6 +70,22 @@ public class ItemManagerImp implements ItemManager {
         itemService.deleteItem(id);
     }
 
+    @Override
+    public void validaAndMovimentaEstoque(Item item, double quantidade) {
+
+        if (quantidade == 0)
+            throw new BusinessException("É necessário informar a quantidade a ser movimentada do item");
+
+
+        if ((item.getQuantidadeEstoque() + quantidade) < 0)
+            throw new BusinessException("Não é possível subtrair do estoque do item, pois o deixaria negativo!");
+        else
+            item.setQuantidadeEstoque(item.getQuantidadeEstoque() + quantidade);
+
+        updateItem(item);
+
+    }
+
     private void validaUnidadeMedidaExistente(Item item){
         if (unidadeMedidaManager.findById(item.getUnidadeMedida().getId()).isEmpty())
             throw new DependencyNotFoundException("Não foi localizada a unidade de medida informada");
@@ -79,4 +96,6 @@ public class ItemManagerImp implements ItemManager {
         if(itemService.findById(id).isEmpty())
             throw new ResourceNotFoundException("Item não encontrado");
     }
+
+
 }

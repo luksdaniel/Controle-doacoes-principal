@@ -10,5 +10,6 @@ public interface ItemManager {
     Item saveItem(Item item);
     Item updateItem(Item item);
     void deleteItem(Long id);
+    void validaAndMovimentaEstoque(Item item, double quantidade);
 
 }

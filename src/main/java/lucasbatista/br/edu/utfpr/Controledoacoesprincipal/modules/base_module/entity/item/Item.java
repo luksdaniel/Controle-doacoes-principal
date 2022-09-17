@@ -1,21 +1,17 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.unidadeMedida.UnidadeMedida;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.ColetaDoacao;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.EntregaDoacao;
-import net.minidev.json.annotate.JsonIgnore;
-import org.hibernate.annotations.Formula;
-import org.springframework.boot.context.properties.bind.DefaultValue;
-import org.springframework.format.annotation.DateTimeFormat;
+
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -45,7 +41,7 @@ public class Item extends RepresentationModel<Item> implements Serializable {
     @Column(name = "informacoes_adicionais")
     private String informacoesAdicionais;
 
-    @NotNull
+    @NotNull()
     @Column(name = "esta_cancelado", nullable = false)
     private boolean estaCancelado;
 
@@ -64,7 +60,7 @@ public class Item extends RepresentationModel<Item> implements Serializable {
     @Column(name = "tipo_item")
     private String tipoItem;
 
-    @NotNull
+    @NotNull(message = "Deve ser informada uma unidade de medida para o item")
     @ManyToOne
     @JoinColumn(name = "unidade_medida_id", referencedColumnName = "id", nullable = false)
     private UnidadeMedida unidadeMedida;
@@ -76,5 +72,4 @@ public class Item extends RepresentationModel<Item> implements Serializable {
     @JsonIgnore
     @ManyToMany(mappedBy = "itemEntrega")
     private Set<EntregaDoacao> entregasDoacao = new HashSet<>();
-
 }

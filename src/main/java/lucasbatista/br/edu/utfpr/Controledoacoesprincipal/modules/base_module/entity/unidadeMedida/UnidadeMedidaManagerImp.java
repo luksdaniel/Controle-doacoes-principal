@@ -37,6 +37,7 @@ public class UnidadeMedidaManagerImp implements UnidadeMedidaManager {
 
     @Override
     public UnidadeMedida saveUnidadeMedida(UnidadeMedida unidadeMedida) {
+        setaAtributosIniciais(unidadeMedida);
         UnidadeMedida un = unidadeMedidaService.saveUnidadeMedida(unidadeMedida);
         if(unidadeMedida == null){
             throw new ResourceCreateErrorException("Não foi possível criar a unidade de medida");
@@ -60,5 +61,9 @@ public class UnidadeMedidaManagerImp implements UnidadeMedidaManager {
     private void verificaUnidadeMedidaJaCadastrada(Long id){
         if(unidadeMedidaService.findById(id).isEmpty())
             throw new ResourceNotFoundException("Unidade de medida não encontrada");
+    }
+
+    private void setaAtributosIniciais(UnidadeMedida unidadeMedida){
+        unidadeMedida.setEstaCancelado(false);
     }
 }

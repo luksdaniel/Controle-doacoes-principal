@@ -1,9 +1,6 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptionHandler;
 
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.DependencyNotFoundException;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceCreateErrorException;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceIntegrityException;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceNotFoundException;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.*;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +31,12 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
 
     @ExceptionHandler(ResourceIntegrityException.class)
     public ResponseEntity handleResourceIntegrityException(ResourceIntegrityException e){
+        e.printStackTrace();
+        return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity handleBusinessException(BusinessException e){
         e.printStackTrace();
         return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
     }

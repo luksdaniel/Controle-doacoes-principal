@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/ajuste-manual-estoque")
@@ -37,6 +36,14 @@ public class AjusteManualEstoqueController extends EntityValidadeExceptionHandle
         ajusteManualInterno.removeLinks();
         //usuarioInterno.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AjusteManualEstoqueController.class).findAllUsuario()).withRel("Lista de Usuarios"));
         return new ResponseEntity<>(ajusteManualInterno, HttpStatus.CREATED);
+    }
+
+    @PutMapping("cancel/{id}")
+    public ResponseEntity<AjusteManualEstoque> cancelaAjusteManual(@PathVariable("id") Long id){
+        AjusteManualEstoque ajusteManualInterno = ajusteManualEstoqueManager.cancelaAjusteManual(id);
+        //ajusteManualInterno.removeLinks();
+        //usuarioInterno.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AjusteManualEstoqueController.class).findAllUsuario()).withRel("Lista de Usuarios"));
+        return new ResponseEntity<>(ajusteManualInterno, HttpStatus.OK);
     }
 
 }

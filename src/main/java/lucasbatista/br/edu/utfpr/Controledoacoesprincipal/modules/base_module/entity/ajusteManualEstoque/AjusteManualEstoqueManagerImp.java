@@ -1,8 +1,8 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.ajusteManualEstoque;
 
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.BusinessException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceCreateErrorException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceNotFoundException;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.controller.AjusteManualEstoqueController;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item.ItemManager;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.usuario.UsuarioManager;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.persistence.ajusteManualEstoque.AjusteManualEstService;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class AjusteManualEstoqueManagerImp implements AjusteManualEstoqueManager{
@@ -37,15 +38,14 @@ public class AjusteManualEstoqueManagerImp implements AjusteManualEstoqueManager
 
     @Override
     public List<AjusteManualEstoque> findByItemId(long itemId) {
-        return/* List<AjusteManualEstoque> ajusteList =*/ ajusteManualEstService.findByItemId(itemId);
+        return ajusteManualEstService.findByItemId(itemId);
     }
 
     @Override
     public AjusteManualEstoque saveAjusteManual(AjusteManualEstoque ajusteManualEstoque) {
         setaAtributosIniciais(ajusteManualEstoque);
 
-        ajusteManualEstoque.setItem(itemManager.findById(ajusteManualEstoque.getItem().getId()).get());
-        ajusteManualEstoque.setUsuarioResponsavel(usuarioManager.findById(ajusteManualEstoque.getUsuarioResponsavel().getId()).get());
+        itemManager.validaAndMovimentaEstoque(ajusteManualEstoque.getItem(), ajusteManualEstoque.getQuantidadeMovimentada());
 
         AjusteManualEstoque ajusteInterno = ajusteManualEstService.saveAjusteManualEstoque(ajusteManualEstoque);
         if(ajusteInterno == null){
@@ -57,11 +57,25 @@ public class AjusteManualEstoqueManagerImp implements AjusteManualEstoqueManager
 
     @Override
     public AjusteManualEstoque cancelaAjusteManual(long id) {
-        return null;
+        Optional<AjusteManualEstoque> ajusteManualEstoque = ajusteManualEstService.findById(id);
+
+        if (ajusteManualEstoque.isEmpty())
+            throw new ResourceNotFoundException("Ajuste de estoque não encontrado");
+        else {
+            if (ajusteManualEstoque.get().isEstaCancelada())
+                throw new BusinessException("O ajuste manual já está cancelado!");
+
+            ajusteManualEstoque.get().setEstaCancelada(true);
+            itemManager.validaAndMovimentaEstoque(ajusteManualEstoque.get().getItem(), -ajusteManualEstoque.get().getQuantidadeMovimentada());
+        }
+        return ajusteManualEstService.updateAjusteManualEstoque(ajusteManualEstoque.get());
     }
 
     private void setaAtributosIniciais(AjusteManualEstoque ajuste){
         ajuste.setDataAjuste(LocalDate.now());
         ajuste.setEstaCancelada(false);
+
+        ajuste.setItem(itemManager.findById(ajuste.getItem().getId()).get());
+        ajuste.setUsuarioResponsavel(usuarioManager.findById(ajuste.getUsuarioResponsavel().getId()).get());
     }
 }
