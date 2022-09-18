@@ -50,6 +50,7 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity handleDataIntegrityViolationException(DataIntegrityViolationException e){
         e.printStackTrace();
+        System.out.println(e.getLocalizedMessage());
         return new ResponseEntity("Erro de integridade ao cadastrar o registro", HttpStatus.BAD_REQUEST);
     }
 

@@ -1,4 +1,4 @@
-package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity;
+package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.avisoFaltaItem;
 
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;

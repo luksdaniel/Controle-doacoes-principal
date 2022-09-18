@@ -1,14 +1,17 @@
-package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity;
+package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.coletaDoacao;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item.Item;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.usuario.Usuario;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.itemColetaDoacao.ItemColetaDoacao;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.doador.Doador;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -25,20 +28,23 @@ public class ColetaDoacao extends RepresentationModel<ColetaDoacao> {
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, updatable = false)
     private long id;
 
-    @Column(name = "esta_efetivada")
+    @Column(name = "esta_efetivada", nullable = false)
     private boolean estaEfetivada;
 
-    @Column(name = "data_doacao")
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    @Column(name = "data_doacao", nullable = false, updatable = false)
     private LocalDate dataDoacao;
 
+    @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(name = "data_efetivacao")
     private LocalDate dataEfetivacao;
 
     private String observacao;
 
-    @Column(name = "esta_cancelada")
+    @Column(name = "esta_cancelada", nullable = false)
     private boolean estaCancelada;
 
     @Column(name = "motivo_cancelamento")
@@ -47,20 +53,17 @@ public class ColetaDoacao extends RepresentationModel<ColetaDoacao> {
     @ManyToOne
     private Usuario usuarioEfetivacao;
 
+    @NotNull(message = "É obrigatório informar o usuário que fez o registro da coleta")
     @ManyToOne
+    @JoinColumn(nullable = false)
     private Usuario usuarioRegistro;
 
-    @ManyToMany
-    @JoinTable(
-            name = "item_coleta_doacao",
-            joinColumns = @JoinColumn(name = "coleta_doacao_id"),
-            inverseJoinColumns = @JoinColumn(name = "item_id")
+    @OneToMany(mappedBy = "coletaDoacao")
+    private List<ItemColetaDoacao> itensColeta;
 
-    )
-    private Set<Item> itemColeta = new HashSet<>();
-
+    @NotNull(message = "É obrigatório informar o doador para a coleta")
     @ManyToOne
-    @JoinColumn(name = "doador_id", referencedColumnName = "id")
+    @JoinColumn(name = "doador_id", referencedColumnName = "id", nullable = false)
     private Doador doador;
 
 }

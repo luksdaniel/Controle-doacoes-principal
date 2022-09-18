@@ -1,6 +1,7 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity;
 
 import lombok.*;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.itemColetaDoacao.ItemColetaDoacao;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;

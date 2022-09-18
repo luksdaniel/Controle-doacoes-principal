@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.unidadeMedida.UnidadeMedida;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.ColetaDoacao;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.itemColetaDoacao.ItemColetaDoacao;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.EntregaDoacao;
 
 import org.springframework.hateoas.RepresentationModel;
@@ -66,8 +66,8 @@ public class Item extends RepresentationModel<Item> implements Serializable {
     private UnidadeMedida unidadeMedida;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "itemColeta")
-    private Set<ColetaDoacao> coletasDoacao = new HashSet<>();
+    @OneToMany(mappedBy = "item")
+    private Set<ItemColetaDoacao> coletasDoacao = new HashSet<>();
 
     @JsonIgnore
     @ManyToMany(mappedBy = "itemEntrega")

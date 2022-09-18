@@ -1,6 +1,6 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.persistence.avisoFaltaItem;
 
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.AvisoFaltaItem;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.avisoFaltaItem.AvisoFaltaItem;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.repository.AvisoFaltaItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
