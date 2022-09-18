@@ -10,9 +10,7 @@ import org.springframework.hateoas.RepresentationModel;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -34,6 +32,7 @@ public class ColetaDoacao extends RepresentationModel<ColetaDoacao> {
     @Column(name = "esta_efetivada", nullable = false)
     private boolean estaEfetivada;
 
+    @NotNull
     @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(name = "data_doacao", nullable = false, updatable = false)
     private LocalDate dataDoacao;
@@ -58,6 +57,7 @@ public class ColetaDoacao extends RepresentationModel<ColetaDoacao> {
     @JoinColumn(nullable = false)
     private Usuario usuarioRegistro;
 
+    @NotNull
     @OneToMany(mappedBy = "coletaDoacao")
     private List<ItemColetaDoacao> itensColeta;
 

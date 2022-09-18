@@ -20,6 +20,16 @@ public class ColetaDoacaoImplService implements ColetaDoacaoService{
     }
 
     @Override
+    public List<ColetaDoacao> findByIdDoador(long id) {
+        return coletaDoacaoRepository.findColetaDoacaoByDoadorId(id);
+    }
+
+    @Override
+    public List<ColetaDoacao> findByIdUsuarioRegistro(long id) {
+        return coletaDoacaoRepository.findColetaDoacaoByUsuarioRegistroId(id);
+    }
+
+    @Override
     public Optional<ColetaDoacao> findById(Long id) {
         return coletaDoacaoRepository.findById(id);
     }

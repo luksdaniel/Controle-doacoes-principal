@@ -1,6 +1,7 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.itemColetaDoacao;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item.Item;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.coletaDoacao.ColetaDoacao;
@@ -39,6 +40,7 @@ public class ItemColetaDoacao extends RepresentationModel<ItemColetaDoacao> impl
     private LocalDate dataInclusao;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "coleta_doacao_id", referencedColumnName = "id", nullable = false)
     private ColetaDoacao coletaDoacao;
 

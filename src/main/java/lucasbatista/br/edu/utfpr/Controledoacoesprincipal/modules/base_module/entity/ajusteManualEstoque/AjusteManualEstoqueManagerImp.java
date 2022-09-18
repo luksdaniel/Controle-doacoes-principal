@@ -38,7 +38,13 @@ public class AjusteManualEstoqueManagerImp implements AjusteManualEstoqueManager
 
     @Override
     public List<AjusteManualEstoque> findByItemId(long itemId) {
-        return ajusteManualEstService.findByItemId(itemId);
+        List<AjusteManualEstoque> ajusteList = ajusteManualEstService.findByItemId(itemId);
+
+        if (ajusteList.isEmpty()){
+            throw new ResourceNotFoundException("Ajustes de estoque não encontrados");
+        }else {
+            return ajusteList;
+        }
     }
 
     @Override
@@ -65,8 +71,8 @@ public class AjusteManualEstoqueManagerImp implements AjusteManualEstoqueManager
             if (ajusteManualEstoque.get().isEstaCancelada())
                 throw new BusinessException("O ajuste manual já está cancelado!");
 
-            ajusteManualEstoque.get().setEstaCancelada(true);
             itemManager.validaAndMovimentaEstoque(ajusteManualEstoque.get().getItem(), -ajusteManualEstoque.get().getQuantidadeMovimentada());
+            ajusteManualEstoque.get().setEstaCancelada(true);
         }
         return ajusteManualEstService.updateAjusteManualEstoque(ajusteManualEstoque.get());
     }

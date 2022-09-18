@@ -1,7 +1,10 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.coletaDoacao;
 
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.BusinessException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceCreateErrorException;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceNotFoundException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item.ItemManager;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.usuario.Usuario;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.usuario.UsuarioManager;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.itemColetaDoacao.ItemColetaDoacao;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.doador.DoadorManager;
@@ -10,6 +13,7 @@ import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Component
@@ -32,22 +36,44 @@ public class ColetaDoacaoManagerImp implements ColetaDoacaoManager{
 
     @Override
     public List<ColetaDoacao> findAllColetaDoacao() {
-        return null;
+        List<ColetaDoacao> coletaList = coletaDoacaoService.findAllColetaDoacao();
+        if (coletaList.isEmpty()){
+            throw new ResourceNotFoundException("Coletas não encontradas");
+        }else {
+            return coletaList;
+        }
     }
 
     @Override
     public List<ColetaDoacao> findByIdDoador(Long id) {
-        return null;
+        List<ColetaDoacao> coletaList = coletaDoacaoService.findByIdDoador(id);
+
+        if (coletaList.isEmpty()){
+            throw new ResourceNotFoundException("Coletas não encontradas");
+        }else {
+            return coletaList;
+        }
     }
 
     @Override
-    public List<ColetaDoacao> findByIdUsuarioLancamento(Long id) {
-        return null;
+    public List<ColetaDoacao> findByIdUsuarioRegistro(Long id) {
+        List<ColetaDoacao> coletaList = coletaDoacaoService.findByIdUsuarioRegistro(id);
+
+        if (coletaList.isEmpty()){
+            throw new ResourceNotFoundException("Coletas não encontradas");
+        }else {
+            return coletaList;
+        }
     }
 
     @Override
     public Optional<ColetaDoacao> findById(Long id) {
-        return Optional.empty();
+        Optional<ColetaDoacao> coletaDoacao = coletaDoacaoService.findById(id);
+        if(coletaDoacao.isEmpty()){
+            throw new ResourceNotFoundException("Coleta não encontrada");
+        }else{
+            return coletaDoacao;
+        }
     }
 
     @Override
@@ -74,14 +100,36 @@ public class ColetaDoacaoManagerImp implements ColetaDoacaoManager{
     }
 
     @Override
-    public ColetaDoacao EfetivaColetaDoacao(ColetaDoacao coletaDoacao) {
-        return null;
+    public ColetaDoacao EfetivaColetaDoacao(Long id, Long usuarioId) {
+        Optional<ColetaDoacao> coletaDoacao = coletaDoacaoService.findById(id);
+        Optional<Usuario> usuarioEfetivador = usuarioManager.findById(usuarioId);
+
+        if(coletaDoacao.isEmpty())
+            throw new ResourceNotFoundException("Coleta de doação não encontrada");
+        else if(usuarioEfetivador.isEmpty())
+            throw new ResourceNotFoundException("Usuario não encontrado");
+
+        if (coletaDoacao.get().isEstaCancelada())
+            throw new BusinessException("A coleta de doação está cancelada, não sendo possível efetivá-la");
+        else if (coletaDoacao.get().isEstaEfetivada())
+            throw new BusinessException("A coleta de doação já foi efetivada");
+
+        List<ItemColetaDoacao> itensColeta = coletaDoacao.get().getItensColeta();
+        for (ItemColetaDoacao itemAtual: itensColeta) {
+            itemManager.validaAndMovimentaEstoque(itemAtual.getItem(), itemAtual.getQuantidade());
+        }
+        coletaDoacao.get().setEstaEfetivada(true);
+        coletaDoacao.get().setUsuarioEfetivacao(usuarioManager.findById(usuarioId).get());
+        coletaDoacao.get().setDataEfetivacao(LocalDate.now());
+
+
+        return coletaDoacaoService.updateColetaDoacao(coletaDoacao.get());
     }
 
     private void setaAtributosIniciais(ColetaDoacao coletaDoacao){
 
         coletaDoacao.setEstaCancelada(false);
-        coletaDoacao.setUsuarioRegistro(usuarioManager.findById(coletaDoacao.getDoador().getId()).get());
+        coletaDoacao.setUsuarioRegistro(usuarioManager.findById(coletaDoacao.getUsuarioRegistro().getId()).get());
         coletaDoacao.setDoador(doadorManager.findById(coletaDoacao.getDoador().getId()).get());
 
         System.out.println(coletaDoacao.getItensColeta());
@@ -91,6 +139,7 @@ public class ColetaDoacaoManagerImp implements ColetaDoacaoManager{
 
         for (ItemColetaDoacao itemColetaAtual: itensDoacao) {
             itemColetaAtual.setItem(itemManager.findById(itemColetaAtual.getItem().getId()).get());
+            itemColetaAtual.setColetaDoacao(coletaDoacao);
             itensCompletos.add(itemColetaAtual);
         }
 

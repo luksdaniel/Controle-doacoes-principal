@@ -9,6 +9,10 @@ public interface ColetaDoacaoService {
 
     List<ColetaDoacao> findAllColetaDoacao();
 
+    List<ColetaDoacao> findByIdDoador(long id);
+
+    List<ColetaDoacao> findByIdUsuarioRegistro(long id);
+
     Optional<ColetaDoacao> findById(Long id);
 
     ColetaDoacao saveColetaDoacao(ColetaDoacao coletaDoacao);
