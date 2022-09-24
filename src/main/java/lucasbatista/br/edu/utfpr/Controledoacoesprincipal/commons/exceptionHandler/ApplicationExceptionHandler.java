@@ -11,7 +11,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -49,9 +48,15 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<Map<String, String>> handleConstraintViolationException(ConstraintViolationException e){
+    public ResponseEntity<Map<String, String>> handleConstraintViolationException(ConstraintViolationException e) throws NoSuchFieldException {
         e.printStackTrace();
-        return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+        Map<String, String> errors = new HashMap<>();
+
+        e.getConstraintViolations().forEach(constraintViolation -> {
+            errors.put(String.valueOf(constraintViolation.getPropertyPath()), constraintViolation.getMessage());
+        });
+
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)

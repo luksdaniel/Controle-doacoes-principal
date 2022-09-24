@@ -96,11 +96,29 @@ public class ColetaDoacaoManagerImp implements ColetaDoacaoManager{
 
     @Override
     public ColetaDoacao cancelaColetaDoacao(ColetaDoacao coletaDoacao) {
-        return null;
+
+        if (coletaDoacao.getMotivoCancelamento() == null || coletaDoacao.getMotivoCancelamento().isBlank())
+            throw new BusinessException("Deve ser informado o motivo de cancelamento");
+
+        Optional<ColetaDoacao> coletaDoacaoInterna = coletaDoacaoService.findById(coletaDoacao.getId());
+        String motivoCancelamento = coletaDoacao.getMotivoCancelamento();
+
+        if(coletaDoacaoInterna.isEmpty())
+            throw new ResourceNotFoundException("Coleta de doação não encontrada");
+
+        if (coletaDoacaoInterna.get().isEstaCancelada())
+            throw new BusinessException("A coleta de doação já está cancelada");
+
+        movimentaEstoqueSeJaEfetivada(coletaDoacaoInterna.get());
+
+        coletaDoacaoInterna.get().setMotivoCancelamento(motivoCancelamento);
+        coletaDoacaoInterna.get().setEstaCancelada(true);
+
+        return coletaDoacaoService.updateColetaDoacao(coletaDoacaoInterna.get());
     }
 
     @Override
-    public ColetaDoacao EfetivaColetaDoacao(Long id, Long usuarioId) {
+    public ColetaDoacao efetivaColetaDoacao(Long id, Long usuarioId) {
         Optional<ColetaDoacao> coletaDoacao = coletaDoacaoService.findById(id);
         Optional<Usuario> usuarioEfetivador = usuarioManager.findById(usuarioId);
 
@@ -121,8 +139,7 @@ public class ColetaDoacaoManagerImp implements ColetaDoacaoManager{
         coletaDoacao.get().setEstaEfetivada(true);
         coletaDoacao.get().setUsuarioEfetivacao(usuarioManager.findById(usuarioId).get());
         coletaDoacao.get().setDataEfetivacao(LocalDate.now());
-
-
+        
         return coletaDoacaoService.updateColetaDoacao(coletaDoacao.get());
     }
 
@@ -148,5 +165,14 @@ public class ColetaDoacaoManagerImp implements ColetaDoacaoManager{
 
     private void gravaItensColeta(ColetaDoacao coletaDoacao){
         itemColetaManager.saveAllItensColeta(coletaDoacao.getItensColeta());
+    }
+
+    private void movimentaEstoqueSeJaEfetivada(ColetaDoacao coletaDoacao){
+        if (coletaDoacao.isEstaEfetivada()){
+            List<ItemColetaDoacao> itensColeta = coletaDoacao.getItensColeta();
+            for (ItemColetaDoacao itemAtual: itensColeta) {
+                itemManager.validaAndMovimentaEstoque(itemAtual.getItem(), -itemAtual.getQuantidade());
+            }
+        }
     }
 }

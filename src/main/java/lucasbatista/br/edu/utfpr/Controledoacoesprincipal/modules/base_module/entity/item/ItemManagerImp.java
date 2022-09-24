@@ -76,7 +76,6 @@ public class ItemManagerImp implements ItemManager {
         if (quantidade == 0)
             throw new BusinessException("É necessário informar a quantidade a ser movimentada do item");
 
-
         if ((item.getQuantidadeEstoque() + quantidade) < 0)
             throw new BusinessException("Não é possível subtrair do estoque do item, pois o deixaria negativo!");
         else

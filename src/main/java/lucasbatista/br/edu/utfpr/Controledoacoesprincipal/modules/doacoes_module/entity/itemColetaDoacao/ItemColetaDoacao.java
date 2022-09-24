@@ -20,7 +20,9 @@ import java.time.LocalDate;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 
 @Entity
-@Table(name = "item_coleta_doacao")
+@Table(name = "item_coleta_doacao",
+        uniqueConstraints = {@UniqueConstraint(name = "ukItemColetaDoacao", columnNames = {"item_id", "coleta_doacao_id"})
+})
 public class ItemColetaDoacao extends RepresentationModel<ItemColetaDoacao> implements Serializable {
 
     @EqualsAndHashCode.Include

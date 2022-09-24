@@ -53,6 +53,7 @@ public class EntregaDoacao extends RepresentationModel<EntregaDoacao> implements
     )
     private Set<Item> itemEntrega = new HashSet<>();
 
+
     @ManyToOne
     @JoinColumn(name = "beneficiario_id", referencedColumnName = "id")
     private Beneficiario beneficiario;

@@ -1,7 +1,5 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.coletaDoacao;
 
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.usuario.Usuario;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +19,6 @@ public interface ColetaDoacaoManager {
 
     ColetaDoacao cancelaColetaDoacao(ColetaDoacao coletaDoacao);
 
-    ColetaDoacao EfetivaColetaDoacao(Long id, Long usuarioId);
+    ColetaDoacao efetivaColetaDoacao(Long id, Long usuarioId);
 
 }
