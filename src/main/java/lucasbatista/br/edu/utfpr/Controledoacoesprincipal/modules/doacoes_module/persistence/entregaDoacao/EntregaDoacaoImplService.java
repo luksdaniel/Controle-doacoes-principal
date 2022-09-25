@@ -1,6 +1,6 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.persistence.entregaDoacao;
 
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.EntregaDoacao;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.entregaDoacao.EntregaDoacao;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.repository.EntregaDoacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +22,21 @@ public class EntregaDoacaoImplService implements EntregaDoacaoService{
     @Override
     public Optional<EntregaDoacao> findById(Long id) {
         return entregaDoacaoRepository.findById(id);
+    }
+
+    @Override
+    public List<EntregaDoacao> findByBeneficiarioId(Long id) {
+        return null;
+    }
+
+    @Override
+    public List<EntregaDoacao> findByUsuarioRegistroId(Long id) {
+        return null;
+    }
+
+    @Override
+    public EntregaDoacao cancelaEntregaDoacao(EntregaDoacao entregaDoacao) {
+        return null;
     }
 
     @Override

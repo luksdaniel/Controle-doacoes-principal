@@ -7,4 +7,8 @@ public interface ItemColetaManager {
 
     List<ItemColetaDoacao> saveAllItensColeta(List<ItemColetaDoacao> itens);
 
+    ItemColetaDoacao findByIdd(Long id);
+
+    List<ItemColetaDoacao> updateAllItensColeta(List<ItemColetaDoacao> itens);
+
 }

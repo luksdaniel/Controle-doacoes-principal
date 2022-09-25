@@ -52,6 +52,9 @@ public class ColetaDoacao extends RepresentationModel<ColetaDoacao> {
     @ManyToOne
     private Usuario usuarioEfetivacao;
 
+    @ManyToOne
+    private Usuario usuarioCancelamento;
+
     @NotNull(message = "É obrigatório informar o usuário que fez o registro da coleta")
     @ManyToOne
     @JoinColumn(nullable = false)

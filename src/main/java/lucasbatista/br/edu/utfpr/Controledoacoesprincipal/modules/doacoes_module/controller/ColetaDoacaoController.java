@@ -87,4 +87,14 @@ public class ColetaDoacaoController extends EntityValidadeExceptionHandler {
         return new ResponseEntity<ColetaDoacao>(coletaDoacaoInterna, HttpStatus.OK);
     }
 
+    @PutMapping("")
+    public ResponseEntity<ColetaDoacao> updateColetaDoacao(@RequestBody ColetaDoacao coletaDoacao){
+
+        ColetaDoacao coletaDoacaoInterna = coletaDoacaoManager.updateColetaDoacao(coletaDoacao);
+
+        //coletaDoacaoInterna.removeLinks();
+        //coletaDoacaoInterna.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(DoadorController.class).findAllDoador()).withRel("Lista de doadores"));
+        return new ResponseEntity<ColetaDoacao>(coletaDoacaoInterna, HttpStatus.OK);
+    }
+
 }
