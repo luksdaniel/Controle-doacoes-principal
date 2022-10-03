@@ -34,4 +34,7 @@ public class LembreteDoacao extends RepresentationModel<LembreteDoacao> implemen
     @Column(name = "repetir_todo_mes")
     private boolean repetirTodoMes;
 
+    @Column(name = "data_ultimo_envio")
+    private LocalDate dataUltimoEnvio;
+
 }
