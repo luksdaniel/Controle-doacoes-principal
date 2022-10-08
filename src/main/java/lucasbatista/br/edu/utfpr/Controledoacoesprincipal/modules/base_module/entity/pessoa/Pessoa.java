@@ -31,11 +31,11 @@ public class Pessoa extends RepresentationModel<Pessoa> implements Serializable 
     @Column(nullable = false, updatable = false)
     private long id;
 
-    @NotBlank()
+    @NotBlank(message = "É obrigatório informar o nome fantasia")
     @Column(name = "nome_fantasia", nullable = false)
     private String nomeFantasia;
 
-    @NotBlank()
+    @NotBlank(message = "É obrigatório informar a razão social")
     @Column(name = "razao_social", nullable = false)
     private String razaoSocial;
 
@@ -47,11 +47,11 @@ public class Pessoa extends RepresentationModel<Pessoa> implements Serializable 
     @Column(name = "cnpj")
     private String cnpj;
 
-    @Email
+    @Email(message = "Email inválido")
     @Column(name = "email")
     private String email;
 
-    @NotNull
+    @NotNull(message = "É obrigatório informar o telefone")
     @Column(name = "telefone", nullable = false)
     private String telefone;
 
@@ -59,7 +59,7 @@ public class Pessoa extends RepresentationModel<Pessoa> implements Serializable 
     @Enumerated(EnumType.STRING)
     private TipoPessoa tipoPessoa;
 
-    @NotNull
+    @NotNull(message = "É obrigatório informar o endereço")
     @OneToOne(cascade = CascadeType.ALL)
     private Endereco endereco;
 

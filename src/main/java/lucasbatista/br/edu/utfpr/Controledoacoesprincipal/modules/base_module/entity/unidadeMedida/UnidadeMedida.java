@@ -31,16 +31,15 @@ public class UnidadeMedida extends RepresentationModel<UnidadeMedida> implements
     @Column(nullable = false, updatable = false)
     private long id;
 
-    @NotBlank()
-    @Length(max = 3)
+    @NotBlank(message = "É obrigatório informar a sigla")
+    @Length(max = 3, message = "A sigla pode conter até 3 caracteres")
     @Column(nullable = false, length = 3)
     private String sigla;
 
-    @NotBlank
+    @NotBlank(message = "É obrigatório informar a descrição")
     @Column(nullable = false)
     private String descricao;
 
-    @NotNull
     @Column(name = "esta_cancelado", nullable = false)
     private boolean estaCancelado;
 

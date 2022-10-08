@@ -23,18 +23,11 @@ import java.util.Set;
 @Entity
 @Table(name = "doador")
 public class Doador extends Pessoa implements Serializable {
-/*
-    @NotNull
-    @Column(name = "esta_cancelado", nullable = false)
-    private boolean estaCancelao;
-*/
-    @NotNull
+
+    @NotNull(message = "É obrigatório informar se o doador recebe e-mails")
     @Column(name = "recebe_emails", nullable = false)
     private boolean recebeEmails;
-/*
-    @Column(name = "data_cadastro",nullable = false)
-    private LocalDate dataCadastro;
-*/
+
     @JsonIgnore
     @OneToOne
     private Usuario usuario;

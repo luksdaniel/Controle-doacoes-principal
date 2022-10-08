@@ -31,7 +31,7 @@ public class ItemColetaDoacao extends RepresentationModel<ItemColetaDoacao> impl
     @Column(nullable = false, updatable = false)
     private long id;
 
-    @DecimalMin("0.001")
+    @DecimalMin(value = "0.001", message = "A quantidade deve ser maior que zero")
     @Column(nullable = false)
     private double quantidade;
 

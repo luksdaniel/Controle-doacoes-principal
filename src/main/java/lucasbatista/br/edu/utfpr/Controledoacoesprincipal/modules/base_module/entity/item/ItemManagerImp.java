@@ -48,7 +48,9 @@ public class ItemManagerImp implements ItemManager {
 
         item.setUnidadeMedida(unidadeMedidaManager.findById(item.getUnidadeMedida().getId()).get());
         item.setDataCadastro(LocalDate.now());
+        item.setEstaCancelado(false);
         Item itemInterno = itemService.saveItem(item);
+
         if(itemInterno == null){
             throw new ResourceCreateErrorException("Não foi possível criar o item");
         }else{

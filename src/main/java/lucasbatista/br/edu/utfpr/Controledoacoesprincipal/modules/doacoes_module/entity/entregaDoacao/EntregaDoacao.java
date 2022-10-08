@@ -31,7 +31,7 @@ public class EntregaDoacao extends RepresentationModel<EntregaDoacao> implements
     @Column(nullable = false, updatable = false)
     private long id;
 
-    @NotNull
+    @NotNull(message = "É obrigatório informa a data da entrega")
     @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(name = "data_entrega", nullable = false, updatable = false)
     private LocalDate dataEntrega;
@@ -47,7 +47,7 @@ public class EntregaDoacao extends RepresentationModel<EntregaDoacao> implements
     @ManyToOne
     private Usuario usuarioCancelamento;
 
-    @NotBlank
+    @NotBlank(message = "É obrigatório informar o nome do responsável")
     @Column(name = "nome_responsavel", nullable = false)
     private String nomeResponsavel;
 
@@ -56,11 +56,11 @@ public class EntregaDoacao extends RepresentationModel<EntregaDoacao> implements
     @JoinColumn(nullable = false)
     private Usuario usuarioRegistro;
 
-    @NotNull
+    @NotNull(message = "É obrigatório informar os itens da entrega")
     @OneToMany(mappedBy = "entregaDoacao")
     private List<ItemEntregaDoacao> itensEntrega;
 
-    @NotNull
+    @NotNull(message = "É obrigatório informar o beneficiário da entrega")
     @ManyToOne
     @JoinColumn(name = "beneficiario_id", referencedColumnName = "id", nullable = false)
     private Beneficiario beneficiario;

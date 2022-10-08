@@ -1,6 +1,6 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.controller;
 
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptionHandler.EntityValidadeExceptionHandler;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptionHandler.EntityValidateExceptionHandler;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item.Item;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item.ItemManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/item")
-public class ItemController extends EntityValidadeExceptionHandler {
+public class ItemController extends EntityValidateExceptionHandler {
     @Autowired
     ItemManager managerItem;
 
@@ -37,7 +37,6 @@ public class ItemController extends EntityValidadeExceptionHandler {
         item.get().removeLinks();
         item.get().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ItemController.class).findAllItem()).withRel("Lista de Items"));
         return new ResponseEntity<Item>(item.get(), HttpStatus.OK);
-
     }
 
     @PostMapping
@@ -46,7 +45,6 @@ public class ItemController extends EntityValidadeExceptionHandler {
         itemInterno.removeLinks();
         itemInterno.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ItemController.class).findAllItem()).withRel("Lista de Items"));
         return new ResponseEntity<Item>(itemInterno, HttpStatus.CREATED);
-
     }
 
     @PutMapping

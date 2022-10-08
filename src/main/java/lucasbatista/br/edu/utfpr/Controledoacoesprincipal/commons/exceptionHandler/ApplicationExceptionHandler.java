@@ -1,5 +1,6 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptionHandler;
 
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.entity.ErrorResponse;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.*;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -8,68 +9,80 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @ControllerAdvice
 public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity handleResourceNotFoundException(ResourceNotFoundException e){
+    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException e){
         e.printStackTrace();
-        return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
+        List<String> mensagem = new ArrayList<>();
+        mensagem.add(e.getMessage());
+        return new ResponseEntity<>(new ErrorResponse(mensagem), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(ResourceCreateErrorException.class)
-    public ResponseEntity handleResourceCreateErrorException(ResourceCreateErrorException e){
+    public ResponseEntity<ErrorResponse> handleResourceCreateErrorException(ResourceCreateErrorException e){
         e.printStackTrace();
-        return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+        List<String> mensagem = new ArrayList<>();
+        mensagem.add(e.getMessage());
+        return new ResponseEntity<>(new ErrorResponse(mensagem), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(DependencyNotFoundException.class)
-    public ResponseEntity handleDependencyNotFoundExceptionn(DependencyNotFoundException e){
+    public ResponseEntity<ErrorResponse> handleDependencyNotFoundExceptionn(DependencyNotFoundException e){
         e.printStackTrace();
-        return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+        List<String> mensagem = new ArrayList<>();
+        mensagem.add(e.getMessage());
+        return new ResponseEntity<>(new ErrorResponse(mensagem), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ResourceIntegrityException.class)
-    public ResponseEntity handleResourceIntegrityException(ResourceIntegrityException e){
+    public ResponseEntity<ErrorResponse> handleResourceIntegrityException(ResourceIntegrityException e){
         e.printStackTrace();
-        return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+        List<String> mensagem = new ArrayList<>();
+        mensagem.add(e.getMessage());
+        return new ResponseEntity<>(new ErrorResponse(mensagem), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(BusinessException.class)
-    public ResponseEntity handleBusinessException(BusinessException e){
+    public ResponseEntity<ErrorResponse> handleBusinessException(BusinessException e){
         e.printStackTrace();
-        return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<Map<String, String>> handleConstraintViolationException(ConstraintViolationException e) throws NoSuchFieldException {
-        e.printStackTrace();
-        Map<String, String> errors = new HashMap<>();
-
-        e.getConstraintViolations().forEach(constraintViolation -> {
-            errors.put(String.valueOf(constraintViolation.getPropertyPath()), constraintViolation.getMessage());
-        });
-
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+        List<String> mensagem = new ArrayList<>();
+        mensagem.add(e.getMessage());
+        return new ResponseEntity<>(new ErrorResponse(mensagem), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity handleException(Exception e){
+    public ResponseEntity<ErrorResponse> handleException(Exception e){
         e.printStackTrace();
-        return new ResponseEntity("Ocorreu um erro ao processar a requisição", HttpStatus.BAD_REQUEST);
+        List<String> mensagem = new ArrayList<>();
+        mensagem.add("Ocorreu um erro ao processar a requisição");
+        return new ResponseEntity<>(new ErrorResponse(mensagem), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity handleDataIntegrityViolationException(DataIntegrityViolationException e){
+    public ResponseEntity<ErrorResponse> handleDataIntegrityViolationException(DataIntegrityViolationException e){
         e.printStackTrace();
-        System.out.println(e.getLocalizedMessage());
-        return new ResponseEntity("Erro de integridade ao cadastrar o registro", HttpStatus.BAD_REQUEST);
+        List<String> mensagem = new ArrayList<>();
+        mensagem.add("Erro de integridade ao cadastrar o registro");
+        return new ResponseEntity<>(new ErrorResponse(mensagem), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException e){
+        e.printStackTrace();
+        List<String> mensagem = new ArrayList<>();
+
+        e.getConstraintViolations().forEach(constraintViolation -> {
+            //errors.put(String.valueOf(constraintViolation.getPropertyPath()), constraintViolation.getMessage());
+            mensagem.add(constraintViolation.getMessage());
+        });
+
+        return new ResponseEntity<>(new ErrorResponse(mensagem), HttpStatus.BAD_REQUEST);
     }
 
 }

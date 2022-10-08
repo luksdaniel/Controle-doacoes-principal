@@ -34,22 +34,21 @@ public class Item extends RepresentationModel<Item> implements Serializable {
     @Column(nullable = false, updatable = false)
     private long id;
 
-    @NotBlank()
+    @NotBlank(message = "É obrigatório informar a descrição")
     @Column(name = "descricao", nullable = false)
     private String descricao;
 
     @Column(name = "informacoes_adicionais")
     private String informacoesAdicionais;
 
-    @NotNull()
     @Column(name = "esta_cancelado", nullable = false)
     private boolean estaCancelado;
 
-    @NotNull
+    @NotNull(message = "É obrigatório informar a quantidade mínima")
     @Column(name = "quantidade_minima", nullable = false)
     private double quantidadeMinima;
 
-    @NotNull
+    @NotNull(message = "É obrigatório informar a quantidade em estoque")
     @Column(name = "quantidade_estoque", nullable = false)
     private double quantidadeEstoque;
 
@@ -60,7 +59,7 @@ public class Item extends RepresentationModel<Item> implements Serializable {
     @Column(name = "tipo_item")
     private String tipoItem;
 
-    @NotNull(message = "Deve ser informada uma unidade de medida para o item")
+    @NotNull(message = "Deve ser informada uma unidade de medida")
     @ManyToOne
     @JoinColumn(name = "unidade_medida_id", referencedColumnName = "id", nullable = false)
     private UnidadeMedida unidadeMedida;

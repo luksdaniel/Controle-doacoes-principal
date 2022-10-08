@@ -19,22 +19,21 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 
 @Entity
 @Table(name = "instituicao")
 public class Instituicao extends Pessoa implements Serializable {
 
-    @NotBlank
+    @NotBlank(message = "É obrigatório informar o horário de funcionamento")
     @Column(name = "horario_funcionamento", nullable = false)
     private String horarioFuncionamento;
 
     @JsonFormat(pattern = "dd/MM/yyyy")
-    @NotNull
+    @NotNull(message = "É obrigatório informar a data de implatação")
     @Column(name = "data_implantacao", nullable = false)
     private LocalDate dataImplantacao;
 
-    @NotNull
+    @NotNull(message = "É obrigatório informar os dias entre doação")
     @Column(name = "dias_entre_doacao",nullable = false)
     private int diasEntreDoacao;
 

@@ -27,15 +27,15 @@ public class Usuario extends RepresentationModel<Usuario> implements Serializabl
     @Column(nullable = false, updatable = false)
     private long id;
 
-    @NotBlank
+    @NotBlank(message = "É obrigatório informar o login")
     @Column(nullable = false)
     private String login;
 
-    @NotBlank
+    @NotBlank(message = "É obrigatório informar a senha")
     @Column(nullable = false)
     private String senha;
 
-    @NotNull
+    @NotNull(message = "É obrigatório informar se o usuário é do google")
     @Column(name = "from_google", nullable = false)
     private boolean eDoGoogle;
 

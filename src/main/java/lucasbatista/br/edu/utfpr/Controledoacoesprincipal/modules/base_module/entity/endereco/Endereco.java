@@ -25,19 +25,19 @@ public class Endereco extends RepresentationModel<Endereco> implements Serializa
     @Column(nullable = false, updatable = false)
     private long id;
 
-    @NotBlank
+    @NotBlank(message = "É obrigatório informar o logradouro")
     @Column(nullable = false)
     private String logradouro;
 
-    @NotBlank
+    @NotBlank(message = "É obrigatório informar a descrição do endereço")
     @Column(name = "descricao_endereco", nullable = false)
     private String descricaoEndereco;
 
-    @NotNull
+    @NotNull(message = "É obrigatório informar o número")
     @Column(nullable = false)
     private int numero;
 
-    @NotNull
+    @NotNull(message = "É obrigatório informar o CEP")
     @Column(nullable = false)
     private int cep;
 

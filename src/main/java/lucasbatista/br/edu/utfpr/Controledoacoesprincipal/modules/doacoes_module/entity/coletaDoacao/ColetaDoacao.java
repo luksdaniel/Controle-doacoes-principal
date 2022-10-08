@@ -32,7 +32,7 @@ public class ColetaDoacao extends RepresentationModel<ColetaDoacao> {
     @Column(name = "esta_efetivada", nullable = false)
     private boolean estaEfetivada;
 
-    @NotNull
+    @NotNull(message = "É obrigatório informar a data da coleta")
     @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(name = "data_doacao", nullable = false, updatable = false)
     private LocalDate dataDoacao;
@@ -60,7 +60,7 @@ public class ColetaDoacao extends RepresentationModel<ColetaDoacao> {
     @JoinColumn(nullable = false)
     private Usuario usuarioRegistro;
 
-    @NotNull
+    @NotNull(message = "É obrigatório informar ao menos um item na coleta")
     @OneToMany(mappedBy = "coletaDoacao")
     private List<ItemColetaDoacao> itensColeta;
 

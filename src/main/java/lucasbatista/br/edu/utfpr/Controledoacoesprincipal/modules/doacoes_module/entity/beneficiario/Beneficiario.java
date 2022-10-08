@@ -26,39 +26,39 @@ import java.util.Set;
 @Table(name = "beneficiario")
 public class Beneficiario extends Pessoa implements Serializable {
 
-    @NotNull
+    @NotNull(message = "É obrigatório informar se o Beneficiário procurou o crás")
     @Column(name = "procurou_cras", nullable = false)
     private boolean procurouCras;
 
-    @NotNull
+    @NotNull(message = "É obrigatório informar se o Beneficiário tem casa própria")
     @Column(name = "tem_casa_propria", nullable = false)
     private boolean temCasaPropria;
 
-    @NotNull
+    @NotNull(message = "É obrigatório informar se o Beneficiário possúi crianças")
     @Column(name = "possui_criancas", nullable = false)
     private boolean possuiCriancas;
 
-    @NotNull
-    @Min(1)
+    @NotNull(message = "É obrigatório informar a quantidade de moradores na casa")
+    @Min(value = 1, message = "Deve haver pelo menos um morador na casa")
     @Column(name = "quantidade_moradores_casa", nullable = false)
     private int quantidadeMoradoresCasa;
 
-    @Min(0)
-    @NotNull
+    @Min(value = 0, message = "A quantidade de crianças não pode ser menor que zero")
+    @NotNull(message = "É obrigatório informar a quantidade de crianças na casa")
     @Column(name = "quantidade_criancas", nullable = false)
     private int quantidadeCriancas;
 
-    @NotNull
+    @NotNull(message = "É obrigatório informar se o Beneficiário possuí idosos em casa")
     @Column(name = "possui_idosos", nullable = false)
     private boolean possuiIdosos;
 
-    @Min(0)
-    @NotNull
+    @Min(value = 0, message = "A quantidade de idosos não pode ser menor que zero")
+    @NotNull(message = "É obrigatório informar a quantidade de idosos na casa")
     @Column(name = "quantidade_idosos", nullable = false)
     private int quantidadeIdosos;
 
-    @Min(0)
-    @NotNull
+    @Min(value = 0, message = "A renda familiar não pode ser menor que zero")
+    @NotNull(message = "É obrigatório informar a renda familiar")
     @Column(name = "renda_familiar", nullable = false)
     private double rendaFamiliar;
 

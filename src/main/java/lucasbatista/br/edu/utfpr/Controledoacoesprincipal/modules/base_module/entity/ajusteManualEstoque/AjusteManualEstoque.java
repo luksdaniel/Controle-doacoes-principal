@@ -30,23 +30,23 @@ public class AjusteManualEstoque extends RepresentationModel<AjusteManualEstoque
     @Column(name = "data_ajuste", nullable = false)
     private LocalDate dataAjuste;
 
-    @NotNull
+    @NotNull(message = "É obrigatório informar a quantidade movimentada")
     @Column(name = "quantidade_movimentada", nullable = false)
     private double quantidadeMovimentada;
 
-    @NotBlank
+    @NotBlank(message = "É obrigatório informar a observação")
     @Column(nullable = false, length = 5000)
     private String observacao;
 
     @Column(name = "esta_cancelada", nullable = false)
     private boolean estaCancelada;
 
-    @NotNull
+    @NotNull(message = "É obrigatório informar o item")
     @ManyToOne
     @JoinColumn(nullable = false)
     private Item item;
 
-    @NotNull
+    @NotNull(message = "É obrigatório informar o usuário")
     @ManyToOne
     @JoinColumn(nullable = false)
     private Usuario usuarioResponsavel;
