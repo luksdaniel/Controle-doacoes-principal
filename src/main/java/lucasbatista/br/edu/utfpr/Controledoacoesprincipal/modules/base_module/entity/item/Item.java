@@ -10,6 +10,8 @@ import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -44,10 +46,12 @@ public class Item extends RepresentationModel<Item> implements Serializable {
     @Column(name = "esta_cancelado", nullable = false)
     private boolean estaCancelado;
 
+    @Min(value = 0, message = "A quantidade mínima não pode ser menor que 0")
     @NotNull(message = "É obrigatório informar a quantidade mínima")
     @Column(name = "quantidade_minima", nullable = false)
     private double quantidadeMinima;
 
+    @Min(value = 0, message = "A quantidade em estoque não pode ser menor que 0")
     @NotNull(message = "É obrigatório informar a quantidade em estoque")
     @Column(name = "quantidade_estoque", nullable = false)
     private double quantidadeEstoque;
@@ -56,7 +60,8 @@ public class Item extends RepresentationModel<Item> implements Serializable {
     @Column(name = "data_cadastro", nullable = false)
     private LocalDate dataCadastro;
 
-    @Column(name = "tipo_item")
+    @NotBlank(message = "É obrigatório informar o tipo do item")
+    @Column(name = "tipo_item", nullable = false)
     private String tipoItem;
 
     @NotNull(message = "Deve ser informada uma unidade de medida")

@@ -62,14 +62,24 @@ public class ItemManagerImp implements ItemManager {
     public Item updateItem(Item item) {
         validaUnidadeMedidaExistente(item);
 
+        item.setUnidadeMedida(unidadeMedidaManager.findById(item.getUnidadeMedida().getId()).get());
+        item.setDataCadastro(LocalDate.now());
+        item.setEstaCancelado(false);
+
         verificaItemJaCadastrado(item.getId());
         return (itemService.updateItem(item));
     }
 
     @Override
-    public void deleteItem(Long id) {
-        verificaItemJaCadastrado(id);
-        itemService.deleteItem(id);
+    public Item cancelItem(Long id) {
+        Optional<Item> item = itemService.findById(id);
+
+        if (item.get().isEstaCancelado())
+            throw new BusinessException("Item já cancelado");
+
+        item.get().setEstaCancelado(true);
+
+        return (itemService.updateItem(item.get()));
     }
 
     @Override

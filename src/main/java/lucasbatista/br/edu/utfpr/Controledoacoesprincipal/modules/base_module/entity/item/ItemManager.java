@@ -9,7 +9,7 @@ public interface ItemManager {
     Optional<Item> findById(Long id);
     Item saveItem(Item item);
     Item updateItem(Item item);
-    void deleteItem(Long id);
+    Item cancelItem(Long id);
     void validaAndMovimentaEstoque(Item item, double quantidade);
 
 }

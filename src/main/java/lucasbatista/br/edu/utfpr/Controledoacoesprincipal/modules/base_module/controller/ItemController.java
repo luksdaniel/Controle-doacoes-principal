@@ -54,10 +54,11 @@ public class ItemController extends EntityValidateExceptionHandler {
         return new ResponseEntity<Item>(itemInterno, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<List<Item>> deleteItem(@PathVariable("id") Long id){
-        managerItem.deleteItem(id);
-        return findAllItem();
+    @PutMapping("/cancel/{id}")
+    public ResponseEntity<Item> cancelItem(@PathVariable("id") Long id){
+        Item item = managerItem.cancelItem(id);
+
+        return new ResponseEntity<Item>(item, HttpStatus.OK);
     }
 
 }
