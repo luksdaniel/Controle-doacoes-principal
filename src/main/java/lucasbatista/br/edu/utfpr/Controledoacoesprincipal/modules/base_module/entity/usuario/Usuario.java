@@ -2,6 +2,7 @@ package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.e
 
 import lombok.*;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.instituicao.Instituicao;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.doador.Doador;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
@@ -48,5 +49,8 @@ public class Usuario extends RepresentationModel<Usuario> implements Serializabl
     @ManyToOne
     @JoinColumn(name = "instituicao_id",referencedColumnName = "id")
     private Instituicao instituicao;
+
+    @OneToOne
+    private Doador doador;
 
 }

@@ -27,11 +27,11 @@ public class Doador extends Pessoa implements Serializable {
     @NotNull(message = "É obrigatório informar se o doador recebe e-mails")
     @Column(name = "recebe_emails", nullable = false)
     private boolean recebeEmails;
-
+/*
     @JsonIgnore
     @OneToOne
     private Usuario usuario;
-
+*/
     @JsonIgnore
     @OneToMany(mappedBy = "doador")
     private Set<ColetaDoacao> coletasDoacao = new HashSet<>();
