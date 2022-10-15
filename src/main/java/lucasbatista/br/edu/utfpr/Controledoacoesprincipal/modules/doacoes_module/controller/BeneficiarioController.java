@@ -1,6 +1,7 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.controller;
 
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptionHandler.EntityValidateExceptionHandler;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item.Item;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.beneficiario.BeneficiarioManager;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.beneficiario.Beneficiario;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,13 @@ public class BeneficiarioController extends EntityValidateExceptionHandler {
         Beneficiario beneficiarioInterno = (beneficiarioManager.updateBeneficiario(beneficiario));
         beneficiarioInterno.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(BeneficiarioController.class).findAllBeneficiario()).withRel("Lista de beneficiarios"));
         return new ResponseEntity<Beneficiario>(beneficiarioInterno, HttpStatus.OK);
+    }
+
+    @PutMapping("/cancel/{id}")
+    public ResponseEntity<Beneficiario> cancelBeneficiario(@PathVariable("id") Long id){
+        Beneficiario beneficiario = beneficiarioManager.cancelBeneficiario(id);
+
+        return new ResponseEntity<Beneficiario>(beneficiario, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

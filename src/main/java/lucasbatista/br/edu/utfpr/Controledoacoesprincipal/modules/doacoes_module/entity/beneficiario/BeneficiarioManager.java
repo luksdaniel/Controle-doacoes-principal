@@ -11,6 +11,7 @@ public interface BeneficiarioManager {
     Optional<Beneficiario> findById(Long id);
     Beneficiario saveBeneficiario(Beneficiario beneficiario);
     Beneficiario updateBeneficiario(Beneficiario beneficiario);
+    Beneficiario cancelBeneficiario(Long id);
     void deleteBeneficiario(Long id);
 
 }

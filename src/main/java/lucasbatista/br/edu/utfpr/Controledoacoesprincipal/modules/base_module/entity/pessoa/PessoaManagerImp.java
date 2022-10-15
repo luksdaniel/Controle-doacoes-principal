@@ -74,7 +74,7 @@ public class PessoaManagerImp implements PessoaManager{
     @Override
     public void setaAtributosIniciais(Pessoa pessoa){
 
-        pessoa.setEstaCancelao(false);
+        pessoa.setEstaCancelado(false);
         pessoa.setDataCadastro(LocalDate.now());
 
     }

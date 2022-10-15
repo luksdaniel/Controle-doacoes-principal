@@ -3,7 +3,6 @@ package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.e
 import lombok.*;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.Enumerators.TipoPessoa;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.endereco.Endereco;
-import org.hibernate.validator.constraints.br.CNPJ;
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.hateoas.RepresentationModel;
 
@@ -35,15 +34,15 @@ public class Pessoa extends RepresentationModel<Pessoa> implements Serializable 
     @Column(name = "nome_fantasia", nullable = false)
     private String nomeFantasia;
 
-    @NotBlank(message = "É obrigatório informar a razão social")
-    @Column(name = "razao_social", nullable = false)
+    //@NotBlank(message = "É obrigatório informar a razão social")
+    @Column(name = "razao_social"/*, nullable = false*/)
     private String razaoSocial;
 
-    @CPF(message = "CPF Inválido")
+    //@CPF(message = "CPF Inválido")
     @Column(name = "cpf")
     private String cpf;
 
-    @CNPJ(message = "CNPJ Inválido")
+    //@CNPJ(message = "CNPJ Inválido")
     @Column(name = "cnpj")
     private String cnpj;
 
@@ -64,7 +63,7 @@ public class Pessoa extends RepresentationModel<Pessoa> implements Serializable 
     private Endereco endereco;
 
     @Column(name = "esta_cancelado", nullable = false)
-    private boolean estaCancelao;
+    private boolean estaCancelado;
 
     @Column(name = "data_cadastro",nullable = false)
     private LocalDate dataCadastro;

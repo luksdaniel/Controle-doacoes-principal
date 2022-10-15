@@ -1,10 +1,8 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.beneficiario;
 
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.DependencyNotFoundException;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceCreateErrorException;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceIntegrityException;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceNotFoundException;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.*;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.endereco.EnderecoManager;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item.Item;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.pessoa.PessoaManager;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.persistence.beneficiario.BeneficiarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +72,18 @@ public class BeneficiarioManagerImp implements BeneficiarioManager{
 
         verificaBeneficiarioJaCadastrado(beneficiario.getId());
         return (beneficiarioService.updateBeneficiario(beneficiario));
+    }
+
+    @Override
+    public Beneficiario cancelBeneficiario(Long id) {
+        Optional<Beneficiario> beneficiario = beneficiarioService.findById(id);
+
+        if (beneficiario.get().isEstaCancelado())
+            throw new BusinessException("Beneficiário já cancelado");
+
+        beneficiario.get().setEstaCancelado(true);
+
+        return (beneficiarioService.updateBeneficiario(beneficiario.get()));
     }
 
     @Override
