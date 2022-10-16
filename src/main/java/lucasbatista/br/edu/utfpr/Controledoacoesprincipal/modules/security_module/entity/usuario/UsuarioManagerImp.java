@@ -1,11 +1,14 @@
-package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.usuario;
+package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.entity.usuario;
 
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.BusinessException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceCreateErrorException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceNotFoundException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.instituicao.InstituicaoManager;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.persistence.usuario.UsuarioService;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.persistence.usuario.UsuarioService;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.doador.DoadorManager;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -53,6 +56,8 @@ public class UsuarioManagerImp implements UsuarioManager{
         else if(usuario.getInstituicao() == null && usuario.getDoador() != null)
             usuario.setDoador(doadorManager.saveDoador(usuario.getDoador()));
 
+        validaUsuarioLoginDuplicado(usuario);
+
         Usuario usuarioInterno = usuarioService.saveUsuario(usuario);
         if(usuarioInterno == null){
             throw new ResourceCreateErrorException("Não foi possível criar o usuário");
@@ -66,6 +71,8 @@ public class UsuarioManagerImp implements UsuarioManager{
 
         if(usuario.getInstituicao() == null && usuario.getDoador() != null)
             usuario.setDoador(doadorManager.saveDoador(usuario.getDoador()));
+
+        validaUsuarioLoginDuplicado(usuario);
 
         setaAtributosIniciais(usuario);
         verificaUsuarioJaCadastrado(usuario.getId());
@@ -84,11 +91,20 @@ public class UsuarioManagerImp implements UsuarioManager{
     }
 
     private void setaAtributosIniciais(Usuario usuario){
-        usuario.setEstaCancelado(false);
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(usuario.getPassword());
+        usuario.setPassword(encodedPassword);
+
+        usuario.setCancelado(false);
         usuario.setDataCadastro(LocalDate.now());
     }
 
-    private void validaUsuario(){
+    private void validaUsuarioLoginDuplicado(Usuario usuario){
+        Optional<Usuario> entity = usuarioService.findByUserName(usuario.getUsername());
 
+        if(!entity.isEmpty()){
+            throw new BusinessException("Já existe um usuário cadastrado com login: "+usuario.getUsername());
+        }
     }
 }

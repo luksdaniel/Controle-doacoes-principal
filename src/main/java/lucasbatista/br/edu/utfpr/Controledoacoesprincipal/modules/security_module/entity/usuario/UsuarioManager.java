@@ -1,4 +1,4 @@
-package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.usuario;
+package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.entity.usuario;
 
 import java.util.List;
 import java.util.Optional;

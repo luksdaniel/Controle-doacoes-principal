@@ -1,10 +1,12 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptionHandler;
 
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.entity.ErrorResponse;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.*;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -54,6 +56,14 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
         List<String> mensagem = new ArrayList<>();
         mensagem.add(e.getMessage());
         return new ResponseEntity<>(new ErrorResponse(mensagem), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(TokenExpiredException.class)
+    public ResponseEntity<ErrorResponse> handleTokenExpiredException(TokenExpiredException e){
+        e.printStackTrace();
+        List<String> mensagem = new ArrayList<>();
+        mensagem.add(e.getMessage());
+        return new ResponseEntity<>(new ErrorResponse(mensagem), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(Exception.class)
