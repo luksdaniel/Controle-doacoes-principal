@@ -19,7 +19,9 @@ import java.time.LocalDate;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 
 @Entity
-@Table(name = "usuario")
+@Table(name = "usuario", uniqueConstraints = {
+        @UniqueConstraint(name = "ukUsuario", columnNames = {"login"})
+})
 public class Usuario extends RepresentationModel<Usuario> implements Serializable {
 
     @EqualsAndHashCode.Include
