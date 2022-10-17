@@ -21,7 +21,7 @@ import java.io.IOException;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
-    private static final String TOKEN_PREFIX = "Baerer ";
+    private static final String TOKEN_PREFIX = "Bearer ";
     private final UserDetailService userDetailService;
     private final String secret;
 

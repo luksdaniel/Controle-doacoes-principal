@@ -1,6 +1,7 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptionHandler.ApplicationExceptionHandler;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.entity.LoginCredentials;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,6 +16,7 @@ import java.io.IOException;
 public class JsonObjectAutheticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
+    ApplicationExceptionHandler applicationExceptionHandler = new ApplicationExceptionHandler();
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response){
@@ -34,7 +36,7 @@ public class JsonObjectAutheticationFilter extends UsernamePasswordAuthenticatio
             setDetails(request, token);
             return this.getAuthenticationManager().authenticate(token);
         }catch (IOException e){
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage());
         }
     }
 

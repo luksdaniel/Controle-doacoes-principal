@@ -1,6 +1,7 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptionHandler;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
+import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.entity.ErrorResponse;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.*;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -64,6 +65,14 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
         List<String> mensagem = new ArrayList<>();
         mensagem.add(e.getMessage());
         return new ResponseEntity<>(new ErrorResponse(mensagem), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(UnrecognizedPropertyException.class)
+    public ResponseEntity<ErrorResponse> handleUnrecognizedPropertyException(UnrecognizedPropertyException e){
+        e.printStackTrace();
+        List<String> mensagem = new ArrayList<>();
+        mensagem.add(e.getMessage());
+        return new ResponseEntity<>(new ErrorResponse(mensagem), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)

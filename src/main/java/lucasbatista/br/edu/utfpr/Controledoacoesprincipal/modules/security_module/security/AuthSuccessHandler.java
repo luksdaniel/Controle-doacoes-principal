@@ -47,7 +47,7 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
                 .withExpiresAt(Instant.ofEpochMilli(ZonedDateTime.now(ZoneId.systemDefault()).toInstant().toEpochMilli()+ expTime))
                 .sign(Algorithm.HMAC256(secret));
 
-        response.addHeader("Authorization", "Baerer " + token);
+        response.addHeader("Authorization", "Bearer " + token);
         response.addHeader("Content-type", "application/json");
         response.getWriter().write("{\"token\":\""+token+"\"}");
     }
