@@ -48,6 +48,26 @@ public class UsuarioManagerImp implements UsuarioManager{
     }
 
     @Override
+    public Optional<Usuario> findByDoadorId(Long id) {
+        Optional<Usuario> usuario = usuarioService.findByDoadorId(id);
+        if(usuario.isEmpty()){
+            throw new ResourceNotFoundException("Usuário não encontrado");
+        }else {
+            return usuario;
+        }
+    }
+
+    @Override
+    public Optional<Usuario> findByUserName(String username) {
+        Optional<Usuario> usuario = usuarioService.findByUserName(username);
+        if(usuario.isEmpty()){
+            throw new ResourceNotFoundException("Usuário não encontrado");
+        }else {
+            return usuario;
+        }
+    }
+
+    @Override
     public Usuario saveUsuario(Usuario usuario) {
         setaAtributosIniciais(usuario);
 

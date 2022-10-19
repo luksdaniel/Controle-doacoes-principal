@@ -7,6 +7,9 @@ public interface UsuarioManager {
 
     List<Usuario> findAllUsuario();
     Optional<Usuario> findById(Long id);
+
+    Optional<Usuario> findByDoadorId(Long id);
+    Optional<Usuario> findByUserName(String username);
     Usuario saveUsuario(Usuario usuario);
     Usuario updateUsuario(Usuario usuario);
     void deleteUsuario(Long id);

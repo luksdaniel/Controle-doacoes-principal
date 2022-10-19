@@ -36,7 +36,7 @@ public class EntityValidateExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponse> handleUnprosseasableMsgException(HttpMessageNotReadableException e){
         List<String> mensagem = new ArrayList<>();
-        mensagem.add("Entidade fora dos padrões - "+e.getMessage());
+        mensagem.add("Entidade fora dos padrões");
 
         return new ResponseEntity<>(new ErrorResponse(mensagem),HttpStatus.UNPROCESSABLE_ENTITY) ;
     }

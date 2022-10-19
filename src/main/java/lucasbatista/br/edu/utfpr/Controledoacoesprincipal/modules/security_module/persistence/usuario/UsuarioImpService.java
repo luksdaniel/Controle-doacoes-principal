@@ -27,6 +27,11 @@ public class UsuarioImpService implements UsuarioService{
     }
 
     @Override
+    public Optional<Usuario> findByDoadorId(Long id) {
+        return usuarioRepository.findByDoadorId(id);
+    }
+
+    @Override
     public Optional<Usuario> findByUserName(String username) {
         return usuarioRepository.findByUsername(username);
     }

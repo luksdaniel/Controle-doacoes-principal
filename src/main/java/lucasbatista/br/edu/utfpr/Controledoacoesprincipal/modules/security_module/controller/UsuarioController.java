@@ -41,6 +41,26 @@ public class UsuarioController extends EntityValidateExceptionHandler {
 
     }
 
+    @GetMapping("/username/{username}")
+    public ResponseEntity<Usuario> findUsuarioByUsername(@PathVariable("username") String username){
+        Optional<Usuario> usuario = usuarioManager.findByUserName(username);
+
+        usuario.get().removeLinks();
+        usuario.get().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class).findAllUsuario()).withRel("Lista de Usuarios"));
+        return new ResponseEntity<Usuario>(usuario.get(), HttpStatus.OK);
+
+    }
+
+    @GetMapping("/doador/{id}")
+    public ResponseEntity<Usuario> findByDoadorId(@PathVariable("id") Long id){
+        Optional<Usuario> usuario = usuarioManager.findByDoadorId(id);
+
+        usuario.get().removeLinks();
+        usuario.get().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class).findAllUsuario()).withRel("Lista de Usuarios"));
+        return new ResponseEntity<Usuario>(usuario.get(), HttpStatus.OK);
+
+    }
+
     @PostMapping
     public ResponseEntity<Usuario> saveUsuario(@RequestBody @Valid Usuario usuario){
         Usuario usuarioInterno = usuarioManager.saveUsuario(usuario);
