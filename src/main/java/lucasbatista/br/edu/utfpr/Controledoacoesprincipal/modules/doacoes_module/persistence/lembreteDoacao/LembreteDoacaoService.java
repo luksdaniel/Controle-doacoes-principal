@@ -2,6 +2,7 @@ package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_modul
 
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.LembreteDoacao;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,6 +11,8 @@ public interface LembreteDoacaoService {
     List<LembreteDoacao> findAllDoador();
 
     Optional<LembreteDoacao> findById(Long id);
+
+    Optional<LembreteDoacao> findLembretePendente(LocalDate data);
 
     LembreteDoacao saveLembreteDoacao(LembreteDoacao lembreteDoacao);
 

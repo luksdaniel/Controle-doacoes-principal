@@ -74,7 +74,8 @@ public class UsuarioManagerImp implements UsuarioManager{
         if(usuario.getInstituicao() != null && usuario.getDoador() == null)
             usuario.setInstituicao(instituicaoManager.findById(usuario.getInstituicao().getId()).get());
         else if(usuario.getInstituicao() == null && usuario.getDoador() != null)
-            usuario.setDoador(doadorManager.saveDoador(usuario.getDoador()));
+            usuario.setDoador(doadorManager.findById(usuario.getDoador().getId()).get());
+            //usuario.setDoador(doadorManager.saveDoador(usuario.getDoador()));
 
         validaUsuarioLoginDuplicado(usuario);
 
@@ -88,10 +89,10 @@ public class UsuarioManagerImp implements UsuarioManager{
 
     @Override
     public Usuario updateUsuario(Usuario usuario) {
-
+/*
         if(usuario.getInstituicao() == null && usuario.getDoador() != null)
             usuario.setDoador(doadorManager.saveDoador(usuario.getDoador()));
-
+*/
         validaUsuarioLoginDuplicado(usuario);
 
         setaAtributosIniciais(usuario);

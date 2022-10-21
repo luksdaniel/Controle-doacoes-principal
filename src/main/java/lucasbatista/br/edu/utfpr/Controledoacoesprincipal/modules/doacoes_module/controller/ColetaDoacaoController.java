@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("coleta-doacao/")
+@RequestMapping("/coleta-doacao")
 public class ColetaDoacaoController extends EntityValidateExceptionHandler {
 
     @Autowired
@@ -78,7 +78,7 @@ public class ColetaDoacaoController extends EntityValidateExceptionHandler {
     }
 
     @PutMapping("cancel")
-    public ResponseEntity<ColetaDoacao> effectColetaDoacao(@RequestBody ColetaDoacao coletaDoacao){
+    public ResponseEntity<ColetaDoacao> cancelColetaDoacao(@RequestBody ColetaDoacao coletaDoacao){
 
         ColetaDoacao coletaDoacaoInterna = coletaDoacaoManager.cancelaColetaDoacao(coletaDoacao);
 

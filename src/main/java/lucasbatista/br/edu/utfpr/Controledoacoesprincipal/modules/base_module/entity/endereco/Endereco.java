@@ -29,9 +29,9 @@ public class Endereco extends RepresentationModel<Endereco> implements Serializa
     @Column(nullable = false)
     private String logradouro;
 
-    @NotBlank(message = "É obrigatório informar a descrição do endereço")
-    @Column(name = "descricao_endereco", nullable = false)
-    private String descricaoEndereco;
+    @NotBlank(message = "É obrigatório informar o bairro")
+    @Column(name = "bairro", nullable = false)
+    private String bairro;
 
     @NotNull(message = "É obrigatório informar o número")
     @Column(nullable = false)
