@@ -32,7 +32,7 @@ public class ColetaDoacao extends RepresentationModel<ColetaDoacao> {
     @Column(name = "esta_efetivada", nullable = false)
     private boolean estaEfetivada;
 
-    @NotNull(message = "É obrigatório informar a data da coleta")
+    //@NotNull(message = "É obrigatório informar a data da coleta")
     @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(name = "data_doacao", nullable = false, updatable = false)
     private LocalDate dataDoacao;

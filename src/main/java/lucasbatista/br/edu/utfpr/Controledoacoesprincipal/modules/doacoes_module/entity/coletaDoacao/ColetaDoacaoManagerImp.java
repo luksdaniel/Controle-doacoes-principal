@@ -150,6 +150,7 @@ public class ColetaDoacaoManagerImp implements ColetaDoacaoManager{
     private void setaAtributosIniciais(ColetaDoacao coletaDoacao){
 
         coletaDoacao.setEstaCancelada(false);
+        coletaDoacao.setDataDoacao(LocalDate.now());
         coletaDoacao.setUsuarioRegistro(usuarioManager.findById(coletaDoacao.getUsuarioRegistro().getId()).get());
         coletaDoacao.setDoador(doadorManager.findById(coletaDoacao.getDoador().getId()).get());
 

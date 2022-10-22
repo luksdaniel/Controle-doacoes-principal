@@ -3,6 +3,7 @@ package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.e
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.Enumerators.TipoItem;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.unidadeMedida.UnidadeMedida;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.ItemEntregaDoacao;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.itemColetaDoacao.ItemColetaDoacao;
@@ -60,9 +61,10 @@ public class Item extends RepresentationModel<Item> implements Serializable {
     @Column(name = "data_cadastro", nullable = false)
     private LocalDate dataCadastro;
 
-    @NotBlank(message = "É obrigatório informar o tipo do item")
+    @NotNull(message = "É obrigatório informar o tipo do item")
     @Column(name = "tipo_item", nullable = false)
-    private String tipoItem;
+    @Enumerated(EnumType.STRING)
+    private TipoItem tipoItem;
 
     @NotNull(message = "Deve ser informada uma unidade de medida")
     @ManyToOne

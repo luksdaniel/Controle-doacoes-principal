@@ -35,7 +35,7 @@ public class ItemColetaDoacao extends RepresentationModel<ItemColetaDoacao> impl
     @Column(nullable = false)
     private double quantidade;
 
-    private String observacao;
+    //private String observacao;
 
     @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(name = "data_inclusao", nullable = false)
