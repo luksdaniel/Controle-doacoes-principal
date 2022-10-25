@@ -10,7 +10,6 @@ public enum TipoItem {
     COBERTOR("Cobertor"),
     DINHEIRO("Dinheiro"),
     OUTRO("Outro");
-
     private String descricao;
 
     TipoItem(String descricao){

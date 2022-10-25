@@ -31,7 +31,7 @@ public class ItemEntregaDoacao extends RepresentationModel<ItemColetaDoacao> imp
 
     private double quantidade;
 
-    private String observacao;
+    //private String observacao;
 
     private LocalDate dataInclusao;
 

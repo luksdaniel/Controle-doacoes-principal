@@ -81,7 +81,7 @@ public class PessoaManagerImp implements PessoaManager{
 
     @Override
     public void validaCPFeCNPJ(Pessoa pessoa){
-
+/*
         if(pessoa.getTipoPessoa().equals(TipoPessoa.PESSOA_JURIDICA)) {
             if (pessoa.getCnpj() == null || pessoa.getCnpj().isEmpty())
                 throw new ResourceIntegrityException("Foi informada Pessoa Jurídica mas o CNPJ está vazio");
@@ -90,7 +90,7 @@ public class PessoaManagerImp implements PessoaManager{
             if(pessoa.getCpf() == null || pessoa.getCpf().isEmpty())
                 throw new ResourceIntegrityException("Foi informada Pessoa Física mas o CPF está vazio");
             pessoa.setCnpj(null);
-        }
+        }*/
     }
 
     @Override

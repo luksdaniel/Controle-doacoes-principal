@@ -37,9 +37,9 @@ public class Endereco extends RepresentationModel<Endereco> implements Serializa
     @Column(nullable = false)
     private int numero;
 
-    @NotNull(message = "É obrigatório informar o CEP")
+    @NotBlank(message = "É obrigatório informar o CEP")
     @Column(nullable = false)
-    private int cep;
+    private String cep;
 
     private String complemento;
 
