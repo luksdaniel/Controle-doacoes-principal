@@ -67,9 +67,6 @@ public class Usuario extends RepresentationModel<Usuario> implements Serializabl
     @OneToOne
     private Doador doador;
 
-
-
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();

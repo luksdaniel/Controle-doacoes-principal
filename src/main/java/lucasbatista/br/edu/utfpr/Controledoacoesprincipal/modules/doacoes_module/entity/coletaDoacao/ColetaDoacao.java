@@ -49,10 +49,10 @@ public class ColetaDoacao extends RepresentationModel<ColetaDoacao> {
     @Column(name = "motivo_cancelamento")
     private String motivoCancelamento;
 
-    @ManyToOne
+    @ManyToOne()
     private Usuario usuarioEfetivacao;
 
-    @ManyToOne
+    @ManyToOne()
     private Usuario usuarioCancelamento;
 
     @NotNull(message = "É obrigatório informar o usuário que fez o registro da coleta")
