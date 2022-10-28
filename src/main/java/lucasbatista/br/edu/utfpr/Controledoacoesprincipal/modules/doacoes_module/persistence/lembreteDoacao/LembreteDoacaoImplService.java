@@ -1,6 +1,6 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.persistence.lembreteDoacao;
 
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.LembreteDoacao;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.lembreteDoacao.LembreteDoacao;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.repository.LembreteDoacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ public class LembreteDoacaoImplService implements LembreteDoacaoService{
     LembreteDoacaoRepository lembreteDoacaoRepository;
 
     @Override
-    public List<LembreteDoacao> findAllDoador() {
+    public List<LembreteDoacao> findAllLembreteDoacao() {
         return lembreteDoacaoRepository.findAll();
     }
 

@@ -59,7 +59,7 @@ public class DoadorController extends EntityValidateExceptionHandler {
     @DeleteMapping("/{id}")
     public ResponseEntity<List<Doador>> deleteDoador(@PathVariable("id") Long id){
         doadorManager.deleteDoador(id);
-        return findAllDoador();
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 }

@@ -1,4 +1,4 @@
-package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity;
+package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.lembreteDoacao;
 
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
