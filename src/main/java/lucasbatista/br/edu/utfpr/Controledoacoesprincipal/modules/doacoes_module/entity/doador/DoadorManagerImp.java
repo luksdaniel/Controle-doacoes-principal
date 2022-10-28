@@ -33,6 +33,11 @@ public class DoadorManagerImp implements DoadorManager{
     }
 
     @Override
+    public List<Doador> retornaDoadoresQueRecebemEmails() {
+        return doadorService.findDoadorsByRecebeEmailsTrue();
+    }
+
+    @Override
     public Optional<Doador> findById(Long id) {
         Optional<Doador> doador = doadorService.findById(id);
         if(doador.isEmpty()){

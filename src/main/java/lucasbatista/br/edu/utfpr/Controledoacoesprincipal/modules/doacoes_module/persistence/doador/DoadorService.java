@@ -9,6 +9,8 @@ public interface DoadorService {
 
     List<Doador> findAllDoador();
 
+    List<Doador> findDoadorsByRecebeEmailsTrue();
+
     Optional<Doador> findById(Long id);
 
     Doador saveDoador(Doador doador);

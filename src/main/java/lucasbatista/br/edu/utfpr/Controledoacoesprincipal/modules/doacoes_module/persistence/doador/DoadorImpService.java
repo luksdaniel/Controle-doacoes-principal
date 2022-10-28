@@ -20,6 +20,11 @@ public class DoadorImpService implements DoadorService{
     }
 
     @Override
+    public List<Doador> findDoadorsByRecebeEmailsTrue() {
+        return doadorRepository.findDoadorsByRecebeEmailsTrue();
+    }
+
+    @Override
     public Optional<Doador> findById(Long id) {
         return doadorRepository.findById(id);
     }

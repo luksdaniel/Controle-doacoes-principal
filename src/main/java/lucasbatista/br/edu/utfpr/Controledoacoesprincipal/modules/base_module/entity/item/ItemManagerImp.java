@@ -1,12 +1,16 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item;
 
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.emailSender.EmailService;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.BusinessException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.DependencyNotFoundException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceCreateErrorException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceNotFoundException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.unidadeMedida.UnidadeMedidaManager;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.persistence.item.ItemService;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.doador.Doador;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.doador.DoadorManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -21,6 +25,12 @@ public class ItemManagerImp implements ItemManager {
 
     @Autowired
     UnidadeMedidaManager unidadeMedidaManager;
+
+    @Autowired
+    EmailService emailService;
+
+    @Autowired
+    DoadorManager doadorManager;
 
     @Override
     public List<Item> findAllItem() {
@@ -93,8 +103,26 @@ public class ItemManagerImp implements ItemManager {
         else
             item.setQuantidadeEstoque(item.getQuantidadeEstoque() + quantidade);
 
+        enviaAvisoFaltaItem(item);
         updateItem(item);
 
+    }
+
+    private void enviaAvisoFaltaItem(Item item){
+        if(item.getQuantidadeEstoque() <= item.getQuantidadeMinima()){
+            List<Doador> doadores = doadorManager.retornaDoadoresQueRecebemEmails();
+
+            if(doadores.isEmpty())
+                return;
+
+            for (Doador doadorAtual: doadores){
+                if (!doadorAtual.getEmail().isEmpty()) {
+                    emailService.enviar(doadorAtual.getEmail(),
+                            "Aviso de falta de itens na prefeitura",
+                            "Olá, o seguinte item está em falta nos nossos estoques, precisamos de sua ajuda! Item: " + item.getDescricao());
+                }
+            }
+        }
     }
 
     private void validaUnidadeMedidaExistente(Item item){
