@@ -26,6 +26,16 @@ public class ItemColetaManagerImp implements ItemColetaManager{
     }
 
     @Override
+    public ItemColetaDoacao saveItenColeta(ItemColetaDoacao item) {
+
+        if (item.getDataInclusao() == null)
+            item.setDataInclusao(LocalDate.now());
+
+        return itemColetaService.saveItenColeta(item);
+    }
+
+
+    @Override
     public ItemColetaDoacao findByIdd(Long id) {
         Optional<ItemColetaDoacao> item = itemColetaService.findById(id);
         if(item.isEmpty()){
@@ -36,11 +46,31 @@ public class ItemColetaManagerImp implements ItemColetaManager{
     }
 
     @Override
-    public List<ItemColetaDoacao> updateAllItensColeta(List<ItemColetaDoacao> itens) {
+    public List<ItemColetaDoacao> updateAllItensColeta(List<ItemColetaDoacao> itens, long coletaId) {
+
+        List<ItemColetaDoacao> listInternoColeta = itemColetaService.findByColetaId(coletaId);
+        boolean gravadoAndAtualizado;
+
         for (ItemColetaDoacao itemAtual: itens) {
-            if (itemAtual.getDataInclusao() == null)
-                itemAtual.setDataInclusao(LocalDate.now());
-            itemColetaService.updateItemColetaDoacao(itemAtual);
+
+            gravadoAndAtualizado = listInternoColeta.contains(itemAtual);
+
+            if(gravadoAndAtualizado){
+                if (itemAtual.getDataInclusao() == null)
+                    itemAtual.setDataInclusao(LocalDate.now());
+                itemColetaService.updateItemColetaDoacao(itemAtual);
+            }else {
+                saveItenColeta(itemAtual);
+            }
+
+        }
+        for (ItemColetaDoacao itemAtual: listInternoColeta){
+
+            gravadoAndAtualizado = itens.contains(itemAtual);
+
+            if(!gravadoAndAtualizado)
+                itemColetaService.deleteItemColetaDoacao(itemAtual.getId());
+
         }
 
         return itens;

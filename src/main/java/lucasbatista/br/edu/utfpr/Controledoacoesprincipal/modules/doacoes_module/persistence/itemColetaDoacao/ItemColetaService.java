@@ -10,7 +10,11 @@ public interface ItemColetaService {
 
     List<ItemColetaDoacao> findAllItemColetaDoacao();
 
+    List<ItemColetaDoacao> findByColetaId(long id);
+
     Optional<ItemColetaDoacao> findById(Long id);
+
+    ItemColetaDoacao saveItenColeta(ItemColetaDoacao item);
 
     List<ItemColetaDoacao> saveItemAllColetaDoacao(List<ItemColetaDoacao> itemColetaDoacao);
 

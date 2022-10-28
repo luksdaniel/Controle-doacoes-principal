@@ -158,9 +158,9 @@ public class ColetaDoacaoManagerImp implements ColetaDoacaoManager{
         List<ItemColetaDoacao> itensCompletos = new ArrayList<>();
 
         for (ItemColetaDoacao itemColetaAtual: itensDoacao) {
-            if (itemColetaAtual.getId() != 0){
+            /*if (itemColetaAtual.getId() != 0){
                 itemColetaAtual = itemColetaManager.findByIdd(itemColetaAtual.getId());
-            }
+            }*/
             itemColetaAtual.setItem(itemManager.findById(itemColetaAtual.getItem().getId()).get());
             itemColetaAtual.setColetaDoacao(coletaDoacao);
             itensCompletos.add(itemColetaAtual);
@@ -174,7 +174,7 @@ public class ColetaDoacaoManagerImp implements ColetaDoacaoManager{
     }
 
     private void atualizaItensColeta(ColetaDoacao coletaDoacao){
-        itemColetaManager.updateAllItensColeta(coletaDoacao.getItensColeta());
+        itemColetaManager.updateAllItensColeta(coletaDoacao.getItensColeta(), coletaDoacao.getId());
     }
 
     private void movimentaEstoqueSeJaEfetivada(ColetaDoacao coletaDoacao){
