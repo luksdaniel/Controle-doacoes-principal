@@ -26,17 +26,12 @@ public class EntregaDoacaoImplService implements EntregaDoacaoService{
 
     @Override
     public List<EntregaDoacao> findByBeneficiarioId(Long id) {
-        return null;
+        return entregaDoacaoRepository.findByBeneficiarioId(id);
     }
 
     @Override
     public List<EntregaDoacao> findByUsuarioRegistroId(Long id) {
-        return null;
-    }
-
-    @Override
-    public EntregaDoacao cancelaEntregaDoacao(EntregaDoacao entregaDoacao) {
-        return null;
+        return entregaDoacaoRepository.findByUsuarioRegistroId(id);
     }
 
     @Override

@@ -4,6 +4,13 @@ import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface EntregaDoacaoRepository extends JpaRepository<EntregaDoacao, Long> {
+
+    List<EntregaDoacao> findByBeneficiarioId(long id);
+
+    List<EntregaDoacao> findByUsuarioRegistroId(long id);
+
 }

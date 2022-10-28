@@ -3,7 +3,7 @@ package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_modul
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.entity.usuario.Usuario;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.ItemEntregaDoacao;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.itemEntregaDoacao.ItemEntregaDoacao;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.beneficiario.Beneficiario;
 import org.springframework.hateoas.RepresentationModel;
 
@@ -31,7 +31,7 @@ public class EntregaDoacao extends RepresentationModel<EntregaDoacao> implements
     @Column(nullable = false, updatable = false)
     private long id;
 
-    @NotNull(message = "É obrigatório informa a data da entrega")
+    //@NotNull(message = "É obrigatório informa a data da entrega")
     @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(name = "data_entrega", nullable = false, updatable = false)
     private LocalDate dataEntrega;

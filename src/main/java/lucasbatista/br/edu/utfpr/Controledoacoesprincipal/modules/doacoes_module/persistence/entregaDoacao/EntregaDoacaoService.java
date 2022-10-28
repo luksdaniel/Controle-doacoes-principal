@@ -15,8 +15,6 @@ public interface EntregaDoacaoService {
 
     List<EntregaDoacao> findByUsuarioRegistroId(Long id);
 
-    EntregaDoacao cancelaEntregaDoacao(EntregaDoacao entregaDoacao);
-
     EntregaDoacao saveEntregaDoacao(EntregaDoacao entregaDoacao);
 
     EntregaDoacao updateEntregaDoacao(EntregaDoacao entregaDoacao);
