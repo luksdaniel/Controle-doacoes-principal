@@ -41,6 +41,14 @@ public class Endereco extends RepresentationModel<Endereco> implements Serializa
     @Column(nullable = false)
     private String cep;
 
+    @NotBlank(message = "É obrigatório informar a UF")
+    @Column(nullable = false)
+    private String uf;
+
+    @NotBlank(message = "É obrigatório informar o município")
+    @Column(nullable = false)
+    private String municipio;
+
     private String complemento;
 
 }
