@@ -1,6 +1,7 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.itemEntregaDoacao;
 
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceNotFoundException;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item.ItemManager;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.entregaDoacao.EntregaDoacao;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.itemColetaDoacao.ItemColetaDoacao;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.persistence.itemEntregaDoacao.ItemEntregaService;
@@ -16,6 +17,9 @@ public class ItemEntregaManagerImp implements ItemEntregaManager{
 
     @Autowired
     ItemEntregaService itemEntregaService;
+
+    @Autowired
+    ItemManager itemManager;
 
     @Override
     public List<ItemEntregaDoacao> saveAllItensEntrega(List<ItemEntregaDoacao> itens) {
@@ -60,16 +64,25 @@ public class ItemEntregaManagerImp implements ItemEntregaManager{
                 if (itemAtual.getDataInclusao() == null)
                     itemAtual.setDataInclusao(LocalDate.now());
                 itemEntregaService.updateItemEntrega(itemAtual);
+
+                ItemEntregaDoacao itemAntigo = listInternoEntrega.get(listInternoEntrega.indexOf(itemAtual));
+                double diferencaQtd = itemAtual.getQuantidade() - itemAntigo.getQuantidade();
+
+                itemManager.validaAndMovimentaEstoque(itemAtual.getItem(), diferencaQtd);
+
             }else {
                 saveItenEntrega(itemAtual);
+                itemManager.validaAndMovimentaEstoque(itemAtual.getItem(), -itemAtual.getQuantidade());
             }
         }
         for (ItemEntregaDoacao itemAtual: listInternoEntrega){
 
             gravadoAndAtualizado = itens.contains(itemAtual);
 
-            if(!gravadoAndAtualizado)
+            if(!gravadoAndAtualizado) {
                 itemEntregaService.deleteItemEntregaDoacao(itemAtual.getId());
+                itemManager.validaAndMovimentaEstoque(itemAtual.getItem(), itemAtual.getQuantidade());
+            }
         }
         return itens;
     }

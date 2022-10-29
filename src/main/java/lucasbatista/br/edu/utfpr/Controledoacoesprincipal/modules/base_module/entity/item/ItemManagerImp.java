@@ -74,7 +74,7 @@ public class ItemManagerImp implements ItemManager {
 
         item.setUnidadeMedida(unidadeMedidaManager.findById(item.getUnidadeMedida().getId()).get());
         item.setDataCadastro(LocalDate.now());
-        item.setEstaCancelado(false);
+        //item.setEstaCancelado(false);
 
         verificaItemJaCadastrado(item.getId());
         return (itemService.updateItem(item));

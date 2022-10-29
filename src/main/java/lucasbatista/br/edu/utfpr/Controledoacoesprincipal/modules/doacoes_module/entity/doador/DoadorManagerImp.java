@@ -9,6 +9,7 @@ import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,7 +74,8 @@ public class DoadorManagerImp implements DoadorManager{
         validaEnderecoExistente(doador);
 
         pessoaManager.validaCPFeCNPJ(doador);
-        pessoaManager.setaAtributosIniciais(doador);
+        //pessoaManager.setaAtributosIniciais(doador);
+        doador.setDataCadastro(LocalDate.now());
 
         verificaDoadorJaCadastrado(doador.getId());
         return (doadorService.updateDoador(doador));

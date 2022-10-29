@@ -82,19 +82,19 @@ public class EntregaDoacaoManagerImp implements EntregaDoacaoManager{
     @Override
     public EntregaDoacao saveEntregaDoacao(EntregaDoacao entregaDoacao) {
         setaAtributosIniciais(entregaDoacao);
+        entregaDoacao.setEstaCancelada(false);
 
         List<ItemEntregaDoacao> itensEntrega = entregaDoacao.getItensEntrega();
-        for (ItemEntregaDoacao itemAtual: itensEntrega) {
-            itemManager.validaAndMovimentaEstoque(itemAtual.getItem(), itemAtual.getQuantidade());
-        }
-
         EntregaDoacao entregaInterna = entregaDoacaoService.saveEntregaDoacao(entregaDoacao);
-        if(entregaInterna == null){
+        if(entregaInterna == null)
             throw new ResourceCreateErrorException("Não foi possível gravar a entrega de doação!");
-        }else {
-            gravaItensEntrega(entregaDoacao);
-            return entregaInterna;
+
+        gravaItensEntrega(entregaDoacao);
+        for (ItemEntregaDoacao itemAtual: itensEntrega) {
+            itemManager.validaAndMovimentaEstoque(itemAtual.getItem(), -itemAtual.getQuantidade());
         }
+        return entregaInterna;
+
     }
 
     @Override
@@ -102,12 +102,16 @@ public class EntregaDoacaoManagerImp implements EntregaDoacaoManager{
         Optional<EntregaDoacao> entregaDoacaoInterna = findById(entregaDoacao.getId());
 
         if (entregaDoacaoInterna.get().isEstaCancelada())
-            throw new BusinessException("A coleta de doação está cancelada");
+            throw new BusinessException("A entrega de doação está cancelada");
 
         setaAtributosIniciais(entregaDoacao);
         EntregaDoacao entregaDoacao1 = entregaDoacaoService.updateEntregaDoacao(entregaDoacao);
+        if(entregaDoacao1 == null)
+            throw new ResourceCreateErrorException("Não foi possível atualizar a entrega de doação!");
+
         atualizaItensEntrega(entregaDoacao);
         return entregaDoacao1;
+
     }
 
     @Override
@@ -134,7 +138,6 @@ public class EntregaDoacaoManagerImp implements EntregaDoacaoManager{
 
     private void setaAtributosIniciais(EntregaDoacao entregaDoacao){
 
-        entregaDoacao.setEstaCancelada(false);
         entregaDoacao.setDataEntrega(LocalDate.now());
         entregaDoacao.setUsuarioRegistro(usuarioManager.findById(entregaDoacao.getUsuarioRegistro().getId()).get());
         entregaDoacao.setBeneficiario(beneficiarioManager.findById(entregaDoacao.getBeneficiario().getId()).get());
@@ -163,7 +166,7 @@ public class EntregaDoacaoManagerImp implements EntregaDoacaoManager{
 
         List<ItemEntregaDoacao> itensEntrega = entregaDoacao.getItensEntrega();
         for (ItemEntregaDoacao itemAtual: itensEntrega) {
-            itemManager.validaAndMovimentaEstoque(itemAtual.getItem(), -itemAtual.getQuantidade());
+            itemManager.validaAndMovimentaEstoque(itemAtual.getItem(), itemAtual.getQuantidade());
         }
 
     }

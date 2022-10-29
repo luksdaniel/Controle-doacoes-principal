@@ -8,6 +8,7 @@ import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,7 +69,8 @@ public class BeneficiarioManagerImp implements BeneficiarioManager{
         validaCaracteristicas(beneficiario);
 
         pessoaManager.validaCPFeCNPJ(beneficiario);
-        pessoaManager.setaAtributosIniciais(beneficiario);
+        //pessoaManager.setaAtributosIniciais(beneficiario);
+        beneficiario.setDataCadastro(LocalDate.now());
 
         verificaBeneficiarioJaCadastrado(beneficiario.getId());
         return (beneficiarioService.updateBeneficiario(beneficiario));

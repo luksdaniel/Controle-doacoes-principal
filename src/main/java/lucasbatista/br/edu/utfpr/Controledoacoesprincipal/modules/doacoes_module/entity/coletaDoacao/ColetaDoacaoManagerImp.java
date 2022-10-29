@@ -79,6 +79,7 @@ public class ColetaDoacaoManagerImp implements ColetaDoacaoManager{
     @Override
     public ColetaDoacao saveColetaDoacao(ColetaDoacao coletaDoacao) {
         setaAtributosIniciais(coletaDoacao);
+        coletaDoacao.setEstaCancelada(false);
 
         ColetaDoacao coletaDoacaoInterna = coletaDoacaoService.saveColetaDoacao(coletaDoacao);
         if(coletaDoacaoInterna == null){
@@ -149,7 +150,6 @@ public class ColetaDoacaoManagerImp implements ColetaDoacaoManager{
 
     private void setaAtributosIniciais(ColetaDoacao coletaDoacao){
 
-        coletaDoacao.setEstaCancelada(false);
         coletaDoacao.setDataDoacao(LocalDate.now());
         coletaDoacao.setUsuarioRegistro(usuarioManager.findById(coletaDoacao.getUsuarioRegistro().getId()).get());
         coletaDoacao.setDoador(doadorManager.findById(coletaDoacao.getDoador().getId()).get());
