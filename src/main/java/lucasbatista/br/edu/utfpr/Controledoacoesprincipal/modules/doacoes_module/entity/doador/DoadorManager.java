@@ -15,6 +15,8 @@ public interface DoadorManager {
 
     Doador updateDoador(Doador doador);
 
+    Doador cancelDoador(Long id);
+
     void deleteDoador(Long id);
 
 }

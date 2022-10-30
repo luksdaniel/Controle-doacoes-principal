@@ -1,5 +1,6 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.doador;
 
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.BusinessException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.DependencyNotFoundException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceCreateErrorException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceNotFoundException;
@@ -66,6 +67,18 @@ public class DoadorManagerImp implements DoadorManager{
         }else{
             return doadorInterno;
         }
+    }
+
+    @Override
+    public Doador cancelDoador(Long id) {
+        Optional<Doador> doador = findById(id);
+
+        if (doador.get().isEstaCancelado())
+            throw new BusinessException("Doadore já cancelado");
+
+        doador.get().setEstaCancelado(true);
+
+        return doadorService.updateDoador(doador.get());
     }
 
     @Override

@@ -1,6 +1,7 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.controller;
 
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptionHandler.EntityValidateExceptionHandler;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.beneficiario.Beneficiario;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.doador.Doador;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.doador.DoadorManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,13 @@ public class DoadorController extends EntityValidateExceptionHandler {
         Doador doadorInterno = (doadorManager.updateDoador(doador));
         doadorInterno.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(DoadorController.class).findAllDoador()).withRel("Lista de doadores"));
         return new ResponseEntity<Doador>(doadorInterno, HttpStatus.OK);
+    }
+
+    @PutMapping("/cancel/{id}")
+    public ResponseEntity<Doador> cancelDoador(@PathVariable("id") Long id){
+        Doador doador = doadorManager.cancelDoador(id);
+
+        return new ResponseEntity<Doador>(doador, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

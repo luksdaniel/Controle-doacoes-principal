@@ -78,7 +78,8 @@ public class BeneficiarioManagerImp implements BeneficiarioManager{
 
     @Override
     public Beneficiario cancelBeneficiario(Long id) {
-        Optional<Beneficiario> beneficiario = beneficiarioService.findById(id);
+
+        Optional<Beneficiario> beneficiario = findById(id);
 
         if (beneficiario.get().isEstaCancelado())
             throw new BusinessException("Beneficiário já cancelado");
