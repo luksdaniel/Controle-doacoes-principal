@@ -63,13 +63,14 @@ public class ItemEntregaManagerImp implements ItemEntregaManager{
             if(gravadoAndAtualizado){
                 if (itemAtual.getDataInclusao() == null)
                     itemAtual.setDataInclusao(LocalDate.now());
-                itemEntregaService.updateItemEntrega(itemAtual);
 
                 ItemEntregaDoacao itemAntigo = listInternoEntrega.get(listInternoEntrega.indexOf(itemAtual));
                 double diferencaQtd = itemAtual.getQuantidade() - itemAntigo.getQuantidade();
 
+                itemEntregaService.updateItemEntrega(itemAtual);
+
                 if(diferencaQtd != 0)
-                    itemManager.validaAndMovimentaEstoque(itemAtual.getItem(), diferencaQtd);
+                    itemManager.validaAndMovimentaEstoque(itemAtual.getItem(), -diferencaQtd);
 
             }else {
                 saveItenEntrega(itemAtual);

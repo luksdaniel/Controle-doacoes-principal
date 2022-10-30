@@ -4,6 +4,8 @@ import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.Bus
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceCreateErrorException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceNotFoundException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item.ItemManager;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.beneficiario.Beneficiario;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.doador.Doador;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.itemEntregaDoacao.ItemEntregaDoacao;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.beneficiario.BeneficiarioManager;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.itemEntregaDoacao.ItemEntregaManager;
@@ -86,6 +88,8 @@ public class EntregaDoacaoManagerImp implements EntregaDoacaoManager{
         setaAtributosIniciais(entregaDoacao);
         entregaDoacao.setEstaCancelada(false);
 
+        validaDiasEntreDoacao(entregaDoacao);
+
         List<ItemEntregaDoacao> itensEntrega = entregaDoacao.getItensEntrega();
         EntregaDoacao entregaInterna = entregaDoacaoService.saveEntregaDoacao(entregaDoacao);
         if(entregaInterna == null)
@@ -136,6 +140,20 @@ public class EntregaDoacaoManagerImp implements EntregaDoacaoManager{
         entregaDoacaoInterna.get().setUsuarioCancelamento(usuarioCancelamento.get());
 
         return entregaDoacaoService.updateEntregaDoacao(entregaDoacaoInterna.get());
+    }
+
+    private void validaDiasEntreDoacao(EntregaDoacao entregaDoacao){
+
+        Optional<Beneficiario> beneficiario = beneficiarioManager.findById(entregaDoacao.getBeneficiario().getId());
+        EntregaDoacao ultimaEntrega = entregaDoacaoService.retornaUltimaEntregaBeneficiario(beneficiario.get().getId());
+
+        if(ultimaEntrega == null){
+            return;
+        }
+        if(ultimaEntrega.getDataEntrega().plusDays(beneficiario.get().getDiasEntreDoacao()).isAfter(LocalDate.now())){
+            throw new BusinessException("O Beneficiário já recebeu uma doação no dia ("+
+                    ultimaEntrega.getDataEntrega()+") e só pode receber outra após ("+beneficiario.get().getDiasEntreDoacao()+") dias");
+        }
     }
 
     private void setaAtributosIniciais(EntregaDoacao entregaDoacao){

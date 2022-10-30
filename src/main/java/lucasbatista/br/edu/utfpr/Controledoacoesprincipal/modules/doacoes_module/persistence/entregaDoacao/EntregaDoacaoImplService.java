@@ -35,6 +35,11 @@ public class EntregaDoacaoImplService implements EntregaDoacaoService{
     }
 
     @Override
+    public EntregaDoacao retornaUltimaEntregaBeneficiario(long id) {
+        return entregaDoacaoRepository.findByBeneficiarioIdAndAndDataEntrega_Max(id);
+    }
+
+    @Override
     public EntregaDoacao saveEntregaDoacao(EntregaDoacao entregaDoacao) {
         return entregaDoacaoRepository.save(entregaDoacao);
     }

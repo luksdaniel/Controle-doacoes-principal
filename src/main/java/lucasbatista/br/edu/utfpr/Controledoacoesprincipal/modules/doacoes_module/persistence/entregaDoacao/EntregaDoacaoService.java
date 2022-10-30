@@ -15,6 +15,8 @@ public interface EntregaDoacaoService {
 
     List<EntregaDoacao> findByUsuarioRegistroId(Long id);
 
+    EntregaDoacao retornaUltimaEntregaBeneficiario(long id);
+
     EntregaDoacao saveEntregaDoacao(EntregaDoacao entregaDoacao);
 
     EntregaDoacao updateEntregaDoacao(EntregaDoacao entregaDoacao);

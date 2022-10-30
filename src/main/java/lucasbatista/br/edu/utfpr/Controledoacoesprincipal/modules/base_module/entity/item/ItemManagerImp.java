@@ -11,6 +11,8 @@ import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.doador.DoadorManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailAuthenticationException;
+import org.springframework.mail.MailException;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
@@ -111,19 +113,23 @@ public class ItemManagerImp implements ItemManager {
     }
 
     private void enviaAvisoFaltaItem(Item item){
-        if(item.getQuantidadeEstoque() <= item.getQuantidadeMinima()){
-            List<Doador> doadores = doadorManager.retornaDoadoresQueRecebemEmails();
+        try {
+            if (item.getQuantidadeEstoque() <= item.getQuantidadeMinima()) {
+                List<Doador> doadores = doadorManager.retornaDoadoresQueRecebemEmails();
 
-            if(doadores.isEmpty())
-                return;
+                if (doadores.isEmpty())
+                    return;
 
-            for (Doador doadorAtual: doadores){
-                if (!doadorAtual.getEmail().isEmpty()) {
-                    emailService.enviar(doadorAtual.getEmail(),
-                            "Aviso de falta de itens na prefeitura",
-                            "Olá, o seguinte item está em falta nos nossos estoques, precisamos de sua ajuda! Item: " + item.getDescricao());
+                for (Doador doadorAtual : doadores) {
+                    if (!doadorAtual.getEmail().isEmpty()) {
+                        emailService.enviar(doadorAtual.getEmail(),
+                                "Aviso de falta de itens na prefeitura",
+                                "Olá, o seguinte item está em falta nos nossos estoques, precisamos de sua ajuda! Item: " + item.getDescricao());
+                    }
                 }
             }
+        }catch (MailAuthenticationException ex){
+            return;
         }
     }
 
