@@ -5,6 +5,7 @@ import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,7 +37,18 @@ public class EntregaDoacaoImplService implements EntregaDoacaoService{
 
     @Override
     public EntregaDoacao retornaUltimaEntregaBeneficiario(long id) {
-        return entregaDoacaoRepository.findByBeneficiarioIdAndAndDataEntrega_Max(id);
+        List<EntregaDoacao> entregaList = entregaDoacaoRepository.findByBeneficiarioId(id);
+        LocalDate maiorData = LocalDate.of(1970, 1, 1);
+        EntregaDoacao entregaRetorno = new EntregaDoacao();
+
+        for (EntregaDoacao entregaAtual: entregaList){
+            if(maiorData.isAfter(entregaAtual.getDataEntrega())){
+                maiorData = entregaAtual.getDataEntrega();
+                entregaRetorno = entregaAtual;
+            }
+        }
+
+        return entregaRetorno;
     }
 
     @Override
