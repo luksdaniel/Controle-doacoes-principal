@@ -8,6 +8,7 @@ import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;

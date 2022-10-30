@@ -13,12 +13,14 @@ import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_modul
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Component
+@Transactional
 public class EntregaDoacaoManagerImp implements EntregaDoacaoManager{
 
     @Autowired

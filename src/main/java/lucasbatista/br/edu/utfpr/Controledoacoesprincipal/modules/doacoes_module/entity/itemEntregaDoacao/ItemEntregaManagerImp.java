@@ -68,7 +68,8 @@ public class ItemEntregaManagerImp implements ItemEntregaManager{
                 ItemEntregaDoacao itemAntigo = listInternoEntrega.get(listInternoEntrega.indexOf(itemAtual));
                 double diferencaQtd = itemAtual.getQuantidade() - itemAntigo.getQuantidade();
 
-                itemManager.validaAndMovimentaEstoque(itemAtual.getItem(), diferencaQtd);
+                if(diferencaQtd != 0)
+                    itemManager.validaAndMovimentaEstoque(itemAtual.getItem(), diferencaQtd);
 
             }else {
                 saveItenEntrega(itemAtual);
