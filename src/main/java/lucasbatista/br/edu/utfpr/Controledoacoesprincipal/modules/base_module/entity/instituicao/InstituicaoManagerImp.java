@@ -27,22 +27,23 @@ public class InstituicaoManagerImp implements InstituicaoManager{
     EnderecoManager enderecoManager;
 
     @Override
-    public List<Instituicao> findAllInstituicao() {
-        List<Instituicao> instituicaoList = instituicaoService.findAllInstituicao();
-        if(instituicaoList.isEmpty()){
-            throw new ResourceNotFoundException("Instiuições não encontradas");
-        }else {
-            return instituicaoList;
-        }
-    }
-
-    @Override
     public Optional<Instituicao> findById(Long id) {
         Optional<Instituicao> instituicao = instituicaoService.findById(id);
         if (instituicao.isEmpty()){
             throw new ResourceNotFoundException("Instituição não encontrada");
         }else {
             return instituicao;
+        }
+    }
+
+    @Override
+    public Optional<Instituicao> find() {
+        List<Instituicao> instituicao = instituicaoService.findAllInstituicao();
+
+        if (instituicao.isEmpty()){
+            throw new ResourceNotFoundException("Instituição não encontrada");
+        }else {
+            return Optional.ofNullable(instituicao.get(0));
         }
     }
 

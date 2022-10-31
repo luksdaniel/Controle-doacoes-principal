@@ -7,7 +7,8 @@ import java.util.Optional;
 
 public interface InstituicaoManager {
 
-    List<Instituicao> findAllInstituicao();
+    //Instituicao findAllInstituicao();
+    Optional<Instituicao> find();
     Optional<Instituicao> findById(Long id);
     Instituicao saveInstituicao(Instituicao instituicao);
     Instituicao updateInstituicao(Instituicao instituicao);
