@@ -27,7 +27,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "usuario", uniqueConstraints = {
-        @UniqueConstraint(name = "ukUsuario", columnNames = {"username"})
+        @UniqueConstraint(name = "ukUsuario", columnNames = {"username"}),
+        @UniqueConstraint(name = "UkUsuarioDoador", columnNames = {"doador_id"})
 })
 public class Usuario extends RepresentationModel<Usuario> implements Serializable, UserDetails {
 
@@ -65,6 +66,7 @@ public class Usuario extends RepresentationModel<Usuario> implements Serializabl
     private Instituicao instituicao;
 
     @OneToOne
+    @JoinColumn(name = "doador_id",referencedColumnName = "id")
     private Doador doador;
 
     @Override

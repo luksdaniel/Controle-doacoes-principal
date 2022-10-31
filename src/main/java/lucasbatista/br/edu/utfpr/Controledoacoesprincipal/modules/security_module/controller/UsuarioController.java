@@ -1,6 +1,7 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.controller;
 
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptionHandler.EntityValidateExceptionHandler;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.dto.PasswordDto;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.entity.usuario.Usuario;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.entity.usuario.UsuarioManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,10 +71,24 @@ public class UsuarioController extends EntityValidateExceptionHandler {
 
     }
 
-    @PutMapping
-    public ResponseEntity<Usuario> updateUsuario(@RequestBody @Valid Usuario usuario){
+    /*@PutMapping
+    public ResponseEntity<Usuario> updateUsuario(@RequestBody Usuario usuario){
         Usuario usuarioInterno = (usuarioManager.updateUsuario(usuario));
         usuarioInterno.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class).findAllUsuario()).withRel("Lista de itens"));
+        return new ResponseEntity<Usuario>(usuarioInterno, HttpStatus.OK);
+    }*/
+
+    @PutMapping("/username/{id}")
+    public ResponseEntity<Usuario> updateUsername(@RequestBody String username, @PathVariable("id") Long id){
+        Usuario usuarioInterno = (usuarioManager.updateUsername(username, id));
+
+        return new ResponseEntity<Usuario>(usuarioInterno, HttpStatus.OK);
+    }
+
+    @PutMapping("/password/{id}")
+    public ResponseEntity<Usuario> updatePassword(@RequestBody PasswordDto passwordDto, @PathVariable("id") Long id){
+        Usuario usuarioInterno = (usuarioManager.updatePassword(passwordDto, id));
+
         return new ResponseEntity<Usuario>(usuarioInterno, HttpStatus.OK);
     }
 

@@ -4,6 +4,7 @@ import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.Bus
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceCreateErrorException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceNotFoundException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.instituicao.InstituicaoManager;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.dto.PasswordDto;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.persistence.usuario.UsuarioService;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.doador.DoadorManager;
 import net.bytebuddy.implementation.bytecode.Throw;
@@ -88,17 +89,45 @@ public class UsuarioManagerImp implements UsuarioManager{
     }
 
     @Override
+    public Usuario updateUsername(String newUsername, long id) {
+        Optional<Usuario> usuarioOptional = findById(id);
+
+        usuarioOptional.get().setUsername(newUsername);
+        validaUsuarioLoginDuplicado(usuarioOptional.get());
+
+        return usuarioService.updateUsuario(usuarioOptional.get());
+    }
+
+    @Override
+    public Usuario updatePassword(PasswordDto passwordDto, long id) {
+        Optional<Usuario> usuarioOptional = findById(id);
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(passwordDto.getPassword());
+
+        if (!passwordDto.getPassword().equals(passwordDto.getConfirmPassword()))
+            throw new BusinessException("As novas senhas não coincidem");
+
+        if (passwordDto.getPassword().equals(encodedPassword))
+            throw new BusinessException("A nova senha é igual à antiga!");
+
+        usuarioOptional.get().setPassword(encodedPassword);
+
+        return usuarioService.updateUsuario(usuarioOptional.get());
+    }
+
+    /*@Override
     public Usuario updateUsuario(Usuario usuario) {
 /*
         if(usuario.getInstituicao() == null && usuario.getDoador() != null)
             usuario.setDoador(doadorManager.saveDoador(usuario.getDoador()));
-*/
+
         validaUsuarioLoginDuplicado(usuario);
 
         setaAtributosIniciais(usuario);
         verificaUsuarioJaCadastrado(usuario.getId());
         return usuarioService.updateUsuario(usuario);
-    }
+    }*/
 
     @Override
     public void deleteUsuario(Long id) {
@@ -114,7 +143,7 @@ public class UsuarioManagerImp implements UsuarioManager{
     private void setaAtributosIniciais(Usuario usuario){
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(usuario.getPassword());
+        String encodedPassword = passwordEncoder.encode(usuario. getPassword());
         usuario.setPassword(encodedPassword);
 
         usuario.setCancelado(false);
