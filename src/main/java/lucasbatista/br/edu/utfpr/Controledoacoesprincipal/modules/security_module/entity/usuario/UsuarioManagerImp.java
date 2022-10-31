@@ -108,7 +108,7 @@ public class UsuarioManagerImp implements UsuarioManager{
         if (!passwordDto.getPassword().equals(passwordDto.getConfirmPassword()))
             throw new BusinessException("As novas senhas não coincidem");
 
-        if (passwordDto.getPassword().equals(encodedPassword))
+        if (usuarioOptional.get().getPassword().equals(encodedPassword))
             throw new BusinessException("A nova senha é igual à antiga!");
 
         usuarioOptional.get().setPassword(encodedPassword);
