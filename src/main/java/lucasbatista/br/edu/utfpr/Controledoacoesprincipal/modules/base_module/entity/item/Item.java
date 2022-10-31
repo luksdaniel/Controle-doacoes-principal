@@ -60,6 +60,10 @@ public class Item extends RepresentationModel<Item> implements Serializable {
     @Column(name = "data_cadastro", nullable = false)
     private LocalDate dataCadastro;
 
+    @JsonIgnore
+    @Column(name = "ultimo_envio_email")
+    private LocalDate ultimoEnvioEmail;
+
     @NotNull(message = "É obrigatório informar o tipo do item")
     @Column(name = "tipo_item", nullable = false)
     @Enumerated(EnumType.STRING)

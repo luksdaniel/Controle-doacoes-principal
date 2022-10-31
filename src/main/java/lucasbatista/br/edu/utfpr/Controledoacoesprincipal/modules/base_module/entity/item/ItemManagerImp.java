@@ -107,30 +107,9 @@ public class ItemManagerImp implements ItemManager {
         else
             item.setQuantidadeEstoque(item.getQuantidadeEstoque() + quantidade);
 
-        enviaAvisoFaltaItem(item);
+        //enviaAvisoFaltaItem(item);
         updateItem(item);
 
-    }
-
-    private void enviaAvisoFaltaItem(Item item){
-        try {
-            if (item.getQuantidadeEstoque() <= item.getQuantidadeMinima()) {
-                List<Doador> doadores = doadorManager.retornaDoadoresQueRecebemEmails();
-
-                if (doadores.isEmpty())
-                    return;
-
-                for (Doador doadorAtual : doadores) {
-                    if (!doadorAtual.getEmail().isEmpty()) {
-                        emailService.enviar(doadorAtual.getEmail(),
-                                "Aviso de falta de itens na prefeitura",
-                                "Olá, o seguinte item está em falta nos nossos estoques, precisamos de sua ajuda! Item: " + item.getDescricao());
-                    }
-                }
-            }
-        }catch (MailAuthenticationException ex){
-            return;
-        }
     }
 
     private void validaUnidadeMedidaExistente(Item item){
