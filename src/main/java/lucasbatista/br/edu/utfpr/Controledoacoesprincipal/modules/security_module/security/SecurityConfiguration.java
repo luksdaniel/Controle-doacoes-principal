@@ -43,6 +43,7 @@ public class SecurityConfiguration {
                                 .antMatchers(HttpMethod.POST,"/login").permitAll()
                                 .antMatchers(HttpMethod.POST, "/doador").permitAll()
                                 .antMatchers(HttpMethod.POST, "/usuario").permitAll()
+                                //.antMatchers(HttpMethod.GET, "/item").hasRole("ROLE_DOADOR")
                                 .anyRequest().authenticated()
                                 .and()
                                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

@@ -1,5 +1,6 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.entity.usuario;
 
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.Enumerators.Role;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.BusinessException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceCreateErrorException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceNotFoundException;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,8 +76,10 @@ public class UsuarioManagerImp implements UsuarioManager{
 
         if(usuario.getInstituicao() != null && usuario.getDoador() == null)
             usuario.setInstituicao(instituicaoManager.findById(usuario.getInstituicao().getId()).get());
-        else if(usuario.getInstituicao() == null && usuario.getDoador() != null)
+        else if(usuario.getInstituicao() == null && usuario.getDoador() != null) {
             usuario.setDoador(doadorManager.findById(usuario.getDoador().getId()).get());
+            usuario.setRole(Collections.singleton(Role.ROLE_DOADOR));
+        }
             //usuario.setDoador(doadorManager.saveDoador(usuario.getDoador()));
 
         validaUsuarioLoginDuplicado(usuario);
