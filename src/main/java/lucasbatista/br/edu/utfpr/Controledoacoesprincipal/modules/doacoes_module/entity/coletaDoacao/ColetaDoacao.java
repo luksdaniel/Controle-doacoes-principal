@@ -61,7 +61,7 @@ public class ColetaDoacao extends RepresentationModel<ColetaDoacao> {
     private Usuario usuarioRegistro;
 
     @NotNull(message = "É obrigatório informar ao menos um item na coleta")
-    @OneToMany(mappedBy = "coletaDoacao")
+    @OneToMany(mappedBy = "coletaDoacao", fetch = FetchType.EAGER)
     private List<ItemColetaDoacao> itensColeta;
 
     @NotNull(message = "É obrigatório informar o doador para a coleta")

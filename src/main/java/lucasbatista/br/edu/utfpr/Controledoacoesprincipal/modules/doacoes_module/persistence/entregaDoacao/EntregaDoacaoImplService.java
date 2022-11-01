@@ -36,6 +36,11 @@ public class EntregaDoacaoImplService implements EntregaDoacaoService{
     }
 
     @Override
+    public List<EntregaDoacao> findByDataBetween(LocalDate dataInicio, LocalDate dataFim) {
+        return entregaDoacaoRepository.findByDataEntregaBetween(dataInicio, dataFim);
+    }
+
+    @Override
     public EntregaDoacao retornaUltimaEntregaBeneficiario(long id) {
         List<EntregaDoacao> entregaList = entregaDoacaoRepository.findByBeneficiarioId(id);
         LocalDate maiorData = LocalDate.of(1970, 1, 1);

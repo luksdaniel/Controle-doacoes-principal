@@ -9,7 +9,7 @@ public interface ColetaDoacaoManager {
 
     List<ColetaDoacao> findByIdDoador(Long id);
 
-    List<ColetaDoacao> findByIdUsuarioRegistro(Long id);
+    List<ColetaDoacao> findByIdUsuarioRegistro(String username);
 
     Optional<ColetaDoacao> findById(Long id);
 

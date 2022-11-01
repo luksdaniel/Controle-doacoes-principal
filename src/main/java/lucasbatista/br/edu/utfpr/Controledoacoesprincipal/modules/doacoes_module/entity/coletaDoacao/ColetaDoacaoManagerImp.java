@@ -1,5 +1,6 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.coletaDoacao;
 
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.Enumerators.Role;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.BusinessException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceCreateErrorException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceNotFoundException;
@@ -56,8 +57,9 @@ public class ColetaDoacaoManagerImp implements ColetaDoacaoManager{
     }
 
     @Override
-    public List<ColetaDoacao> findByIdUsuarioRegistro(Long id) {
-        List<ColetaDoacao> coletaList = coletaDoacaoService.findByIdUsuarioRegistro(id);
+    public List<ColetaDoacao> findByIdUsuarioRegistro(String username) {
+        Optional<Usuario> usuario = usuarioManager.findByUserName(username);
+        List<ColetaDoacao> coletaList = coletaDoacaoService.findByIdUsuarioRegistro(usuario.get().getId());
 
         if (coletaList.isEmpty()){
             throw new ResourceNotFoundException("Coletas não encontradas");
@@ -117,6 +119,16 @@ public class ColetaDoacaoManagerImp implements ColetaDoacaoManager{
 
         if (coletaDoacaoInterna.get().isEstaCancelada())
             throw new BusinessException("A coleta de doação já está cancelada");
+
+        if(usuarioCancelamento.get().haveRole(Role.ROLE_DOADOR)
+                && !usuarioCancelamento.get().getDoador().equals(coletaDoacaoInterna.get().getDoador())){
+            throw new BusinessException("Doadores só podem cancelar suas próprias coletas!");
+        }
+
+        if(usuarioCancelamento.get().haveRole(Role.ROLE_DOADOR)
+                && coletaDoacaoInterna.get().isEstaEfetivada()){
+            throw new BusinessException("Coleta já efetivada, não pode ser cancelada pelo doador!");
+        }
 
         movimentaEstoqueSeJaEfetivada(coletaDoacaoInterna.get());
 

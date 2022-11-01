@@ -58,7 +58,7 @@ public class EntregaDoacao extends RepresentationModel<EntregaDoacao> implements
     private Usuario usuarioRegistro;
 
     @NotNull(message = "É obrigatório informar os itens da entrega")
-    @OneToMany(mappedBy = "entregaDoacao")
+    @OneToMany(mappedBy = "entregaDoacao", fetch = FetchType.EAGER)
     private List<ItemEntregaDoacao> itensEntrega;
 
     @NotNull(message = "É obrigatório informar o beneficiário da entrega")

@@ -48,9 +48,9 @@ public class ColetaDoacaoController extends EntityValidateExceptionHandler {
         return new ResponseEntity<>(coletaDoacao, HttpStatus.OK);
     }
 
-    @GetMapping("usuario-registro/{id}")
-    public ResponseEntity<List<ColetaDoacao>> findColetaByIdusuarioRegistro(@PathVariable("id") Long id){
-        List<ColetaDoacao> coletaDoacao = coletaDoacaoManager.findByIdUsuarioRegistro(id);
+    @GetMapping("usuario-registro/username/{username}")
+    public ResponseEntity<List<ColetaDoacao>> findColetaByIdusuarioRegistro(@PathVariable("username") String username){
+        List<ColetaDoacao> coletaDoacao = coletaDoacaoManager.findByIdUsuarioRegistro(username);
 
         //coletaDoacao.get().removeLinks();
         //coletaDoacao.get().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ColetaDoacaoController.class).findAllColetaDoacao()).withRel("Lista de Coletas"));

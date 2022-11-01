@@ -2,6 +2,7 @@ package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_modul
 
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.coletaDoacao.ColetaDoacao;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +13,8 @@ public interface ColetaDoacaoService {
     List<ColetaDoacao> findByIdDoador(long id);
 
     List<ColetaDoacao> findByIdUsuarioRegistro(long id);
+
+    List<ColetaDoacao> findByDataBetween(LocalDate dataInicio, LocalDate dataFim);
 
     Optional<ColetaDoacao> findById(Long id);
 

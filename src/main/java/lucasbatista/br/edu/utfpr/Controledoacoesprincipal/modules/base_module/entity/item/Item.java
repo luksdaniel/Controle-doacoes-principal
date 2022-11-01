@@ -75,10 +75,10 @@ public class Item extends RepresentationModel<Item> implements Serializable {
     private UnidadeMedida unidadeMedida;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "item")
+    @OneToMany(mappedBy = "item", fetch = FetchType.EAGER)
     private Set<ItemColetaDoacao> coletasDoacao = new HashSet<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "item")
+    @OneToMany(mappedBy = "item", fetch = FetchType.EAGER)
     private Set<ItemEntregaDoacao> entregasDoacao = new HashSet<>();
 }

@@ -1,7 +1,7 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal;
 
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.emailSender.EmailService;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.initializeResource.InictializeResource;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.persistence.dadosRelatorio.DadosRelatorioServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

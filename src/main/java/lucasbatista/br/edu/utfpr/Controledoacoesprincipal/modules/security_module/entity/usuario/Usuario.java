@@ -1,5 +1,8 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.entity.usuario;
 
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.*;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.Enumerators.Role;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.instituicao.Instituicao;
@@ -59,6 +62,7 @@ public class Usuario extends RepresentationModel<Usuario> implements Serializabl
     @Column
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.EAGER)
+    @JsonDeserialize
     private Set<Role> role = new HashSet<>();
 
     @ManyToOne
@@ -70,6 +74,7 @@ public class Usuario extends RepresentationModel<Usuario> implements Serializabl
     private Doador doador;
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
         for (var r : this.role){
@@ -77,6 +82,14 @@ public class Usuario extends RepresentationModel<Usuario> implements Serializabl
             authorities.add(sga);
         }
         return authorities;
+    }
+
+    public boolean haveRole(Role role){
+        for (Role roleAtual: this.getRole()){
+            if (roleAtual.equals(role))
+                return true;
+        }
+        return false;
     }
 
     @Override
