@@ -28,9 +28,9 @@ public class Instituicao extends Pessoa implements Serializable {
     @Column(name = "horario_funcionamento", nullable = false)
     private String horarioFuncionamento;
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
-    @NotNull(message = "É obrigatório informar a data de implatação")
-    @Column(name = "data_implantacao", nullable = false)
+    //@JsonFormat(pattern = "dd/MM/yyyy")
+    //@NotNull(message = "É obrigatório informar a data de implatação")
+    @Column(name = "data_implantacao"/*, nullable = false*/)
     private LocalDate dataImplantacao;
 
     @NotNull(message = "É obrigatório informar os dias entre doação")
