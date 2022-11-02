@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 
-public class ColetaEntregaDto {
+public class ColetaEntregaDto implements Comparable<ColetaEntregaDto> {
 
     private LocalDate data;
 
@@ -23,4 +23,13 @@ public class ColetaEntregaDto {
 
     private double quantidadeMovimentada;
 
+    @Override
+    public int compareTo(ColetaEntregaDto o) {
+        if (this.getData().isBefore(o.getData()))
+            return -1;
+        if (this.getData().isAfter(o.getData()))
+            return 1;
+
+        return 0;
+    }
 }
