@@ -12,6 +12,8 @@ public interface ItemColetaService {
 
     List<ItemColetaDoacao> findByColetaId(long id);
 
+    List<ItemColetaDoacao> findByItemId(long id);
+
     Optional<ItemColetaDoacao> findById(Long id);
 
     ItemColetaDoacao saveItenColeta(ItemColetaDoacao item);

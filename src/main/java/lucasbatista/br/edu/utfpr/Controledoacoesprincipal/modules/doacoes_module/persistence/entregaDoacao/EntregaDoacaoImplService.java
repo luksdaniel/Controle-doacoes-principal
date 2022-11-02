@@ -46,6 +46,9 @@ public class EntregaDoacaoImplService implements EntregaDoacaoService{
         LocalDate maiorData = LocalDate.of(1970, 1, 1);
         EntregaDoacao entregaRetorno = new EntregaDoacao();
 
+        if(entregaList.isEmpty())
+            return null;
+
         for (EntregaDoacao entregaAtual: entregaList){
             if(maiorData.isAfter(entregaAtual.getDataEntrega())){
                 maiorData = entregaAtual.getDataEntrega();

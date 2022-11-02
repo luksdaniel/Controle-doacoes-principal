@@ -24,6 +24,11 @@ public class ItemColetaServiceImp implements ItemColetaService{
     }
 
     @Override
+    public List<ItemColetaDoacao> findByItemId(long id) {
+        return itemColetaRepository.findByItemId(id);
+    }
+
+    @Override
     public Optional<ItemColetaDoacao> findById(Long id) {
         return itemColetaRepository.findById(id);
     }

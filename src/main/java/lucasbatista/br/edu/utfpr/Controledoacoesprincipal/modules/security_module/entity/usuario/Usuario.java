@@ -25,7 +25,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+//@ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 
 @Entity

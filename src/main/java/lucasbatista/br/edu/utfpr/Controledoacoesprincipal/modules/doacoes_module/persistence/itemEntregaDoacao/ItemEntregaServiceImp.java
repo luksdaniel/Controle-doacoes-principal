@@ -27,6 +27,11 @@ public class ItemEntregaServiceImp implements ItemEntregaService{
     }
 
     @Override
+    public List<ItemEntregaDoacao> findByItemId(Long id) {
+        return itemEntregaRepository.findByItemId(id);
+    }
+
+    @Override
     public ItemEntregaDoacao saveItemEntrega(ItemEntregaDoacao item) {
         return itemEntregaRepository.save(item);
     }

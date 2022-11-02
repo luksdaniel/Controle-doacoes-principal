@@ -1,8 +1,11 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.persistence.dadosRelatorio;
 
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceNotFoundException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.dto.ColetaEntregaDto;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.dto.MovItemDto;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.ajusteManualEstoque.AjusteManualEstoque;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item.Item;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.persistence.ajusteManualEstoque.AjusteManualEstService;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.persistence.item.ItemService;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.coletaDoacao.ColetaDoacao;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.entregaDoacao.EntregaDoacao;
@@ -10,6 +13,8 @@ import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.itemEntregaDoacao.ItemEntregaDoacao;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.persistence.coletaDoacao.ColetaDoacaoService;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.persistence.entregaDoacao.EntregaDoacaoService;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.persistence.itemColetaDoacao.ItemColetaService;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.persistence.itemEntregaDoacao.ItemEntregaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,16 +33,64 @@ public class DadosRelatorioServiceImp implements DadosRelatorioService{
     @Autowired
     ColetaDoacaoService coletaDoacaoService;
 
-    public List<MovItemDto> findAllMovimentacoes(){
+    @Autowired
+    ItemColetaService itemColetaService;
+
+    @Autowired
+    ItemEntregaService itemEntregaService;
+
+    @Autowired
+    AjusteManualEstService ajusteManualService;
+
+    @Override
+    public List<MovItemDto> findAllMovimentacoes(long itemId){
 
         List<MovItemDto> movimentacoes = new ArrayList<>();
-        List<Item> itens = itemService.findAllItem();
+        List<ItemColetaDoacao> itensColeta = itemColetaService.findByItemId(itemId);
+        List<ColetaDoacao> coletaList = new ArrayList<>();
 
-        for (Item item: itens){
+        List<ItemEntregaDoacao> itensEntrega = itemEntregaService.findByItemId(itemId);
+        List<EntregaDoacao> entregaLista = new ArrayList<>();
 
+        List<AjusteManualEstoque> ajustesList = ajusteManualService.findByItemId(itemId);
+
+        if(ajustesList.isEmpty() && itensColeta.isEmpty() && itensEntrega.isEmpty())
+            throw new ResourceNotFoundException("Não foram encontradas movimentações para o item!");
+
+        for (ItemColetaDoacao item: itensColeta){
+            if(!coletaList.contains(item.getColetaDoacao()) && item.getColetaDoacao().isEstaEfetivada()){
+                coletaList.add(item.getColetaDoacao());
+                MovItemDto mov = new MovItemDto();
+                mov.setDataMovimentacao(item.getColetaDoacao().getDataEfetivacao());
+                mov.setDescricaoItem(item.getItem().getDescricao());
+                mov.setTipoDocumento("Coleta de doação");
+                mov.setQuantidadeMovimentada(item.getQuantidade());
+                movimentacoes.add(mov);
+            }
         }
 
-        return null;
+        for (ItemEntregaDoacao item: itensEntrega){
+            if(!entregaLista.contains(item.getEntregaDoacao())){
+                entregaLista.add(item.getEntregaDoacao());
+                MovItemDto mov = new MovItemDto();
+                mov.setDataMovimentacao(item.getEntregaDoacao().getDataEntrega());
+                mov.setDescricaoItem(item.getItem().getDescricao());
+                mov.setTipoDocumento("Entrega de doação");
+                mov.setQuantidadeMovimentada(-item.getQuantidade());
+                movimentacoes.add(mov);
+            }
+        }
+
+        for (AjusteManualEstoque ajuste: ajustesList){
+            MovItemDto mov = new MovItemDto();
+            mov.setDataMovimentacao(ajuste.getDataAjuste());
+            mov.setDescricaoItem(ajuste.getItem().getDescricao());
+            mov.setTipoDocumento("Ajuste Manual de estoque");
+            mov.setQuantidadeMovimentada(ajuste.getQuantidadeMovimentada());
+            movimentacoes.add(mov);
+        }
+
+        return movimentacoes;
     }
 
     @Override

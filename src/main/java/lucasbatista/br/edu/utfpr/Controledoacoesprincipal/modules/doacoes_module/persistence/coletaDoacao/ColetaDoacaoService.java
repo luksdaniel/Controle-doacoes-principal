@@ -1,6 +1,7 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.persistence.coletaDoacao;
 
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.coletaDoacao.ColetaDoacao;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.itemColetaDoacao.ItemColetaDoacao;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,6 +16,8 @@ public interface ColetaDoacaoService {
     List<ColetaDoacao> findByIdUsuarioRegistro(long id);
 
     List<ColetaDoacao> findByDataBetween(LocalDate dataInicio, LocalDate dataFim);
+
+    //List<ColetaDoacao> findByItemColeta(List<ItemColetaDoacao> inteColeta);
 
     Optional<ColetaDoacao> findById(Long id);
 

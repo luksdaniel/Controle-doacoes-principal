@@ -1,6 +1,7 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.persistence.coletaDoacao;
 
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.coletaDoacao.ColetaDoacao;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.itemColetaDoacao.ItemColetaDoacao;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.repository.ColetaDoacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,11 @@ public class ColetaDoacaoImplService implements ColetaDoacaoService{
         return coletaDoacaoRepository.findByDataEfetivacaoBetween(dataInicio, dataFim);
     }
 
+   /* @Override
+    public List<ColetaDoacao> findByItemColeta(List<ItemColetaDoacao> itemColetaDoacao) {
+        return coletaDoacaoRepository.findByItensColeta(itemColetaDoacao);
+    }
+*/
     @Override
     public Optional<ColetaDoacao> findById(Long id) {
         return coletaDoacaoRepository.findById(id);

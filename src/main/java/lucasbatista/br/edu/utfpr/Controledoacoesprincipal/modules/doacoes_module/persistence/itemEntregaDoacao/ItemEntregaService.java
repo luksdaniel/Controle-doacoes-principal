@@ -11,6 +11,8 @@ public interface ItemEntregaService {
 
     Optional<ItemEntregaDoacao> findById(Long id);
 
+    List<ItemEntregaDoacao> findByItemId(Long id);
+
     ItemEntregaDoacao saveItemEntrega(ItemEntregaDoacao item);
 
     List<ItemEntregaDoacao> saveAllItemEntrega(List<ItemEntregaDoacao> itemEntregaList);

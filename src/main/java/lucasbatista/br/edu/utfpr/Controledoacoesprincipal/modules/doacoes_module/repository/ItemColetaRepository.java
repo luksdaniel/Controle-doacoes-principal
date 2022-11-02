@@ -12,4 +12,6 @@ public interface ItemColetaRepository extends JpaRepository<ItemColetaDoacao, Lo
 
     List<ItemColetaDoacao> findByColetaDoacaoId(long id);
 
+    List<ItemColetaDoacao> findByItemId(long id);
+
 }
