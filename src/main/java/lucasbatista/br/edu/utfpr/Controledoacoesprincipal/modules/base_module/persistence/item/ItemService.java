@@ -8,6 +8,8 @@ import java.util.Optional;
 public interface ItemService {
 
     List<Item> findAllItem();
+
+    List<Item> findAllActiveItem();
     Optional<Item> findById(Long id);
     Item saveItem(Item item);
     Item updateItem(Item item);

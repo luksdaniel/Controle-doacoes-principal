@@ -15,5 +15,7 @@ public interface EntregaDoacaoRepository extends JpaRepository<EntregaDoacao, Lo
 
     List<EntregaDoacao> findByUsuarioRegistroId(long id);
 
+    List<EntregaDoacao> findByUsuarioRegistroIdOrderByDataEntregaDesc(long id);
+
     List<EntregaDoacao> findByDataEntregaBetween(LocalDate dataInicio, LocalDate dataFim);
 }

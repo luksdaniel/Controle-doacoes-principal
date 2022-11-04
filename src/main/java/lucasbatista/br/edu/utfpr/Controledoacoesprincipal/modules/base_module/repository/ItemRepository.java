@@ -10,8 +10,7 @@ import java.util.List;
 
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Long> {
-/*
-    @Query("select e.dataEntrega from EntregaDoacao as e, ColetaDoacao as coleta")
-    List<ColetaEntregaDto> retornaRelatorioColetasEntregas();
-*/
+
+    List<Item> findByEstaCanceladoFalse();
+
 }

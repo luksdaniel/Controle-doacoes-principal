@@ -22,11 +22,7 @@ public class ItemController extends EntityValidateExceptionHandler {
     @GetMapping
     public ResponseEntity<List<Item>> findAllItem() {
         List<Item> itemList = managerItem.findAllItem();
-        for(Item item : itemList){
-            item.removeLinks();
-            long id = item.getId();
-            item.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ItemController.class).findItemById((Long) id)).withSelfRel());
-        }
+
         return new ResponseEntity<>(itemList, HttpStatus.OK);
     }
 
@@ -34,29 +30,33 @@ public class ItemController extends EntityValidateExceptionHandler {
     public ResponseEntity<Item> findItemById(@PathVariable("id") Long id){
         Optional<Item> item = managerItem.findById(id);
 
-        item.get().removeLinks();
-        item.get().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ItemController.class).findAllItem()).withRel("Lista de Items"));
         return new ResponseEntity<Item>(item.get(), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<Item> saveItem(@RequestBody @Valid Item item){
         Item itemInterno = managerItem.saveItem(item);
-        itemInterno.removeLinks();
-        itemInterno.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ItemController.class).findAllItem()).withRel("Lista de Items"));
+
         return new ResponseEntity<Item>(itemInterno, HttpStatus.CREATED);
     }
 
     @PutMapping
     public ResponseEntity<Item> updateItem(@RequestBody @Valid Item item){
         Item itemInterno = (managerItem.updateItem(item));
-        itemInterno.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ItemController.class).findAllItem()).withRel("Lista de itens"));
+
         return new ResponseEntity<Item>(itemInterno, HttpStatus.OK);
     }
 
     @PutMapping("/cancel/{id}")
     public ResponseEntity<Item> cancelItem(@PathVariable("id") Long id){
         Item item = managerItem.cancelItem(id);
+
+        return new ResponseEntity<Item>(item, HttpStatus.OK);
+    }
+
+    @PutMapping("/uncancel/{id}")
+    public ResponseEntity<Item> uncancelItem(@PathVariable("id") Long id){
+        Item item = managerItem.uncanceItem(id);
 
         return new ResponseEntity<Item>(item, HttpStatus.OK);
     }

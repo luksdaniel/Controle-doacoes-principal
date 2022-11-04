@@ -64,6 +64,13 @@ public class DoadorController extends EntityValidateExceptionHandler {
         return new ResponseEntity<Doador>(doador, HttpStatus.OK);
     }
 
+    @PutMapping("/uncancel/{id}")
+    public ResponseEntity<Doador> uncancelDoador(@PathVariable("id") Long id){
+        Doador doador = doadorManager.uncancelDoador(id);
+
+        return new ResponseEntity<Doador>(doador, HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<List<Doador>> deleteDoador(@PathVariable("id") Long id){
         doadorManager.deleteDoador(id);

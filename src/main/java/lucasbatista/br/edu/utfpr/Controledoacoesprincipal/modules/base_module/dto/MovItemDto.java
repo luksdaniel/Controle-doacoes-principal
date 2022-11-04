@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 
-public class MovItemDto implements Serializable {
+public class MovItemDto implements Serializable, Comparable<MovItemDto>{
 
     private LocalDate dataMovimentacao;
 
@@ -22,4 +22,13 @@ public class MovItemDto implements Serializable {
 
     private String tipoDocumento;
 
+    @Override
+    public int compareTo(MovItemDto o) {
+        if (this.getDataMovimentacao().isBefore(o.getDataMovimentacao()))
+            return -1;
+        if (this.getDataMovimentacao().isAfter(o.getDataMovimentacao()))
+            return 1;
+
+        return 0;
+    }
 }

@@ -91,6 +91,7 @@ public class DadosRelatorioServiceImp implements DadosRelatorioService{
             movimentacoes.add(mov);
         }
 
+        Collections.sort(movimentacoes);
         return movimentacoes;
     }
 

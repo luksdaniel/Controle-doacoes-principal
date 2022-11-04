@@ -20,6 +20,11 @@ public class ItemImplService implements ItemService {
     }
 
     @Override
+    public List<Item> findAllActiveItem() {
+        return itemRepository.findByEstaCanceladoFalse();
+    }
+
+    @Override
     public Optional<Item> findById(Long id) {
         return itemRepository.findById(id);
     }

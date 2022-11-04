@@ -42,19 +42,13 @@ public class EntregaDoacaoImplService implements EntregaDoacaoService{
 
     @Override
     public EntregaDoacao retornaUltimaEntregaBeneficiario(long id) {
-        List<EntregaDoacao> entregaList = entregaDoacaoRepository.findByBeneficiarioId(id);
-        LocalDate maiorData = LocalDate.of(1970, 1, 1);
+        List<EntregaDoacao> entregaList = entregaDoacaoRepository.findByUsuarioRegistroIdOrderByDataEntregaDesc(id);
         EntregaDoacao entregaRetorno = new EntregaDoacao();
 
         if(entregaList.isEmpty())
             return null;
 
-        for (EntregaDoacao entregaAtual: entregaList){
-            if(maiorData.isAfter(entregaAtual.getDataEntrega())){
-                maiorData = entregaAtual.getDataEntrega();
-                entregaRetorno = entregaAtual;
-            }
-        }
+        entregaRetorno = entregaList.get(0);
 
         return entregaRetorno;
     }

@@ -76,9 +76,21 @@ public class DoadorManagerImp implements DoadorManager{
         Optional<Doador> doador = findById(id);
 
         if (doador.get().isEstaCancelado())
-            throw new BusinessException("Doadore já cancelado");
+            throw new BusinessException("Doador já cancelado");
 
         doador.get().setEstaCancelado(true);
+
+        return doadorService.updateDoador(doador.get());
+    }
+
+    @Override
+    public Doador uncancelDoador(Long id) {
+        Optional<Doador> doador = findById(id);
+
+        if (!doador.get().isEstaCancelado())
+            throw new BusinessException("Doador não está cancelado");
+
+        doador.get().setEstaCancelado(false);
 
         return doadorService.updateDoador(doador.get());
     }

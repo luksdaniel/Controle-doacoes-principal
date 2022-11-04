@@ -47,6 +47,16 @@ public class ItemManagerImp implements ItemManager {
     }
 
     @Override
+    public List<Item> findAllActiveItem() {
+        List<Item> itemList = itemService.findAllActiveItem();
+        if(itemList.isEmpty()){
+            throw new ResourceNotFoundException("Itens não encontrados");
+        }else{
+            return itemList;
+        }
+    }
+
+    @Override
     public Optional<Item> findById(Long id) {
         Optional<Item> item = itemService.findById(id);
         if(item.isEmpty()){
@@ -92,6 +102,18 @@ public class ItemManagerImp implements ItemManager {
             throw new BusinessException("Item já cancelado");
 
         item.get().setEstaCancelado(true);
+
+        return (itemService.updateItem(item.get()));
+    }
+
+    @Override
+    public Item uncanceItem(Long id) {
+        Optional<Item> item = itemService.findById(id);
+
+        if (!item.get().isEstaCancelado())
+            throw new BusinessException("Item não está cancelado");
+
+        item.get().setEstaCancelado(false);
 
         return (itemService.updateItem(item.get()));
     }

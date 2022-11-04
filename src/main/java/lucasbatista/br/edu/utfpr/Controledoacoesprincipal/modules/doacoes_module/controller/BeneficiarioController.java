@@ -65,6 +65,13 @@ public class BeneficiarioController extends EntityValidateExceptionHandler {
         return new ResponseEntity<Beneficiario>(beneficiario, HttpStatus.OK);
     }
 
+    @PutMapping("/uncancel/{id}")
+    public ResponseEntity<Beneficiario> uncancelBeneficiario(@PathVariable("id") Long id){
+        Beneficiario beneficiario = beneficiarioManager.uncancelBeneficiario(id);
+
+        return new ResponseEntity<Beneficiario>(beneficiario, HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<List<Beneficiario>> deleteBeneficiario(@PathVariable("id") Long id){
         beneficiarioManager.deleteBeneficiario(id);
