@@ -17,9 +17,6 @@ public class ControleDoacoesPrincipalApplication {
 	@Autowired
 	InictializeResource inictializeResource;
 
-	@Autowired
-	DadosRelatorioServiceImp dados;
-
 	public static void main(String[] args) {
 		SpringApplication.run(ControleDoacoesPrincipalApplication.class, args);
 	}
@@ -27,7 +24,6 @@ public class ControleDoacoesPrincipalApplication {
 	@PostConstruct
 	public void initializeResourse(){
 		inictializeResource.createDefaultIntituicao();
-		dados.findAllMovimentacoes(4);
 	}
 
 

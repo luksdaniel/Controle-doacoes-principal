@@ -70,42 +70,45 @@ public class ThreadEnvioLembrete {
 
     @Scheduled(fixedDelay = DIA)
     public void enviaAvisoFaltaItemDiariamente() {
-        List<Item> itens = itemManager.findAllItem();
-        List<Doador> doadores = doadorManager.retornaDoadoresQueRecebemEmails();
-        StringBuilder conteudoEmail = new StringBuilder("Olá, o seguinte item está em falta nos nossos estoques, precisamos de sua ajuda! \n");
-
-        if (doadores.isEmpty() || itens.isEmpty())
-            return;
-
-        for(Item itemAtual: itens){
-
-            if(itemAtual.getUltimoEnvioEmail() == null && itemAtual.getQuantidadeEstoque() <= itemAtual.getQuantidadeMinima()) {
-                conteudoEmail.append(itemAtual.getDescricao()).append("; \n");
-                itemAtual.setUltimoEnvioEmail(LocalDate.now());
-                itemService.updateItem(itemAtual);
-            }else if (itemAtual.getQuantidadeEstoque() <= itemAtual.getQuantidadeMinima() &&
-                    (itemAtual.getUltimoEnvioEmail().plusMonths(1).isBefore(LocalDate.now()) ||
-                    itemAtual.getUltimoEnvioEmail().plusMonths(1).isEqual(LocalDate.now()))) {
-                conteudoEmail.append(itemAtual.getDescricao()).append("; \n");
-                itemAtual.setUltimoEnvioEmail(LocalDate.now());
-                itemService.updateItem(itemAtual);
-            }
-        }
-
         try {
+            List<Item> itens = itemService.findAllItem();
+            List<Doador> doadores = doadorManager.retornaDoadoresQueRecebemEmails();
+            StringBuilder conteudoEmail = new StringBuilder("Olá, o seguinte item está em falta nos nossos estoques, precisamos de sua ajuda! \n");
 
-            for (Doador doadorAtual : doadores) {
-                if (!doadorAtual.getEmail().isEmpty()) {
-                    emailService.enviar(doadorAtual.getEmail(),
-                            "Aviso de falta de itens na prefeitura",
-                            conteudoEmail.toString());
+            if (doadores.isEmpty() || itens.isEmpty())
+                return;
+
+            for (Item itemAtual : itens) {
+
+                if (itemAtual.getUltimoEnvioEmail() == null && itemAtual.getQuantidadeEstoque() <= itemAtual.getQuantidadeMinima()) {
+                    conteudoEmail.append(itemAtual.getDescricao()).append("; \n");
+                    itemAtual.setUltimoEnvioEmail(LocalDate.now());
+                    itemService.updateItem(itemAtual);
+                } else if (itemAtual.getQuantidadeEstoque() <= itemAtual.getQuantidadeMinima() &&
+                        (itemAtual.getUltimoEnvioEmail().plusMonths(1).isBefore(LocalDate.now()) ||
+                                itemAtual.getUltimoEnvioEmail().plusMonths(1).isEqual(LocalDate.now()))) {
+                    conteudoEmail.append(itemAtual.getDescricao()).append("; \n");
+                    itemAtual.setUltimoEnvioEmail(LocalDate.now());
+                    itemService.updateItem(itemAtual);
                 }
             }
 
-        }catch (MailAuthenticationException ex){
+            try {
+
+                for (Doador doadorAtual : doadores) {
+                    if (!doadorAtual.getEmail().isEmpty()) {
+                        emailService.enviar(doadorAtual.getEmail(),
+                                "Aviso de falta de itens na prefeitura",
+                                conteudoEmail.toString());
+                    }
+                }
+
+            } catch (MailAuthenticationException ex) {
+                return;
+            }
+        }catch (Exception ex){
             return;
         }
-
     }
 
     private void enviaEmailParaDoadores(List<Doador> doadores, LembreteDoacao lembrete){

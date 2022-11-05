@@ -60,8 +60,8 @@ public class InictializeResource {
 
             instituicaoManager.saveInstituicao(instituicao);
 
-            usuario.setUsername("usuario");
-            usuario.setPassword("usuario");
+            usuario.setUsername("admin");
+            usuario.setPassword("admin");
             usuario.setRole(Collections.singleton(Role.ROLE_INSTITUICAO));
             usuario.setDoGoogle(false);
             usuario.setInstituicao(instituicao);
