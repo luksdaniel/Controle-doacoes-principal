@@ -59,7 +59,7 @@ public class DadosRelatorioServiceImp implements DadosRelatorioService{
             throw new ResourceNotFoundException("Não foram encontradas movimentações para o item!");
 
         for (ItemColetaDoacao item: itensColeta){
-            if(!coletaList.contains(item.getColetaDoacao()) && item.getColetaDoacao().isEstaEfetivada()){
+            if(!coletaList.contains(item.getColetaDoacao()) && item.getColetaDoacao().isEstaEfetivada() && !item.getColetaDoacao().isEstaEfetivada()){
                 coletaList.add(item.getColetaDoacao());
                 MovItemDto mov = new MovItemDto();
                 mov.setDataMovimentacao(item.getColetaDoacao().getDataEfetivacao());
@@ -71,7 +71,7 @@ public class DadosRelatorioServiceImp implements DadosRelatorioService{
         }
 
         for (ItemEntregaDoacao item: itensEntrega){
-            if(!entregaLista.contains(item.getEntregaDoacao())){
+            if(!entregaLista.contains(item.getEntregaDoacao()) && !item.getEntregaDoacao().isEstaCancelada()){
                 entregaLista.add(item.getEntregaDoacao());
                 MovItemDto mov = new MovItemDto();
                 mov.setDataMovimentacao(item.getEntregaDoacao().getDataEntrega());
