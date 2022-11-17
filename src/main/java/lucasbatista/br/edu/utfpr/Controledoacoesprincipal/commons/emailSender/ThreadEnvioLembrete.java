@@ -53,6 +53,9 @@ public class ThreadEnvioLembrete {
         for (LembreteDoacao lembreteAtual: lembretes){
             if(lembreteAtual.isRepetirTodoMes()){
 
+                if (lembreteAtual.getDataUltimoEnvio() == null)
+                    lembreteAtual.setDataUltimoEnvio(LocalDate.now().minusMonths(2));
+
                 if ((lembreteAtual.getDataAgendamento().getDayOfMonth() == LocalDate.now().getDayOfMonth()) &&
                         lembreteAtual.getDataUltimoEnvio() == null ||
                         lembreteAtual.getDataUltimoEnvio().plusMonths(1).isBefore(LocalDate.now()) ||

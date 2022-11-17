@@ -17,14 +17,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ControllerAdvice
-public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler {
+public class ApplicationExceptionHandler extends
+        ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException e){
+    public ResponseEntity<ErrorResponse>
+    handleResourceNotFoundException(ResourceNotFoundException e){
         e.printStackTrace();
         List<String> mensagem = new ArrayList<>();
         mensagem.add(e.getMessage());
-        return new ResponseEntity<>(new ErrorResponse(mensagem), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new ErrorResponse(mensagem),
+                HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(ResourceCreateErrorException.class)

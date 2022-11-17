@@ -19,18 +19,18 @@ public class ItemController extends EntityValidateExceptionHandler {
     @Autowired
     ItemManager managerItem;
 
-    @GetMapping
-    public ResponseEntity<List<Item>> findAllItem() {
-        List<Item> itemList = managerItem.findAllItem();
-
-        return new ResponseEntity<>(itemList, HttpStatus.OK);
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<Item> findItemById(@PathVariable("id") Long id){
         Optional<Item> item = managerItem.findById(id);
 
         return new ResponseEntity<Item>(item.get(), HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Item>> findAllItem() {
+        List<Item> itemList = managerItem.findAllItem();
+
+        return new ResponseEntity<>(itemList, HttpStatus.OK);
     }
 
     @PostMapping
