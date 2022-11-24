@@ -1,9 +1,12 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.controller;
 
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptionHandler.EntityValidateExceptionHandler;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.dto.EmailDto;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.dto.PasswordDto;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.dto.RecoveryCredentialsDto;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.entity.usuario.Usuario;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.entity.usuario.UsuarioManager;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.persistence.recoveryToken.RecoveryTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
@@ -20,6 +23,9 @@ public class UsuarioController extends EntityValidateExceptionHandler {
 
     @Autowired
     UsuarioManager usuarioManager;
+
+    @Autowired
+    RecoveryTokenService recoveryTokenService;
 
     @GetMapping
     public ResponseEntity<List<Usuario>> findAllUsuario() {
@@ -59,7 +65,6 @@ public class UsuarioController extends EntityValidateExceptionHandler {
         usuario.get().removeLinks();
         usuario.get().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class).findAllUsuario()).withRel("Lista de Usuarios"));
         return new ResponseEntity<Usuario>(usuario.get(), HttpStatus.OK);
-
     }
 
     @PostMapping
@@ -68,7 +73,6 @@ public class UsuarioController extends EntityValidateExceptionHandler {
         usuarioInterno.removeLinks();
         usuarioInterno.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class).findAllUsuario()).withRel("Lista de Usuarios"));
         return new ResponseEntity<Usuario>(usuarioInterno, HttpStatus.CREATED);
-
     }
 
     /*@PutMapping
@@ -96,5 +100,22 @@ public class UsuarioController extends EntityValidateExceptionHandler {
     public ResponseEntity<List<Usuario>> deleteUsuario(@PathVariable("id") Long id){
         usuarioManager.deleteUsuario(id);
         return findAllUsuario();
+    }
+
+    @PostMapping("/password-recovery")
+    @ResponseStatus(code = HttpStatus.ACCEPTED)
+    public void passwordRecovery(@RequestBody EmailDto email) {
+        recoveryTokenService.createToken(email.getEmail());
+    }
+
+    @PostMapping("/recovery-confirm")
+    public void recoveryConfirm(@RequestBody RecoveryCredentialsDto recoveryCredentialsDto) {
+        recoveryTokenService.recoverPassword(recoveryCredentialsDto);
+    }
+
+    @PostMapping("/recovery-token-valid")
+    @ResponseStatus(code = HttpStatus.ACCEPTED)
+    public void validateRecoveryToken(@RequestBody RecoveryCredentialsDto recoveryCredentialsDto) {
+        recoveryTokenService.validateRecoveryToken(recoveryCredentialsDto);
     }
 }

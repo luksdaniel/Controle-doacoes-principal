@@ -20,7 +20,9 @@ import java.util.Set;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 
 @Entity
-@Table(name = "doador")
+@Table(name = "doador",
+        uniqueConstraints = {@UniqueConstraint(name = "ukEmailDoador", columnNames = {"email"})
+})
 public class Doador extends Pessoa implements Serializable {
 
     @NotNull(message = "É obrigatório informar se o doador recebe e-mails")

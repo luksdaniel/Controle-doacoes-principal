@@ -11,6 +11,8 @@ public interface InstituicaoService {
 
     Optional<Instituicao> findById(Long id);
 
+    Optional<Instituicao> findByEmail(String email);
+
     Instituicao saveInstituicao(Instituicao instituicao);
 
     Instituicao updateInstituicao(Instituicao instituicao);

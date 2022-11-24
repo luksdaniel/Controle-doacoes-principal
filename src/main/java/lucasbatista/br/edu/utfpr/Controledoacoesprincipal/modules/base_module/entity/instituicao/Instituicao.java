@@ -21,7 +21,9 @@ import java.util.Set;
 @ToString
 
 @Entity
-@Table(name = "instituicao")
+@Table(name = "instituicao",
+        uniqueConstraints = {@UniqueConstraint(name = "ukEmailInstituicao", columnNames = {"email"})
+})
 public class Instituicao extends Pessoa implements Serializable {
 
     @NotBlank(message = "É obrigatório informar o horário de funcionamento")

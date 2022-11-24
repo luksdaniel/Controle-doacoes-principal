@@ -13,6 +13,8 @@ public interface DoadorService {
 
     Optional<Doador> findById(Long id);
 
+    Optional<Doador> findByEmail(String email);
+
     Doador saveDoador(Doador doador);
 
     Doador updateDoador(Doador doador);
