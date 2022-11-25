@@ -13,6 +13,8 @@ public interface UsuarioService {
 
     Optional<Usuario> findByDoadorId(Long id);
 
+    Optional<Usuario> findByInstituicaoId(Long id);
+
     Optional<Usuario> findByUserName(String username);
 
     Usuario saveUsuario(Usuario usuario);

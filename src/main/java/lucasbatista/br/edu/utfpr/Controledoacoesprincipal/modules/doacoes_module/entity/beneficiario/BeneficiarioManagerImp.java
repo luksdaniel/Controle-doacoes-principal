@@ -66,7 +66,7 @@ public class BeneficiarioManagerImp implements BeneficiarioManager{
 
     @Override
     public Beneficiario updateBeneficiario(Beneficiario beneficiario) {
-        atualizaEnderecoComId(beneficiario);
+        //atualizaEnderecoComId(beneficiario);
         validaEnderecoExistente(beneficiario);
         validaCaracteristicas(beneficiario);
 

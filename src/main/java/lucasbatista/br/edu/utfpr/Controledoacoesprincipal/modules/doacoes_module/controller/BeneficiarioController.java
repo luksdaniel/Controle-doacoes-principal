@@ -25,11 +25,7 @@ public class BeneficiarioController extends EntityValidateExceptionHandler {
     @GetMapping
     public ResponseEntity<List<Beneficiario>> findAllBeneficiario() {
         List<Beneficiario> beneficiarioList = beneficiarioManager.findAllBeneficiario();
-        for(Beneficiario beneficiario : beneficiarioList){
-            beneficiario.removeLinks();
-            long id = beneficiario.getId();
-            beneficiario.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(BeneficiarioController.class).findBeneficiarioById((Long) id)).withSelfRel());
-        }
+
         return new ResponseEntity<>(beneficiarioList, HttpStatus.OK);
     }
 
@@ -37,8 +33,6 @@ public class BeneficiarioController extends EntityValidateExceptionHandler {
     public ResponseEntity<Beneficiario> findBeneficiarioById(@PathVariable("id") Long id){
         Optional<Beneficiario> beneficiario = beneficiarioManager.findById(id);
 
-        beneficiario.get().removeLinks();
-        beneficiario.get().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(BeneficiarioController.class).findAllBeneficiario()).withRel("Lista de beneficiarios"));
         return new ResponseEntity<Beneficiario>(beneficiario.get(), HttpStatus.OK);
     }
 
@@ -46,15 +40,13 @@ public class BeneficiarioController extends EntityValidateExceptionHandler {
     public ResponseEntity<Beneficiario> saveBeneficiario(@RequestBody @Valid Beneficiario beneficiario){
         Beneficiario beneficiarioInterno = beneficiarioManager.saveBeneficiario(beneficiario);
 
-        beneficiarioInterno.removeLinks();
-        beneficiarioInterno.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(BeneficiarioController.class).findAllBeneficiario()).withRel("Lista de beneficiarios"));
         return new ResponseEntity<Beneficiario>(beneficiarioInterno, HttpStatus.CREATED);
     }
 
     @PutMapping
     public ResponseEntity<Beneficiario> updateBeneficiario(@RequestBody @Valid Beneficiario beneficiario){
         Beneficiario beneficiarioInterno = (beneficiarioManager.updateBeneficiario(beneficiario));
-        beneficiarioInterno.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(BeneficiarioController.class).findAllBeneficiario()).withRel("Lista de beneficiarios"));
+
         return new ResponseEntity<Beneficiario>(beneficiarioInterno, HttpStatus.OK);
     }
 

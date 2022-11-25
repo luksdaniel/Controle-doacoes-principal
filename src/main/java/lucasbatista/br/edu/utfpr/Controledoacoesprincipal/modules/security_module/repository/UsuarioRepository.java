@@ -13,4 +13,5 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     Optional<Usuario> findByDoadorId(long id);
 
+    Optional<Usuario> findByInstituicaoId(long id);
 }

@@ -32,6 +32,11 @@ public class UsuarioImpService implements UsuarioService{
     }
 
     @Override
+    public Optional<Usuario> findByInstituicaoId(Long id) {
+        return usuarioRepository.findByInstituicaoId(id);
+    }
+
+    @Override
     public Optional<Usuario> findByUserName(String username) {
         return usuarioRepository.findByUsername(username);
     }

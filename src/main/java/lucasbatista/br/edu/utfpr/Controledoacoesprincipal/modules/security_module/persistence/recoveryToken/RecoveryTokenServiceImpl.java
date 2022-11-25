@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.emailSender.EmailService;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.BusinessException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceNotFoundException;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.persistence.instituicao.InstituicaoService;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.persistence.doador.DoadorService;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.dto.RecoveryCredentialsDto;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.entity.RecoveryToken;
@@ -27,17 +28,36 @@ public class RecoveryTokenServiceImpl implements RecoveryTokenService {
     private final EmailService emailService;
     private final BCryptPasswordEncoder passwordEncoder;
 
+    private final InstituicaoService instituicaoService;
+
     @Override
     public void createToken(String email) {
         var doador = doadorService.findByEmail(email);
-        if(doador.isEmpty()) throw new ResourceNotFoundException("Não foi encontrado usuário com o e-mail: "+email);
+        var instituicao = instituicaoService.findByEmail(email);
+        Usuario usuario = new Usuario();
+        Optional<Usuario> userOpt;
 
-        var userOpt = usuarioService.findByDoadorId(doador.get().getId());
-        if (userOpt.isEmpty()) throw new ResourceNotFoundException("Não foi encontrado usuário com o e-mail: "+email);
+        if(instituicao.isEmpty() && doador.isEmpty())
+            throw new ResourceNotFoundException("Não foi encontrado usuário com o e-mail: "+email);
 
-        var user = userOpt.get();
+        if(doador.isPresent()) {
+            userOpt = usuarioService.findByDoadorId(doador.get().getId());
+            if (userOpt.isPresent())
+                usuario = userOpt.get();
+        }
+
+        if(instituicao.isPresent()){
+            userOpt = usuarioService.findByInstituicaoId(instituicao.get().getId());
+            if (userOpt.isPresent())
+                usuario = userOpt.get();
+
+            if (userOpt.isEmpty())
+                throw new ResourceNotFoundException("Não foi encontrado usuário com o e-mail: "+email);
+
+        }
+
         String token = UUID.randomUUID().toString();
-        createRecoveryToken(user, token);
+        createRecoveryToken(usuario, token);
         sendRecoveryMail(email, token);
     }
 

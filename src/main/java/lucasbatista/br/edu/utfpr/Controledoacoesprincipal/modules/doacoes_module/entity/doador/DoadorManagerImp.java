@@ -97,7 +97,7 @@ public class DoadorManagerImp implements DoadorManager{
 
     @Override
     public Doador updateDoador(Doador doador) {
-        atualizaEnderecoComId(doador);
+        //atualizaEnderecoComId(doador);
         validaEnderecoExistente(doador);
 
         pessoaManager.validaCPFeCNPJ(doador);
