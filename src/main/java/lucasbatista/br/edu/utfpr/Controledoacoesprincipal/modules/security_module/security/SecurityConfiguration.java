@@ -10,10 +10,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class SecurityConfiguration {
@@ -31,35 +34,28 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors()
-                .and()
-                .csrf()
-                .disable()
-                .authorizeHttpRequests((auth) -> {
-                    try{
-                        auth
-                                .antMatchers(HttpMethod.POST,"/login").permitAll()
-                                .antMatchers(HttpMethod.POST, "/doador").permitAll()
-                                .antMatchers(HttpMethod.POST, "/usuario").permitAll()
-                                .antMatchers(HttpMethod.POST, "/usuario/password-recovery").permitAll()
-                                .antMatchers(HttpMethod.POST, "/usuario/recovery-token-valid").permitAll()
-                                .antMatchers(HttpMethod.POST, "/usuario/recovery-confirm").permitAll()
-                                //.antMatchers(HttpMethod.GET, "/item").hasRole("ROLE_DOADOR")
-                                .anyRequest().authenticated()
-                                .and()
-                                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                                .and()
-                                .addFilter(authenticationFIlter())
-                                .addFilter(new JwtAuthorizationFilter(authenticationManager, userDetailService, secret))
-                                .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())
-                                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
-                    }catch (Exception e){
-                        throw new RuntimeException(e);
-                    }
-                })
-                .httpBasic(Customizer.withDefaults());
+                .cors(Customizer.withDefaults())
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.POST, "/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/doador").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/usuario").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/usuario/password-recovery").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/usuario/recovery-token-valid").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/usuario/recovery-confirm").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .addFilterBefore(authenticationFIlter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthorizationFilter(authenticationManager, userDetailService, secret), UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+                        .httpBasic(Customizer.withDefaults());
+
         return http.build();
     }
 

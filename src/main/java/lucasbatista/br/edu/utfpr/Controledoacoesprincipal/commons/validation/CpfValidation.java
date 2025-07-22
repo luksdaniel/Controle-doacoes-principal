@@ -1,7 +1,7 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.validation;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 public class CpfValidation implements ConstraintValidator<Cpf_NotNull, String> {
 
@@ -12,11 +12,6 @@ public class CpfValidation implements ConstraintValidator<Cpf_NotNull, String> {
 
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
-        if(s.isBlank())
-            return true;
-
-
-
-        return false;
+        return s.isEmpty();
     }
 }

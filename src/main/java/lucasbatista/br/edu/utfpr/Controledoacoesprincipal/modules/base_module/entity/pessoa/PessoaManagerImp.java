@@ -10,7 +10,7 @@ import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.pe
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -38,7 +38,7 @@ public class PessoaManagerImp implements PessoaManager{
     @Override
     public Optional<Pessoa> findById(Long id) {
         Optional<Pessoa> pessoa = pessoaService.findById(id);
-        if(pessoa.isEmpty()){
+        if(!pessoa.isPresent()){
             throw new ResourceNotFoundException("Pessoa não encontrada");
         }else {
             return pessoa;
@@ -69,7 +69,7 @@ public class PessoaManagerImp implements PessoaManager{
     }
 
     private void verificaPessoaJaCadastrada(Long id){
-        if (pessoaService.findById(id).isEmpty())
+        if (!pessoaService.findById(id).isPresent())
             throw new ResourceNotFoundException("Pessoa não encontrada");
     }
 

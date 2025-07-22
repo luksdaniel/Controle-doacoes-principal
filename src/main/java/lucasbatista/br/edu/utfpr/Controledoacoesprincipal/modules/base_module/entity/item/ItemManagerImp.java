@@ -15,7 +15,7 @@ import org.springframework.mail.MailAuthenticationException;
 import org.springframework.mail.MailException;
 import org.springframework.stereotype.Component;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -59,7 +59,7 @@ public class ItemManagerImp implements ItemManager {
     @Override
     public Optional<Item> findById(Long id) {
         Optional<Item> item = itemService.findById(id);
-        if(item.isEmpty()){
+        if(!item.isPresent()){
             throw new ResourceNotFoundException("Item não encontrado");
         }else{
             return item;
@@ -135,13 +135,13 @@ public class ItemManagerImp implements ItemManager {
     }
 
     private void validaUnidadeMedidaExistente(Item item){
-        if (unidadeMedidaManager.findById(item.getUnidadeMedida().getId()).isEmpty())
+        if (!unidadeMedidaManager.findById(item.getUnidadeMedida().getId()).isPresent())
             throw new DependencyNotFoundException("Não foi localizada a unidade de medida informada");
 
     }
 
     private void verificaItemJaCadastrado(Long id){
-        if(itemService.findById(id).isEmpty())
+        if(!itemService.findById(id).isPresent())
             throw new ResourceNotFoundException("Item não encontrado");
     }
 

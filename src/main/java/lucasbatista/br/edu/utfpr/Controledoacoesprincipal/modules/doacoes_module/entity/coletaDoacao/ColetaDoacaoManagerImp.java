@@ -14,7 +14,7 @@ import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -73,7 +73,7 @@ public class ColetaDoacaoManagerImp implements ColetaDoacaoManager{
     @Override
     public Optional<ColetaDoacao> findById(Long id) {
         Optional<ColetaDoacao> coletaDoacao = coletaDoacaoService.findById(id);
-        if(coletaDoacao.isEmpty()){
+        if(!coletaDoacao.isPresent()){
             throw new ResourceNotFoundException("Coleta não encontrada");
         }else{
             return coletaDoacao;
@@ -112,7 +112,7 @@ public class ColetaDoacaoManagerImp implements ColetaDoacaoManager{
     @Override
     public ColetaDoacao cancelaColetaDoacao(ColetaDoacao coletaDoacao) {
 
-        if (coletaDoacao.getMotivoCancelamento() == null || coletaDoacao.getMotivoCancelamento().isBlank())
+        if (coletaDoacao.getMotivoCancelamento() == null || coletaDoacao.getMotivoCancelamento().isEmpty())
             throw new BusinessException("Deve ser informado o motivo de cancelamento");
 
         Optional<ColetaDoacao> coletaDoacaoInterna = findById(coletaDoacao.getId());

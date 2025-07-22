@@ -6,7 +6,7 @@ import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.pe
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +30,7 @@ public class EnderecoManagerImp implements EnderecoManager{
     @Override
     public Optional<Endereco> findById(Long id) {
         Optional<Endereco> endereco = enderecoService.findById(id);
-        if(endereco.isEmpty()){
+        if(!endereco.isPresent()){
             throw new ResourceNotFoundException("Endereço não encontrado");
         }else {
             return endereco;
@@ -60,7 +60,7 @@ public class EnderecoManagerImp implements EnderecoManager{
     }
 
     private void verificaEnderecoJaCadastrado(Long id){
-        if(enderecoService.findById(id).isEmpty())
+        if(!enderecoService.findById(id).isPresent())
             throw new ResourceNotFoundException("Endereço não encontrado");
     }
 }

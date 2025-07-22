@@ -43,7 +43,7 @@ public class ItemEntregaManagerImp implements ItemEntregaManager{
     @Override
     public ItemEntregaDoacao findByIdd(Long id) {
         Optional<ItemEntregaDoacao> item = itemEntregaService.findById(id);
-        if(item.isEmpty()){
+        if(!item.isPresent()){
             throw new ResourceNotFoundException("Item não encontrado na Entrega de doação");
         }else{
             return item.get();

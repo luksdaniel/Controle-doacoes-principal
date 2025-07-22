@@ -3,7 +3,7 @@ package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_modul
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 

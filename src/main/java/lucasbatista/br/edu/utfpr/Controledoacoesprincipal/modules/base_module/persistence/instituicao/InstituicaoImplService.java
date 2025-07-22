@@ -55,7 +55,7 @@ public class InstituicaoImplService implements InstituicaoService{
     private void validaEmailDuplicado(Instituicao instituicao){
         Optional<Doador> doador1 = doadorRepository.findByEmail(instituicao.getEmail());
         Optional<Instituicao> instituicao1 = instituicaoRepository.findByEmail(instituicao.getEmail());
-        if (!doador1.isEmpty() || !instituicao1.isEmpty())
+        if (doador1.isPresent() || instituicao1.isPresent())
             throw new ResourceIntegrityException("Já existe um registro gravado com o e-mail fornecido!");
 
     }

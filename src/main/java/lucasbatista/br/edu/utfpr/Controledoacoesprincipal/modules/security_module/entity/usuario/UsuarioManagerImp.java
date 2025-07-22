@@ -8,7 +8,6 @@ import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.en
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.dto.PasswordDto;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.persistence.usuario.UsuarioService;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.doador.DoadorManager;
-import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -43,7 +42,7 @@ public class UsuarioManagerImp implements UsuarioManager{
     @Override
     public Optional<Usuario> findById(Long id) {
         Optional<Usuario> usuario = usuarioService.findById(id);
-        if(usuario.isEmpty()){
+        if(!usuario.isPresent()){
             throw new ResourceNotFoundException("Usuário não encontrado");
         }else {
             return usuario;
@@ -53,7 +52,7 @@ public class UsuarioManagerImp implements UsuarioManager{
     @Override
     public Optional<Usuario> findByDoadorId(Long id) {
         Optional<Usuario> usuario = usuarioService.findByDoadorId(id);
-        if(usuario.isEmpty()){
+        if(!usuario.isPresent()){
             throw new ResourceNotFoundException("Usuário não encontrado");
         }else {
             return usuario;
@@ -63,7 +62,7 @@ public class UsuarioManagerImp implements UsuarioManager{
     @Override
     public Optional<Usuario> findByUserName(String username) {
         Optional<Usuario> usuario = usuarioService.findByUserName(username);
-        if(usuario.isEmpty()){
+        if(!usuario.isPresent()){
             throw new ResourceNotFoundException("Usuário não encontrado");
         }else {
             return usuario;
@@ -140,7 +139,7 @@ public class UsuarioManagerImp implements UsuarioManager{
     }
 
     private void verificaUsuarioJaCadastrado(Long id){
-        if (usuarioService.findById(id).isEmpty())
+        if (!usuarioService.findById(id).isPresent())
             throw new ResourceNotFoundException("Usuário não encontrado");
     }
 
@@ -157,7 +156,7 @@ public class UsuarioManagerImp implements UsuarioManager{
     private void validaUsuarioLoginDuplicado(Usuario usuario){
         Optional<Usuario> entity = usuarioService.findByUserName(usuario.getUsername());
 
-        if(!entity.isEmpty()){
+        if(entity.isPresent()){
             throw new BusinessException("Já existe um usuário cadastrado com login: "+usuario.getUsername());
         }
     }

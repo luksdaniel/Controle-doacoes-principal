@@ -6,7 +6,7 @@ import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.pe
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +30,7 @@ public class UnidadeMedidaManagerImp implements UnidadeMedidaManager {
     @Override
     public Optional<UnidadeMedida> findById(Long id) {
         Optional<UnidadeMedida> un = unidadeMedidaService.findById(id);
-        if(un.isEmpty()){
+        if(!un.isPresent()){
             throw new ResourceNotFoundException("Unidade de medida não encontrada");
         }else{
             return un;
@@ -40,12 +40,7 @@ public class UnidadeMedidaManagerImp implements UnidadeMedidaManager {
     @Override
     public UnidadeMedida saveUnidadeMedida(UnidadeMedida unidadeMedida) {
         setaAtributosIniciais(unidadeMedida);
-        UnidadeMedida un = unidadeMedidaService.saveUnidadeMedida(unidadeMedida);
-        if(unidadeMedida == null){
-            throw new ResourceCreateErrorException("Não foi possível criar a unidade de medida");
-        }else{
-            return un;
-        }
+        return unidadeMedidaService.saveUnidadeMedida(unidadeMedida);
     }
 
     @Override
@@ -61,7 +56,7 @@ public class UnidadeMedidaManagerImp implements UnidadeMedidaManager {
     }
 
     private void verificaUnidadeMedidaJaCadastrada(Long id){
-        if(unidadeMedidaService.findById(id).isEmpty())
+        if(!unidadeMedidaService.findById(id).isPresent())
             throw new ResourceNotFoundException("Unidade de medida não encontrada");
     }
 

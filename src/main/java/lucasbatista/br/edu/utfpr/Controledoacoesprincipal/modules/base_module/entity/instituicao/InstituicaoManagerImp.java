@@ -10,7 +10,7 @@ import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.pe
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +29,7 @@ public class InstituicaoManagerImp implements InstituicaoManager{
     @Override
     public Optional<Instituicao> findById(Long id) {
         Optional<Instituicao> instituicao = instituicaoService.findById(id);
-        if (instituicao.isEmpty()){
+        if (!instituicao.isPresent()){
             throw new ResourceNotFoundException("Instituição não encontrada");
         }else {
             return instituicao;
@@ -87,12 +87,12 @@ public class InstituicaoManagerImp implements InstituicaoManager{
     }
 
     public void validaEnderecoExistente(Instituicao instituicao){
-        if (enderecoManager.findById(instituicao.getEndereco().getId()).isEmpty())
+        if (!enderecoManager.findById(instituicao.getEndereco().getId()).isPresent())
             throw new DependencyNotFoundException("Não foi localizado o endereço para criação da instituição");
     }
 
     private void verificaInstituicaoJaCadastrada(Long id){
-        if(instituicaoService.findById(id).isEmpty())
+        if(!instituicaoService.findById(id).isPresent())
             throw new ResourceNotFoundException("Instituição não econtrada");
     }
 }

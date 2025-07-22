@@ -16,7 +16,7 @@ import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_modul
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -80,7 +80,7 @@ public class EntregaDoacaoManagerImp implements EntregaDoacaoManager{
     @Override
     public Optional<EntregaDoacao> findById(Long id) {
         Optional<EntregaDoacao> entregaList = entregaDoacaoService.findById(id);
-        if(entregaList.isEmpty()){
+        if(!entregaList.isPresent()){
             throw new ResourceNotFoundException("Entrega não encontrada");
         }else{
             return entregaList;
@@ -127,7 +127,7 @@ public class EntregaDoacaoManagerImp implements EntregaDoacaoManager{
     @Override
     public EntregaDoacao cancelaEntregaDoacao(EntregaDoacao entregaDoacao) {
 
-        if (entregaDoacao.getMotivoCancelamento() == null || entregaDoacao.getMotivoCancelamento().isBlank())
+        if (entregaDoacao.getMotivoCancelamento() == null || entregaDoacao.getMotivoCancelamento().isEmpty())
             throw new BusinessException("Deve ser informado o motivo de cancelamento");
 
         Optional<EntregaDoacao> entregaDoacaoInterna = findById(entregaDoacao.getId());

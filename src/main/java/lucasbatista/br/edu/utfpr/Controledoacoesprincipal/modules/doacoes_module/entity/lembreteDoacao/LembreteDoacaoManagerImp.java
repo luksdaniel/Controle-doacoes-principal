@@ -6,7 +6,7 @@ import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +33,7 @@ public class LembreteDoacaoManagerImp implements LembreteDoacaoManager{
     public Optional<LembreteDoacao> findById(long id) {
         Optional<LembreteDoacao> lembrete = lembreteDoacaoService.findById(id);
 
-        if (lembrete.isEmpty()){
+        if (!lembrete.isPresent()){
             throw new ResourceNotFoundException("Lembrete de doação não encontrado");
         }else {
             return lembrete;
@@ -71,7 +71,7 @@ public class LembreteDoacaoManagerImp implements LembreteDoacaoManager{
     }
 
     private void verificaLembretejaCadastrado(Long id){
-        if(lembreteDoacaoService.findById(id).isEmpty())
+        if(!lembreteDoacaoService.findById(id).isPresent())
             throw new ResourceNotFoundException("Lembrete não encontrado");
     }
 }
