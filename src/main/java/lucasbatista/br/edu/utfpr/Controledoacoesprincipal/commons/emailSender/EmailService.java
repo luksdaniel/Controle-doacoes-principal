@@ -17,7 +17,7 @@ public class EmailService {
 
     public void enviar(String para, String titulo, String conteudo) {
 
-        var mensagem = new SimpleMailMessage();
+        SimpleMailMessage mensagem = new SimpleMailMessage();
         mensagem.setTo(para);
 
         mensagem.setSubject(titulo);

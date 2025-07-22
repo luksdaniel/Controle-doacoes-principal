@@ -10,7 +10,7 @@ import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -44,7 +44,7 @@ public class DoadorManagerImp implements DoadorManager{
     @Override
     public Optional<Doador> findById(Long id) {
         Optional<Doador> doador = doadorService.findById(id);
-        if(doador.isEmpty()){
+        if(!doador.isPresent()){
             throw new ResourceNotFoundException("Doador não encontrado");
         }else{
             return doador;
@@ -55,8 +55,7 @@ public class DoadorManagerImp implements DoadorManager{
     public Doador saveDoador(Doador doador) {
         Optional<Doador> entity = doadorService.findById(doador.getId());
 
-        if (!entity.isEmpty())
-            return updateDoador(doador);
+        if (entity.isPresent()) return updateDoador(doador);
 
         pessoaManager.setaAtributosIniciais(doador);
         pessoaManager.criaEnderecoPessoa(doador);
@@ -121,12 +120,12 @@ public class DoadorManagerImp implements DoadorManager{
     }
 
     public void validaEnderecoExistente(Doador doador){
-        if (enderecoManager.findById(doador.getEndereco().getId()).isEmpty())
+        if (!enderecoManager.findById(doador.getEndereco().getId()).isPresent())
             throw new DependencyNotFoundException("Não foi localizado o endereço para criação do doador");
     }
 
     private void verificaDoadorJaCadastrado(Long id){
-        if(doadorService.findById(id).isEmpty())
+        if(!doadorService.findById(id).isPresent())
             throw new ResourceNotFoundException("Doador não encontrado");
     }
 }

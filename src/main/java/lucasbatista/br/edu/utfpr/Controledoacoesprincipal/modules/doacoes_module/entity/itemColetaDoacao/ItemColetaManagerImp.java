@@ -38,7 +38,7 @@ public class ItemColetaManagerImp implements ItemColetaManager{
     @Override
     public ItemColetaDoacao findByIdd(Long id) {
         Optional<ItemColetaDoacao> item = itemColetaService.findById(id);
-        if(item.isEmpty()){
+        if(!item.isPresent()){
             throw new ResourceNotFoundException("Item não encontrado na doação");
         }else{
             return item.get();

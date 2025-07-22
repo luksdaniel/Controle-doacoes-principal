@@ -1,5 +1,6 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.beneficiario;
 
+import jakarta.transaction.Transactional;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.*;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.endereco.EnderecoManager;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item.Item;
@@ -8,7 +9,7 @@ import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -39,7 +40,7 @@ public class BeneficiarioManagerImp implements BeneficiarioManager{
     @Override
     public Optional<Beneficiario> findById(Long id) {
         Optional<Beneficiario> beneficiario = beneficiarioService.findById(id);
-        if (beneficiario.isEmpty()){
+        if (!beneficiario.isPresent()){
             throw new ResourceNotFoundException("Beneficiário não encontrado");
         }else {
             return beneficiario;
@@ -125,12 +126,12 @@ public class BeneficiarioManagerImp implements BeneficiarioManager{
     }
 
     public void validaEnderecoExistente(Beneficiario beneficiario){
-        if (enderecoManager.findById(beneficiario.getEndereco().getId()).isEmpty())
+        if (!enderecoManager.findById(beneficiario.getEndereco().getId()).isPresent())
             throw new DependencyNotFoundException("Não foi localizado o endereço para criação do Beneficiário");
     }
 
     private void verificaBeneficiarioJaCadastrado(Long id){
-        if(beneficiarioService.findById(id).isEmpty())
+        if(!beneficiarioService.findById(id).isPresent())
             throw new ResourceNotFoundException("Beneficiário não encontrado");
     }
 }

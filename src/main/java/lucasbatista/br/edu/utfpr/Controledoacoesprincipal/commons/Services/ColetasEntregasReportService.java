@@ -4,6 +4,7 @@ package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.Services;
 import com.lowagie.text.*;
 import com.lowagie.text.Font;
 import com.lowagie.text.pdf.*;
+import jakarta.servlet.http.HttpServletResponse;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.dto.ColetaEntregaDto;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.instituicao.Instituicao;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.instituicao.InstituicaoManager;
@@ -11,7 +12,7 @@ import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.pe
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;

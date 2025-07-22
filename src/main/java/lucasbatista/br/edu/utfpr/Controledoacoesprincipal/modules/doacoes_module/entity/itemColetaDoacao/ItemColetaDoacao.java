@@ -2,13 +2,13 @@ package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_modul
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.DecimalMin;
 import lombok.*;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item.Item;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.coletaDoacao.ColetaDoacao;
 import org.springframework.hateoas.RepresentationModel;
 
-import javax.persistence.*;
-import javax.validation.constraints.DecimalMin;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 

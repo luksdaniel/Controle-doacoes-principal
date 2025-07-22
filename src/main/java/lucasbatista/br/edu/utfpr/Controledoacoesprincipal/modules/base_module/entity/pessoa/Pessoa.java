@@ -1,15 +1,14 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.pessoa;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.Enumerators.TipoPessoa;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.endereco.Endereco;
-import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.hateoas.RepresentationModel;
 
-import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -20,7 +19,6 @@ import java.time.LocalDate;
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 
-@Table(name = "pessoa")
 @MappedSuperclass
 public class Pessoa extends RepresentationModel<Pessoa> implements Serializable {
 
@@ -34,15 +32,9 @@ public class Pessoa extends RepresentationModel<Pessoa> implements Serializable 
     @Column(name = "nome_fantasia", nullable = false)
     private String nomeFantasia;
 
-    //@NotBlank(message = "É obrigatório informar a razão social")
-    @Column(name = "razao_social"/*, nullable = false*/)
+    @Column(name = "razao_social")
     private String razaoSocial;
 
-    //@CPF(message = "CPF Inválido")
-    /*@Column(name = "cpf")
-    private String cpf;*/
-
-    //@CNPJ(message = "CNPJ Inválido")
     @Column(name = "cpfCnpj", nullable = false)
     private String cpfCnpj;
 
