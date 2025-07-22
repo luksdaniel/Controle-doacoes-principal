@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.emailSender.EmailService;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.BusinessException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceNotFoundException;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.instituicao.Instituicao;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.persistence.instituicao.InstituicaoService;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.Instituicao;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.repository.InstituicaoRepository;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.doador.Doador;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.persistence.doador.DoadorService;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.dto.RecoveryCredentialsDto;
@@ -13,7 +13,6 @@ import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_modul
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.entity.usuario.Usuario;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.persistence.usuario.UsuarioService;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.repository.RecoveryTokenRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -33,12 +32,12 @@ public class RecoveryTokenServiceImpl implements RecoveryTokenService {
     private final EmailService emailService;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    private final InstituicaoService instituicaoService;
+    private final InstituicaoRepository instituicaoRepository;
 
     @Override
     public void createToken(String email) {
         Optional<Doador> doador = doadorService.findByEmail(email);
-        Optional<Instituicao> instituicao = instituicaoService.findByEmail(email);
+        Optional<Instituicao> instituicao = instituicaoRepository.findByEmail(email);
         Usuario usuario = new Usuario();
         Optional<Usuario> userOpt;
 

@@ -2,14 +2,12 @@ package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_modul
 
 import jakarta.transaction.Transactional;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.*;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.endereco.EnderecoManager;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item.Item;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.pessoa.PessoaManager;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.service.endereco.EnderecoServiceBase;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.service.pessoa.PessoaServiceBase;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.persistence.beneficiario.BeneficiarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -19,11 +17,11 @@ import java.util.Optional;
 public class BeneficiarioManagerImp implements BeneficiarioManager{
 
     @Autowired
-    PessoaManager pessoaManager;
+    PessoaServiceBase pessoaManager;
     @Autowired
     BeneficiarioService beneficiarioService;
     @Autowired
-    EnderecoManager enderecoManager;
+    EnderecoServiceBase enderecoManager;
 
 
     @Override

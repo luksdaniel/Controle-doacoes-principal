@@ -1,8 +1,8 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.emailSender;
 
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item.Item;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item.ItemManager;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.persistence.item.ItemService;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.Item;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.service.item.ItemManager;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.repository.ItemRepository;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.doador.Doador;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.doador.DoadorManager;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.lembreteDoacao.LembreteDoacao;
@@ -33,7 +33,7 @@ public class ThreadEnvioLembrete {
     ItemManager itemManager;
 
     @Autowired
-    ItemService itemService;
+    ItemRepository itemRepository;
 
     private final long SEGUNDO = 1000;
     private final long MINUTO = SEGUNDO * 60;
@@ -73,7 +73,7 @@ public class ThreadEnvioLembrete {
     @Scheduled(fixedDelay = DIA)
     public void enviaAvisoFaltaItemDiariamente() {
         try {
-            List<Item> itens = itemService.findAllItem();
+            List<Item> itens = itemRepository.findAll();
             List<Doador> doadores = doadorManager.retornaDoadoresQueRecebemEmails();
             StringBuilder conteudoEmail = new StringBuilder("Olá, o seguinte item está em falta nos nossos estoques, precisamos de sua ajuda! \n");
 
@@ -85,13 +85,13 @@ public class ThreadEnvioLembrete {
                 if (itemAtual.getUltimoEnvioEmail() == null && itemAtual.getQuantidadeEstoque() <= itemAtual.getQuantidadeMinima()) {
                     conteudoEmail.append(itemAtual.getDescricao()).append("; \n");
                     itemAtual.setUltimoEnvioEmail(LocalDate.now());
-                    itemService.updateItem(itemAtual);
+                    itemRepository.save(itemAtual);
                 } else if (itemAtual.getQuantidadeEstoque() <= itemAtual.getQuantidadeMinima() &&
                         (itemAtual.getUltimoEnvioEmail().plusMonths(1).isBefore(LocalDate.now()) ||
                                 itemAtual.getUltimoEnvioEmail().plusMonths(1).isEqual(LocalDate.now()))) {
                     conteudoEmail.append(itemAtual.getDescricao()).append("; \n");
                     itemAtual.setUltimoEnvioEmail(LocalDate.now());
-                    itemService.updateItem(itemAtual);
+                    itemRepository.save(itemAtual);
                 }
             }
 

@@ -3,9 +3,9 @@ package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_modul
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.BusinessException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceCreateErrorException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceNotFoundException;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.instituicao.Instituicao;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.instituicao.InstituicaoManager;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item.ItemManager;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.Instituicao;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.service.instituicao.InstituicaoServiceBase;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.service.item.ItemManager;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.beneficiario.Beneficiario;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.itemEntregaDoacao.ItemEntregaDoacao;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.beneficiario.BeneficiarioManager;
@@ -42,7 +42,7 @@ public class EntregaDoacaoManagerImp implements EntregaDoacaoManager{
     ItemEntregaManager itemEntregaManager;
 
     @Autowired
-    InstituicaoManager instituicaoManager;
+    InstituicaoServiceBase instituicaoServiceBase;
 
 
     @Override
@@ -150,7 +150,7 @@ public class EntregaDoacaoManagerImp implements EntregaDoacaoManager{
 
         Optional<Beneficiario> beneficiario = beneficiarioManager.findById(entregaDoacao.getBeneficiario().getId());
         EntregaDoacao ultimaEntrega = entregaDoacaoService.retornaUltimaEntregaBeneficiario(beneficiario.get().getId());
-        Optional<Instituicao> instituicao = instituicaoManager.find();
+        Optional<Instituicao> instituicao = instituicaoServiceBase.find();
         int intervalo;
 
         if( beneficiario.get().getDiasEntreDoacao() != 0 ) {

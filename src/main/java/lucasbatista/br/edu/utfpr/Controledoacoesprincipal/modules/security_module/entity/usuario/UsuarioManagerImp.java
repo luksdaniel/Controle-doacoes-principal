@@ -4,7 +4,7 @@ import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.Enumerators.Ro
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.BusinessException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceCreateErrorException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceNotFoundException;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.instituicao.InstituicaoManager;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.service.instituicao.InstituicaoServiceBase;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.dto.PasswordDto;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.persistence.usuario.UsuarioService;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.doador.DoadorManager;
@@ -24,7 +24,7 @@ public class UsuarioManagerImp implements UsuarioManager{
     UsuarioService usuarioService;
 
     @Autowired
-    InstituicaoManager instituicaoManager;
+    InstituicaoServiceBase instituicaoServiceBase;
 
     @Autowired
     DoadorManager doadorManager;
@@ -74,7 +74,7 @@ public class UsuarioManagerImp implements UsuarioManager{
         setaAtributosIniciais(usuario);
 
         if(usuario.getInstituicao() != null && usuario.getDoador() == null)
-            usuario.setInstituicao(instituicaoManager.findById(usuario.getInstituicao().getId()).get());
+            usuario.setInstituicao(instituicaoServiceBase.findById(usuario.getInstituicao().getId()).get());
         else if(usuario.getInstituicao() == null && usuario.getDoador() != null) {
             usuario.setDoador(doadorManager.findById(usuario.getDoador().getId()).get());
             usuario.setRole(Collections.singleton(Role.ROLE_DOADOR));

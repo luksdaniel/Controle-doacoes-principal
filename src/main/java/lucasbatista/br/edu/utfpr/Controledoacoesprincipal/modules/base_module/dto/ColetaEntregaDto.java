@@ -9,7 +9,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 
 public class ColetaEntregaDto implements Comparable<ColetaEntregaDto> {
 
@@ -32,4 +31,5 @@ public class ColetaEntregaDto implements Comparable<ColetaEntregaDto> {
 
         return 0;
     }
+
 }

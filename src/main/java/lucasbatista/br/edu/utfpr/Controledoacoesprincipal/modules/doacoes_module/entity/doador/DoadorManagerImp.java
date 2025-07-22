@@ -4,8 +4,8 @@ import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.Bus
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.DependencyNotFoundException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceCreateErrorException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceNotFoundException;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.endereco.EnderecoManager;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.pessoa.PessoaManager;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.service.endereco.EnderecoServiceBase;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.service.pessoa.PessoaServiceBase;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.persistence.doador.DoadorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,9 +22,9 @@ public class DoadorManagerImp implements DoadorManager{
     @Autowired
     DoadorService doadorService;
     @Autowired
-    PessoaManager pessoaManager;
+    PessoaServiceBase pessoaManager;
     @Autowired
-    EnderecoManager enderecoManager;
+    EnderecoServiceBase enderecoManager;
 
     @Override
     public List<Doador> findAllDoador() {

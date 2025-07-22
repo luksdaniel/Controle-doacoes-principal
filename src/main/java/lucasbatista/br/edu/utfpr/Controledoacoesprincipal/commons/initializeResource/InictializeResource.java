@@ -3,9 +3,9 @@ package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.initializeRes
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.Enumerators.Role;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.Enumerators.TipoPessoa;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.ResourceNotFoundException;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.endereco.Endereco;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.instituicao.Instituicao;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.instituicao.InstituicaoManager;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.Endereco;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.Instituicao;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.service.instituicao.InstituicaoServiceBase;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.entity.usuario.Usuario;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.entity.usuario.UsuarioManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import java.util.Set;
 public class InictializeResource {
 
     @Autowired
-    InstituicaoManager instituicaoManager;
+    InstituicaoServiceBase instituicaoServiceBase;
 
     @Autowired
     UsuarioManager usuarioManager;
@@ -30,7 +30,7 @@ public class InictializeResource {
         Optional<Instituicao> instituicaoOptional;
 
         try {
-            instituicaoOptional = instituicaoManager.find();
+            instituicaoOptional = instituicaoServiceBase.find();
         }catch (ResourceNotFoundException ex){
 
             Usuario usuario = new Usuario();
@@ -58,7 +58,7 @@ public class InictializeResource {
             instituicao.setTelefone("(00)0000-0000");
             instituicao.setTipoPessoa(TipoPessoa.PESSOA_JURIDICA);
 
-            instituicaoManager.saveInstituicao(instituicao);
+            instituicaoServiceBase.saveInstituicao(instituicao);
 
             usuario.setUsername("admin");
             usuario.setPassword("admin");

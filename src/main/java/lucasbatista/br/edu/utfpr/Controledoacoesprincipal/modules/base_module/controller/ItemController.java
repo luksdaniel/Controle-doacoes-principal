@@ -1,10 +1,9 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.controller;
 
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptionHandler.EntityValidateExceptionHandler;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item.Item;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.item.ItemManager;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.Item;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.service.item.ItemManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +15,13 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/item")
 public class ItemController extends EntityValidateExceptionHandler {
-    @Autowired
+
     ItemManager managerItem;
+
+    @Autowired
+    public ItemController(ItemManager managerItem) {
+        this.managerItem = managerItem;
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Item> findItemById(@PathVariable("id") Long id){

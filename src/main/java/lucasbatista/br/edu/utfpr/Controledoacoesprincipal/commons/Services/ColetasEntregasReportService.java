@@ -6,13 +6,12 @@ import com.lowagie.text.Font;
 import com.lowagie.text.pdf.*;
 import jakarta.servlet.http.HttpServletResponse;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.dto.ColetaEntregaDto;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.instituicao.Instituicao;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.instituicao.InstituicaoManager;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.persistence.dadosRelatorio.DadosRelatorioService;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.Instituicao;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.service.instituicao.InstituicaoServiceBase;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.service.relatorio.RelatorioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import jakarta.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
@@ -23,10 +22,10 @@ import java.util.Optional;
 public class ColetasEntregasReportService {
 
     @Autowired
-    InstituicaoManager instituicaoManager;
+    InstituicaoServiceBase instituicaoServiceBase;
 
     @Autowired
-    DadosRelatorioService dadosRelatorioService;
+    RelatorioService dadosRelatorioService;
 
     public void export(HttpServletResponse response) throws IOException {
 
@@ -44,7 +43,7 @@ public class ColetasEntregasReportService {
         Font fontContent = FontFactory.getFont(FontFactory.TIMES);
         fontContent.setSize(11);
 
-        Optional<Instituicao> instituicao = instituicaoManager.find();
+        Optional<Instituicao> instituicao = instituicaoServiceBase.find();
         Paragraph paragraph = new Paragraph("Relatório de Doações - "+instituicao.get().getNomeFantasia(), fontTitle);
         paragraph.setAlignment(Paragraph.ALIGN_CENTER);
 
