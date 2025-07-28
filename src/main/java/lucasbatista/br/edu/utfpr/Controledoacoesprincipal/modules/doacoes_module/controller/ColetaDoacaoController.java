@@ -1,8 +1,8 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.controller;
 
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptionHandler.EntityValidateExceptionHandler;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.coletaDoacao.ColetaDoacao;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.coletaDoacao.ColetaDoacaoManager;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.ColetaDoacao;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.service.coletaDoacao.ColetaDoacaoServiceBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,53 +16,48 @@ import java.util.Optional;
 @RequestMapping("/coleta-doacao")
 public class ColetaDoacaoController extends EntityValidateExceptionHandler {
 
+    ColetaDoacaoServiceBase coletaDoacaoServiceBase;
+
     @Autowired
-    ColetaDoacaoManager coletaDoacaoManager;
+    public ColetaDoacaoController(ColetaDoacaoServiceBase coletaDoacaoServiceBase) {
+        this.coletaDoacaoServiceBase = coletaDoacaoServiceBase;
+    }
 
     @GetMapping
     public ResponseEntity<List<ColetaDoacao>> findAllColetaDoacao() {
-        List<ColetaDoacao> coletaList = coletaDoacaoManager.findAllColetaDoacao();
+        List<ColetaDoacao> coletaList = coletaDoacaoServiceBase.findAllColetaDoacao();
         for(ColetaDoacao coleta : coletaList){
             coleta.removeLinks();
             long id = coleta.getId();
-        //  coleta.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ColetaDoacaoController.class).findColetaById((Long) id)).withSelfRel());
         }
         return new ResponseEntity<>(coletaList, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ColetaDoacao> findColetaById(@PathVariable("id") Long id){
-        Optional<ColetaDoacao> coletaDoacao = coletaDoacaoManager.findById(id);
+        Optional<ColetaDoacao> coletaDoacao = coletaDoacaoServiceBase.findById(id);
 
-        //coletaDoacao.get().removeLinks();
-        //coletaDoacao.get().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ColetaDoacaoController.class).findAllColetaDoacao()).withRel("Lista de Coletas"));
         return new ResponseEntity<>(coletaDoacao.get(), HttpStatus.OK);
     }
 
     @GetMapping("doador/{id}")
     public ResponseEntity<List<ColetaDoacao>> findColetaByIdDoador(@PathVariable("id") Long id){
-        List<ColetaDoacao> coletaDoacao = coletaDoacaoManager.findByIdDoador(id);
+        List<ColetaDoacao> coletaDoacao = coletaDoacaoServiceBase.findByIdDoador(id);
 
-        //coletaDoacao.get().removeLinks();
-        //coletaDoacao.get().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ColetaDoacaoController.class).findAllColetaDoacao()).withRel("Lista de Coletas"));
         return new ResponseEntity<>(coletaDoacao, HttpStatus.OK);
     }
 
     @GetMapping("usuario-registro/username/{username}")
     public ResponseEntity<List<ColetaDoacao>> findColetaByIdusuarioRegistro(@PathVariable("username") String username){
-        List<ColetaDoacao> coletaDoacao = coletaDoacaoManager.findByIdUsuarioRegistro(username);
+        List<ColetaDoacao> coletaDoacao = coletaDoacaoServiceBase.findByIdUsuarioRegistro(username);
 
-        //coletaDoacao.get().removeLinks();
-        //coletaDoacao.get().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ColetaDoacaoController.class).findAllColetaDoacao()).withRel("Lista de Coletas"));
         return new ResponseEntity<>(coletaDoacao, HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<ColetaDoacao> saveColetaDoacao(@RequestBody @Valid ColetaDoacao coletaDoacao){
-        ColetaDoacao coletaDoacaoInterna = coletaDoacaoManager.saveColetaDoacao(coletaDoacao);
+        ColetaDoacao coletaDoacaoInterna = coletaDoacaoServiceBase.saveColetaDoacao(coletaDoacao);
 
-        //coletaDoacaoInterna.removeLinks();
-        //coletaDoacaoInterna.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(DoadorController.class).findAllDoador()).withRel("Lista de doadores"));
         return new ResponseEntity<ColetaDoacao>(coletaDoacaoInterna, HttpStatus.CREATED);
     }
 
@@ -70,30 +65,24 @@ public class ColetaDoacaoController extends EntityValidateExceptionHandler {
     public ResponseEntity<ColetaDoacao> effectColetaDoacao(@PathVariable("id") Long id,
                                                            @PathVariable("user-id") Long userId){
 
-        ColetaDoacao coletaDoacaoInterna = coletaDoacaoManager.efetivaColetaDoacao(id, userId);
+        ColetaDoacao coletaDoacaoInterna = coletaDoacaoServiceBase.efetivaColetaDoacao(id, userId);
 
-        //coletaDoacaoInterna.removeLinks();
-        //coletaDoacaoInterna.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(DoadorController.class).findAllDoador()).withRel("Lista de doadores"));
         return new ResponseEntity<ColetaDoacao>(coletaDoacaoInterna, HttpStatus.OK);
     }
 
     @PutMapping("cancel")
     public ResponseEntity<ColetaDoacao> cancelColetaDoacao(@RequestBody ColetaDoacao coletaDoacao){
 
-        ColetaDoacao coletaDoacaoInterna = coletaDoacaoManager.cancelaColetaDoacao(coletaDoacao);
+        ColetaDoacao coletaDoacaoInterna = coletaDoacaoServiceBase.cancelaColetaDoacao(coletaDoacao);
 
-        //coletaDoacaoInterna.removeLinks();
-        //coletaDoacaoInterna.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(DoadorController.class).findAllDoador()).withRel("Lista de doadores"));
         return new ResponseEntity<ColetaDoacao>(coletaDoacaoInterna, HttpStatus.OK);
     }
 
     @PutMapping("")
     public ResponseEntity<ColetaDoacao> updateColetaDoacao(@RequestBody ColetaDoacao coletaDoacao){
 
-        ColetaDoacao coletaDoacaoInterna = coletaDoacaoManager.updateColetaDoacao(coletaDoacao);
+        ColetaDoacao coletaDoacaoInterna = coletaDoacaoServiceBase.updateColetaDoacao(coletaDoacao);
 
-        //coletaDoacaoInterna.removeLinks();
-        //coletaDoacaoInterna.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(DoadorController.class).findAllDoador()).withRel("Lista de doadores"));
         return new ResponseEntity<ColetaDoacao>(coletaDoacaoInterna, HttpStatus.OK);
     }
 

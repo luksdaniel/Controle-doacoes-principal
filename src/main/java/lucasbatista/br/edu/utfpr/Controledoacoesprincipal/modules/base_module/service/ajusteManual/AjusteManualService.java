@@ -5,7 +5,7 @@ import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.Res
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.AjusteManualEstoque;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.service.item.ItemManager;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.repository.AjusteManualEstoqueRepository;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.entity.usuario.UsuarioManager;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.service.usuario.UsuarioServiceBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,13 +20,13 @@ public class AjusteManualService implements AjusteManualServiceBase {
 
     AjusteManualEstoqueRepository ajusteManualEstService;
     ItemManager itemManager;
-    UsuarioManager usuarioManager;
+    UsuarioServiceBase usuarioServiceBase;
 
     @Autowired
-    public AjusteManualService(AjusteManualEstoqueRepository ajusteManualEstService, ItemManager itemManager, UsuarioManager usuarioManager) {
+    public AjusteManualService(AjusteManualEstoqueRepository ajusteManualEstService, ItemManager itemManager, UsuarioServiceBase usuarioServiceBase) {
         this.ajusteManualEstService = ajusteManualEstService;
         this.itemManager = itemManager;
-        this.usuarioManager = usuarioManager;
+        this.usuarioServiceBase = usuarioServiceBase;
     }
 
     @Override
@@ -81,6 +81,6 @@ public class AjusteManualService implements AjusteManualServiceBase {
         ajuste.setEstaCancelada(false);
 
         ajuste.setItem(itemManager.findById(ajuste.getItem().getId()).get());
-        ajuste.setUsuarioResponsavel(usuarioManager.findById(ajuste.getUsuarioResponsavel().getId()).get());
+        ajuste.setUsuarioResponsavel(usuarioServiceBase.findById(ajuste.getUsuarioResponsavel().getId()).get());
     }
 }

@@ -6,8 +6,8 @@ import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.Res
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.Endereco;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.Instituicao;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.service.instituicao.InstituicaoServiceBase;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.entity.usuario.Usuario;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.entity.usuario.UsuarioManager;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.entity.Usuario;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.service.usuario.UsuarioServiceBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +24,7 @@ public class InictializeResource {
     InstituicaoServiceBase instituicaoServiceBase;
 
     @Autowired
-    UsuarioManager usuarioManager;
+    UsuarioServiceBase usuarioServiceBase;
 
     public void createDefaultIntituicao(){
         Optional<Instituicao> instituicaoOptional;
@@ -67,7 +67,7 @@ public class InictializeResource {
             usuario.setInstituicao(instituicao);
             usuarioSet.add(usuario);
 
-            usuarioManager.saveUsuario(usuario);
+            usuarioServiceBase.saveUsuario(usuario);
 
         }
 

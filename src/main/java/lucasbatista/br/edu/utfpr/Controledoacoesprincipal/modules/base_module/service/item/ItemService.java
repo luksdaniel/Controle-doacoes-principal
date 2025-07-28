@@ -8,7 +8,7 @@ import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptions.Res
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.Item;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.service.unidadeMedida.UnidadeMedidaServiceBase;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.repository.ItemRepository;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.doador.DoadorManager;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.service.doador.DoadorServiceBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,18 +24,18 @@ public class ItemService implements ItemManager {
     ItemRepository itemRepository;
     UnidadeMedidaServiceBase unidadeMedidaManager;
     EmailService emailService;
-    DoadorManager doadorManager;
+    DoadorServiceBase doadorServiceBase;
 
     @Autowired
     public ItemService(
             ItemRepository itemRepository,
             UnidadeMedidaServiceBase unidadeMedidaManager,
             EmailService emailService,
-            DoadorManager doadorManager) {
+            DoadorServiceBase doadorServiceBase) {
         this.itemRepository = itemRepository;
         this.unidadeMedidaManager = unidadeMedidaManager;
         this.emailService = emailService;
-        this.doadorManager = doadorManager;
+        this.doadorServiceBase = doadorServiceBase;
     }
 
     @Override

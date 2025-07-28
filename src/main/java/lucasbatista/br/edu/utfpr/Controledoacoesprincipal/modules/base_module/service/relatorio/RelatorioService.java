@@ -6,14 +6,14 @@ import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.dt
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.AjusteManualEstoque;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.service.item.ItemService;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.service.ajusteManual.AjusteManualService;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.coletaDoacao.ColetaDoacao;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.entregaDoacao.EntregaDoacao;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.itemColetaDoacao.ItemColetaDoacao;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.itemEntregaDoacao.ItemEntregaDoacao;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.persistence.coletaDoacao.ColetaDoacaoService;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.persistence.entregaDoacao.EntregaDoacaoService;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.persistence.itemColetaDoacao.ItemColetaService;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.persistence.itemEntregaDoacao.ItemEntregaService;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.ColetaDoacao;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.EntregaDoacao;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.ItemColetaDoacao;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.ItemEntregaDoacao;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.repository.ColetaDoacaoRepository;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.repository.EntregaDoacaoRepository;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.repository.ItemColetaRepository;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.repository.ItemEntregaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,25 +25,25 @@ import java.util.List;
 public class RelatorioService implements RelatorioServiceBase {
 
     ItemService itemService;
-    EntregaDoacaoService entregaDoacaoService;
-    ColetaDoacaoService coletaDoacaoService;
-    ItemColetaService itemColetaService;
-    ItemEntregaService itemEntregaService;
+    EntregaDoacaoRepository entregaDoacaoRepository;
+    ColetaDoacaoRepository coletaDoacaoService;
+    ItemColetaRepository itemColetaRepository;
+    ItemEntregaRepository itemEntregaRepository;
     AjusteManualService ajusteManualService;
 
     @Autowired
     public RelatorioService(
             ItemService itemService,
-            EntregaDoacaoService entregaDoacaoService,
-            ColetaDoacaoService coletaDoacaoService,
-            ItemColetaService itemColetaService,
-            ItemEntregaService itemEntregaService,
+            EntregaDoacaoRepository entregaDoacaoRepository,
+            ColetaDoacaoRepository coletaDoacaoService,
+            ItemColetaRepository itemColetaRepository,
+            ItemEntregaRepository itemEntregaRepository,
             AjusteManualService ajusteManualService) {
         this.itemService = itemService;
-        this.entregaDoacaoService = entregaDoacaoService;
+        this.entregaDoacaoRepository = entregaDoacaoRepository;
         this.coletaDoacaoService = coletaDoacaoService;
-        this.itemColetaService = itemColetaService;
-        this.itemEntregaService = itemEntregaService;
+        this.itemColetaRepository = itemColetaRepository;
+        this.itemEntregaRepository = itemEntregaRepository;
         this.ajusteManualService = ajusteManualService;
     }
 
@@ -51,10 +51,10 @@ public class RelatorioService implements RelatorioServiceBase {
     public List<MovItemDto> findAllMovimentacoes(long itemId){
 
         List<MovItemDto> movimentacoes = new ArrayList<>();
-        List<ItemColetaDoacao> itensColeta = itemColetaService.findByItemId(itemId);
+        List<ItemColetaDoacao> itensColeta = itemColetaRepository.findByItemId(itemId);
         List<ColetaDoacao> coletaList = new ArrayList<>();
 
-        List<ItemEntregaDoacao> itensEntrega = itemEntregaService.findByItemId(itemId);
+        List<ItemEntregaDoacao> itensEntrega = itemEntregaRepository.findByItemId(itemId);
         List<EntregaDoacao> entregaLista = new ArrayList<>();
 
         List<AjusteManualEstoque> ajustesList = ajusteManualService.findByItemId(itemId);
@@ -103,8 +103,8 @@ public class RelatorioService implements RelatorioServiceBase {
     public List<ColetaEntregaDto> getDadosRelatorioColetaEntrega(){
 
         List<ColetaEntregaDto> movimentacoes = new ArrayList<>();
-        List<ColetaDoacao> coletas = coletaDoacaoService.findAllColetaDoacao();
-        List<EntregaDoacao> entregas = entregaDoacaoService.findAllEntregaDoacao();
+        List<ColetaDoacao> coletas = coletaDoacaoService.findAll();
+        List<EntregaDoacao> entregas = entregaDoacaoRepository.findAll();
         ColetaEntregaDto mov;
 
         for (ColetaDoacao coletaAtual: coletas){

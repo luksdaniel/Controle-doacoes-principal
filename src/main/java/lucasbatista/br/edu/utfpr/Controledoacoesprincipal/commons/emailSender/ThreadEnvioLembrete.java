@@ -3,10 +3,10 @@ package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.emailSender;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.Item;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.service.item.ItemManager;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.repository.ItemRepository;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.doador.Doador;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.doador.DoadorManager;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.lembreteDoacao.LembreteDoacao;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.persistence.lembreteDoacao.LembreteDoacaoService;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.Doador;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.repository.LembreteDoacaoRepository;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.service.doador.DoadorServiceBase;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.LembreteDoacao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailAuthenticationException;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -20,20 +20,24 @@ import java.util.List;
 @EnableScheduling
 public class ThreadEnvioLembrete {
 
-    @Autowired
-    LembreteDoacaoService lembreteService;
-
-    @Autowired
+    LembreteDoacaoRepository lembreteDoacaoRepository;
     EmailService emailService;
-
-    @Autowired
-    DoadorManager doadorManager;
-
-    @Autowired
+    DoadorServiceBase doadorServiceBase;
     ItemManager itemManager;
+    ItemRepository itemRepository;
 
     @Autowired
-    ItemRepository itemRepository;
+    public ThreadEnvioLembrete(LembreteDoacaoRepository lembreteDoacaoRepository,
+                               EmailService emailService,
+                               DoadorServiceBase doadorServiceBase,
+                               ItemManager itemManager,
+                               ItemRepository itemRepository){
+        this.lembreteDoacaoRepository = lembreteDoacaoRepository;
+        this.emailService = emailService;
+        this.doadorServiceBase = doadorServiceBase;
+        this.itemManager = itemManager;
+        this.itemRepository = itemRepository;
+    }
 
     private final long SEGUNDO = 1000;
     private final long MINUTO = SEGUNDO * 60;
@@ -43,8 +47,8 @@ public class ThreadEnvioLembrete {
     @Scheduled(fixedDelay = DIA)
     public void enviaLembretesDiariament() {
 
-        List<LembreteDoacao> lembretes = lembreteService.findAllLembreteDoacao();
-        List<Doador> doadores = doadorManager.retornaDoadoresQueRecebemEmails();
+        List<LembreteDoacao> lembretes = lembreteDoacaoRepository.findAll();
+        List<Doador> doadores = doadorServiceBase.retornaDoadoresQueRecebemEmails();
 
         if(doadores.isEmpty() || lembretes.isEmpty())
             return;
@@ -74,7 +78,7 @@ public class ThreadEnvioLembrete {
     public void enviaAvisoFaltaItemDiariamente() {
         try {
             List<Item> itens = itemRepository.findAll();
-            List<Doador> doadores = doadorManager.retornaDoadoresQueRecebemEmails();
+            List<Doador> doadores = doadorServiceBase.retornaDoadoresQueRecebemEmails();
             StringBuilder conteudoEmail = new StringBuilder("Olá, o seguinte item está em falta nos nossos estoques, precisamos de sua ajuda! \n");
 
             if (doadores.isEmpty() || itens.isEmpty())
@@ -86,12 +90,16 @@ public class ThreadEnvioLembrete {
                     conteudoEmail.append(itemAtual.getDescricao()).append("; \n");
                     itemAtual.setUltimoEnvioEmail(LocalDate.now());
                     itemRepository.save(itemAtual);
-                } else if (itemAtual.getQuantidadeEstoque() <= itemAtual.getQuantidadeMinima() &&
-                        (itemAtual.getUltimoEnvioEmail().plusMonths(1).isBefore(LocalDate.now()) ||
-                                itemAtual.getUltimoEnvioEmail().plusMonths(1).isEqual(LocalDate.now()))) {
-                    conteudoEmail.append(itemAtual.getDescricao()).append("; \n");
-                    itemAtual.setUltimoEnvioEmail(LocalDate.now());
-                    itemRepository.save(itemAtual);
+                } else {
+                    if (itemAtual.getQuantidadeEstoque() <= itemAtual.getQuantidadeMinima()) {
+                        assert itemAtual.getUltimoEnvioEmail() != null;
+                        if (itemAtual.getUltimoEnvioEmail().plusMonths(1).isBefore(LocalDate.now()) ||
+                                itemAtual.getUltimoEnvioEmail().plusMonths(1).isEqual(LocalDate.now())) {
+                            conteudoEmail.append(itemAtual.getDescricao()).append("; \n");
+                            itemAtual.setUltimoEnvioEmail(LocalDate.now());
+                            itemRepository.save(itemAtual);
+                        }
+                    }
                 }
             }
 
@@ -119,7 +127,7 @@ public class ThreadEnvioLembrete {
                 emailService.enviar(doadorAtual.getEmail(),"Lembrete de doação para prefeitura",lembrete.getMensagem());
 
                 lembrete.setDataUltimoEnvio(LocalDate.now());
-                lembreteService.updateLembreteDoacao(lembrete);
+                lembreteDoacaoRepository.save(lembrete);
             }
         }
 

@@ -1,6 +1,6 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.security;
 
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.persistence.UserDetailService;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.service.UserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +12,6 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
@@ -21,13 +20,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfiguration {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
     private final AuthSuccessHandler authSuccessHandler;
     private final UserDetailService userDetailService;
     private final String secret;
 
-    public SecurityConfiguration(AuthSuccessHandler authSuccessHandler, UserDetailService userDetailService, @Value("${jwt.secret}") String secret) {
+    @Autowired
+    public SecurityConfiguration(AuthenticationManager authenticationManager, AuthSuccessHandler authSuccessHandler, UserDetailService userDetailService, @Value("${jwt.secret}") String secret) {
+        this.authenticationManager = authenticationManager;
         this.authSuccessHandler = authSuccessHandler;
         this.userDetailService = userDetailService;
         this.secret = secret;
