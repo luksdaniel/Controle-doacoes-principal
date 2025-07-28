@@ -2,8 +2,8 @@ package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.c
 
 import jakarta.validation.Valid;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptionHandler.EntityValidateExceptionHandler;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.ajusteManualEstoque.AjusteManualEstoque;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.ajusteManualEstoque.AjusteManualEstoqueManager;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.AjusteManualEstoque;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.service.ajusteManual.AjusteManualServiceBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,32 +15,33 @@ import java.util.List;
 @RequestMapping("/ajuste-manual-estoque")
 public class AjusteManualEstoqueController extends EntityValidateExceptionHandler {
 
+    AjusteManualServiceBase ajusteManualServiceBase;
+
     @Autowired
-    AjusteManualEstoqueManager ajusteManualEstoqueManager;
+    public AjusteManualEstoqueController(AjusteManualServiceBase ajusteManualServiceBase) {
+        this.ajusteManualServiceBase = ajusteManualServiceBase;
+    }
 
     @GetMapping("item/{Id}")
     public ResponseEntity<List<AjusteManualEstoque>> findUsuarioByItemId(@PathVariable("Id") Long id){
-        List<AjusteManualEstoque> ajusteManualEstoque = ajusteManualEstoqueManager.findByItemId(id);
+        List<AjusteManualEstoque> ajusteManualEstoque = ajusteManualServiceBase.findByItemId(id);
 
-        /*ajusteManualEstoque.get().removeLinks();
-        ajusteManualEstoque.get().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class).findAllUsuario()).withRel("Lista de Usuarios"));*/
         return new ResponseEntity<>(ajusteManualEstoque, HttpStatus.OK);
 
     }
 
     @PostMapping
     public ResponseEntity<AjusteManualEstoque> saveAjusteManual(@RequestBody @Valid AjusteManualEstoque ajusteManualEstoque){
-        AjusteManualEstoque ajusteManualInterno = ajusteManualEstoqueManager.saveAjusteManual(ajusteManualEstoque);
+        AjusteManualEstoque ajusteManualInterno = ajusteManualServiceBase.saveAjusteManual(ajusteManualEstoque);
         ajusteManualInterno.removeLinks();
-        //usuarioInterno.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AjusteManualEstoqueController.class).findAllUsuario()).withRel("Lista de Usuarios"));
+
         return new ResponseEntity<>(ajusteManualInterno, HttpStatus.CREATED);
     }
 
     @PutMapping("cancel/{id}")
     public ResponseEntity<AjusteManualEstoque> cancelaAjusteManual(@PathVariable("id") Long id){
-        AjusteManualEstoque ajusteManualInterno = ajusteManualEstoqueManager.cancelaAjusteManual(id);
-        //ajusteManualInterno.removeLinks();
-        //usuarioInterno.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AjusteManualEstoqueController.class).findAllUsuario()).withRel("Lista de Usuarios"));
+        AjusteManualEstoque ajusteManualInterno = ajusteManualServiceBase.cancelaAjusteManual(id);
+
         return new ResponseEntity<>(ajusteManualInterno, HttpStatus.OK);
     }
 

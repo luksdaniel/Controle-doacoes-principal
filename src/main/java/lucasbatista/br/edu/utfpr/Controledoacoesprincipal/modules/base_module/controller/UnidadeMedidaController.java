@@ -1,8 +1,8 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.controller;
 
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptionHandler.EntityValidateExceptionHandler;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.unidadeMedida.UnidadeMedidaManager;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.unidadeMedida.UnidadeMedida;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.service.unidadeMedida.UnidadeMedidaServiceBase;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.UnidadeMedida;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
@@ -17,8 +17,12 @@ import java.util.Optional;
 @RequestMapping("/unidadeMedida")
 public class UnidadeMedidaController extends EntityValidateExceptionHandler {
 
+    UnidadeMedidaServiceBase managerUnidadeMedida;
+
     @Autowired
-    UnidadeMedidaManager managerUnidadeMedida;
+    public UnidadeMedidaController(UnidadeMedidaServiceBase managerUnidadeMedida) {
+        this.managerUnidadeMedida = managerUnidadeMedida;
+    }
 
     @GetMapping
     public ResponseEntity<List<UnidadeMedida>> findAllUnidadeMedida() {

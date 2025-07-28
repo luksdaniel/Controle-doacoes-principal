@@ -2,10 +2,8 @@ package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_modu
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.TokenExpiredException;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptionHandler.ApplicationExceptionHandler;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.persistence.UserDetailService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.security_module.service.UserDetailService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

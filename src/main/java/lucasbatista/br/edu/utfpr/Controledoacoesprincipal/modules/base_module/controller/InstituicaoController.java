@@ -2,8 +2,8 @@ package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.c
 
 import jakarta.validation.Valid;
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptionHandler.EntityValidateExceptionHandler;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.instituicao.InstituicaoManager;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.instituicao.Instituicao;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.service.instituicao.InstituicaoServiceBase;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.base_module.entity.Instituicao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +15,16 @@ import java.util.Optional;
 @RequestMapping("/instituicao")
 public class InstituicaoController extends EntityValidateExceptionHandler {
     
+    InstituicaoServiceBase instituicaoServiceBase;
+
     @Autowired
-    InstituicaoManager instituicaoManager;
+    public InstituicaoController(InstituicaoServiceBase instituicaoServiceBase){
+        this.instituicaoServiceBase = instituicaoServiceBase;
+    }
 
     @GetMapping("")
     public ResponseEntity<Instituicao> findInstituicao(){
-        Optional<Instituicao> instituicao = instituicaoManager.find();
+        Optional<Instituicao> instituicao = instituicaoServiceBase.find();
 
         return new ResponseEntity<Instituicao>(instituicao.get(), HttpStatus.OK);
 
@@ -28,7 +32,7 @@ public class InstituicaoController extends EntityValidateExceptionHandler {
 
     @PutMapping
     public ResponseEntity<Instituicao> updateInstituicao(@RequestBody @Valid Instituicao instituicao){
-        Instituicao instituicaoInterno = (instituicaoManager.updateInstituicao(instituicao));
+        Instituicao instituicaoInterno = (instituicaoServiceBase.updateInstituicao(instituicao));
 
         return new ResponseEntity<Instituicao>(instituicaoInterno, HttpStatus.OK);
     }

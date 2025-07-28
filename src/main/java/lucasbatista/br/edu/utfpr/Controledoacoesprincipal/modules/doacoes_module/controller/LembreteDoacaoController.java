@@ -1,8 +1,8 @@
 package lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.controller;
 
 import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.commons.exceptionHandler.EntityValidateExceptionHandler;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.lembreteDoacao.LembreteDoacao;
-import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.lembreteDoacao.LembreteDoacaoManager;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.entity.LembreteDoacao;
+import lucasbatista.br.edu.utfpr.Controledoacoesprincipal.modules.doacoes_module.service.lembreteDoacao.LembreteDoacaoServiceBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +17,11 @@ import java.util.Optional;
 public class LembreteDoacaoController extends EntityValidateExceptionHandler {
 
     @Autowired
-    LembreteDoacaoManager lembreteDoacaoManager;
+    LembreteDoacaoServiceBase lembreteDoacaoServiceBase;
 
     @GetMapping
     public ResponseEntity<List<LembreteDoacao>> findAllLembreteDoacao() {
-        List<LembreteDoacao> lembreteList = lembreteDoacaoManager.findAllLembreteDoacao();
+        List<LembreteDoacao> lembreteList = lembreteDoacaoServiceBase.findAllLembreteDoacao();
         /*for(LembreteDoacao lembrete : lembreteList){
             lembrete.removeLinks();
             long id = lembrete.getId();
@@ -32,7 +32,7 @@ public class LembreteDoacaoController extends EntityValidateExceptionHandler {
 
     @GetMapping("/{id}")
     public ResponseEntity<LembreteDoacao> findLembreteDoacaoById(@PathVariable("id") Long id){
-        Optional<LembreteDoacao> lembreteDoacao = lembreteDoacaoManager.findById(id);
+        Optional<LembreteDoacao> lembreteDoacao = lembreteDoacaoServiceBase.findById(id);
 /*
         lembreteDoacao.get().removeLinks();
         lembreteDoacao.get().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(LembreteDoacaoController.class).findAllLembreteDoacao()).withRel("Lista de Lembretes"));]
@@ -43,7 +43,7 @@ public class LembreteDoacaoController extends EntityValidateExceptionHandler {
 
     @PostMapping
     public ResponseEntity<LembreteDoacao> saveLembreteDoacao(@RequestBody @Valid LembreteDoacao lembreteDoacao){
-        LembreteDoacao lembreteInterno = lembreteDoacaoManager.saveLembreteDoacao(lembreteDoacao);
+        LembreteDoacao lembreteInterno = lembreteDoacaoServiceBase.saveLembreteDoacao(lembreteDoacao);
 
         /*lembreteInterno.removeLinks();
         lembreteInterno.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(LembreteDoacaoController.class).findAllLembreteDoacao()).withRel("Lista de Lembretes"));*/
@@ -52,14 +52,14 @@ public class LembreteDoacaoController extends EntityValidateExceptionHandler {
 
     @PutMapping
     public ResponseEntity<LembreteDoacao> updateLembreteDoacao(@RequestBody @Valid LembreteDoacao lembreteDoacao){
-        LembreteDoacao lembreteInterno = (lembreteDoacaoManager.updateLembreteDoacao(lembreteDoacao));
+        LembreteDoacao lembreteInterno = (lembreteDoacaoServiceBase.updateLembreteDoacao(lembreteDoacao));
         /*lembreteInterno.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(LembreteDoacaoController.class).findAllLembreteDoacao()).withRel("Lista de Lembretes"));*/
         return new ResponseEntity<LembreteDoacao>(lembreteInterno, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<List<LembreteDoacao>> deleteLembreteDoacao(@PathVariable("id") Long id){
-        lembreteDoacaoManager.deleteLembreteDoacao(id);
+        lembreteDoacaoServiceBase.deleteLembreteDoacao(id);
         return new ResponseEntity(HttpStatus.OK);
     }
 

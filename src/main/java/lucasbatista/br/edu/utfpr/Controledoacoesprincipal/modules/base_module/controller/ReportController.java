@@ -14,8 +14,12 @@ import java.time.LocalDate;
 @RequestMapping("/relatorios")
 public class ReportController {
 
-    @Autowired
     ColetasEntregasReportService coletasEntregasReportService;
+
+    @Autowired
+    public ReportController(ColetasEntregasReportService coletasEntregasReportService) {
+        this.coletasEntregasReportService = coletasEntregasReportService;
+    }
 
     @GetMapping("entregas-coletas")
     public void relatorioColetasEntregas(HttpServletResponse response) throws IOException {
